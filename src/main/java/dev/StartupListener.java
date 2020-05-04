@@ -1,18 +1,17 @@
 package dev;
 
-import dev.domain.Collegue;
-import dev.domain.Role;
-import dev.domain.RoleCollegue;
-import dev.domain.Version;
-import dev.repository.CollegueRepo;
-import dev.repository.VersionRepo;
+import java.util.Arrays;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
+import dev.domain.Collegue;
+import dev.domain.Role;
+import dev.domain.RoleCollegue;
+import dev.repository.CollegueRepo;
 
 /**
  * Code de démarrage de l'application.
@@ -21,22 +20,19 @@ import java.util.Arrays;
 @Component
 public class StartupListener {
 
-    private String appVersion;
-    private VersionRepo versionRepo;
+	private String appVersion;
     private PasswordEncoder passwordEncoder;
     private CollegueRepo collegueRepo;
-
-    public StartupListener(@Value("${app.version}") String appVersion, VersionRepo versionRepo, PasswordEncoder passwordEncoder, CollegueRepo collegueRepo) {
+ 
+    public StartupListener(@Value("${app.version}") String appVersion, PasswordEncoder passwordEncoder, CollegueRepo collegueRepo) {
         this.appVersion = appVersion;
-        this.versionRepo = versionRepo;
         this.passwordEncoder = passwordEncoder;
         this.collegueRepo = collegueRepo;
     }
 
     @EventListener(ContextRefreshedEvent.class)
     public void onStart() {
-        this.versionRepo.save(new Version(appVersion));
-
+   
         // Création de deux utilisateurs
 
         Collegue col1 = new Collegue();

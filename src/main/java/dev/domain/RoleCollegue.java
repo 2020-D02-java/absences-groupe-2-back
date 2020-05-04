@@ -29,15 +29,6 @@ public class RoleCollegue {
     }
 
     public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
     }
 
     public Collegue getCollegue() {
@@ -47,4 +38,20 @@ public class RoleCollegue {
     public void setCollegue(Collegue collegue) {
         this.collegue = collegue;
     }
+
+	/** Getter
+	 *
+	 * @return the role
+	 */
+	public Role getRole() {
+		return role;
+	}
+
+	/** Setter
+	 *
+	 * @param role the role to set
+	 */
+	public void setRole(Role role) {
+		this.role = role;
+	}
 }
