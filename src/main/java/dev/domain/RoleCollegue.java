@@ -2,17 +2,25 @@ package dev.domain;
 
 import javax.persistence.*;
 
+/** Représentation du role d'un collègue
+ *
+ * @author KOMINIARZ Anaïs
+ *
+ */
 @Entity
 public class RoleCollegue {
 
+    /** id du role collegue **/
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    /** collegue **/
     @ManyToOne
     @JoinColumn(name = "collegue_id")
     private Collegue collegue;
 
+    /** role d'un collegue **/
     @Enumerated(EnumType.STRING)
     private Role role;
 
@@ -29,15 +37,6 @@ public class RoleCollegue {
     }
 
     public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
     }
 
     public Collegue getCollegue() {
@@ -47,4 +46,20 @@ public class RoleCollegue {
     public void setCollegue(Collegue collegue) {
         this.collegue = collegue;
     }
+
+	/** Getter
+	 *
+	 * @return the role
+	 */
+	public Role getRole() {
+		return role;
+	}
+
+	/** Setter
+	 *
+	 * @param role the role to set
+	 */
+	public void setRole(Role role) {
+		this.role = role;
+	}
 }

@@ -1,26 +1,53 @@
 package dev.domain;
 
-import javax.persistence.*;
 import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Collegue {
 
+    /** id du collegue **/
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    /** nom du collegue **/
     private String nom;
 
+    /** prenom du collegue **/
     private String prenom;
 
+    /** email du collegue **/
     private String email;
 
+    /** mot de passe du collegue **/
     private String motDePasse;
 
+    /** roles du collegue **/
     @OneToMany(mappedBy = "collegue", cascade = CascadeType.PERSIST)
     private List<RoleCollegue> roles;
-
+    
+    /** soldes du collegue **/
+    @OneToMany(mappedBy = "collegue", cascade = CascadeType.PERSIST)
+	private List<Solde> soldes;
+    
+    
+    /** manager de plusieurs collegues **/
+    @ManyToOne
+    private Collegue manager; 
+    
+    /** subordonnes d'un manager **/
+    @OneToMany(mappedBy = "manager")
+    List<Collegue> subordonnes;
+    
+    
     public Long getId() {
         return id;
     }
