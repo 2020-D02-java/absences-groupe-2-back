@@ -1,7 +1,9 @@
 package dev;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -45,11 +47,16 @@ public class StartupListener {
         col1.setEmail("admin@dev.fr");
         col1.setMotDePasse(passwordEncoder.encode("superpass"));
         col1.setRoles(Arrays.asList(new RoleCollegue(col1, Role.ROLE_ADMINISTRATEUR), new RoleCollegue(col1, Role.ROLE_EMPLOYE)));
-        //creation d'une absence
-        Absence abs1 = new Absence(LocalDate.of(2020, 02, 04), LocalDate.of(2020, 02, 14), TypeAbsence.CONGES_PAYES, "vacances au soleil", Statut.INITIALE, col1);
-        this.collegueRepo.save(col1);
-       
         
+        
+        //creation d'une absence + TESTS *********
+        Absence abs1 = new Absence(LocalDate.of(2020, 02, 04), LocalDate.of(2020, 02, 14), TypeAbsence.CONGES_PAYES, "vacances au soleil", Statut.INITIALE, col1);
+        List<Absence> listeAbsences = new ArrayList<>();
+        listeAbsences.add(abs1);
+        col1.setAbsences(listeAbsences);
+        // ****************************************
+        
+        this.collegueRepo.save(col1);
         
         Collegue col2 = new Collegue();
         col2.setNom("User");
