@@ -6,7 +6,7 @@ import dev.entites.Collegue;
 
 import java.util.Optional;
 
-public interface CollegueRepo extends JpaRepository<Collegue, Long> {
+public interface CollegueRepo extends JpaRepository<Collegue, Integer> {
 
     Optional<Collegue> findByEmail(String email);
 }

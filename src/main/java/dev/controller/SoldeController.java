@@ -13,40 +13,35 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import dev.controller.dto.AbsenceDto;
 import dev.controller.dto.ErreurDto;
+import dev.controller.dto.SoldeDto;
 import dev.exceptions.CollegueByIdNotExistException;
-import dev.services.AbsenceService;
+import dev.services.SoldeService;
 
-/** Controller de l'entité Absence
+/** Controller de l'entité Solde
  *
  * @author KOMINIARZ Anaïs
  *
  */
 @RestController
-@RequestMapping("absences")
-public class AbsenceController {
-
+@RequestMapping("soldes")
+public class SoldeController {
 	
-	private AbsenceService absenceService;
+	private SoldeService soldeService;
 
 	/** Constructeur
 	 *
-	 * @param absenceService
+	 * @param soldeService
 	 */
-	public AbsenceController(AbsenceService absenceService) {
-		this.absenceService = absenceService;
-	}
+	public SoldeController(SoldeService soldeService) {
+		super();
+		this.soldeService = soldeService;
+	} 
 	
-	/**
-	 * @param id
-	 * @return une liste d'absence Dto
-	 */
 	@GetMapping(("{id}"))
-	public List<AbsenceDto> listerAbsencesCollegue(@PathVariable Integer id){
-		return absenceService.listerAbsencesCollegue(id);
+	public List<SoldeDto> listerSoldesCollegue(@PathVariable Integer id) {
+		return soldeService.listerSoldesCollegue(id);
 	}
-	 
 	
 	//Gestion des erreurs
     @ExceptionHandler(CollegueByIdNotExistException.class)
@@ -55,5 +50,5 @@ public class AbsenceController {
     	erreurDto.setMessage(ex.getMessage());
     	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erreurDto);
   	}
-	
+
 }

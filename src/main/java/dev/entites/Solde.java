@@ -3,8 +3,6 @@
  */
 package dev.entites;
 
-import java.util.List;
-
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -12,7 +10,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
 /** Représentation des différents compteurs
@@ -26,25 +23,48 @@ public class Solde {
 	/** id du solde **/
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 	
 	/** nombre de jours pour le solde **/
 	private Integer nombreDeJours;
 	
 	/** type de l'absence **/
 	@Enumerated(EnumType.STRING)
-	private TypeAbsence typeAbsence;
+	private TypeSolde typeSolde;
 	
 	/** collegue auquel le solde est associé **/
 	@ManyToOne
     @JoinColumn(name = "collegue_id")
     private Collegue collegue;
 
+	
+	/** Constructeur
+	 *
+	 */
+	public Solde() {
+		
+	}
+
+	
+	/** Constructeur
+	 *
+	 * @param nombreDeJours
+	 * @param typeSolde
+	 * @param collegue
+	 */
+	public Solde(Integer nombreDeJours, TypeSolde typeSolde, Collegue collegue) {
+		super();
+		this.nombreDeJours = nombreDeJours;
+		this.typeSolde = typeSolde;
+		this.collegue = collegue;
+	}
+	
+	
 	/** Getter
 	 *
 	 * @return the id
 	 */
-	public Long getId() {
+	public Integer getId() {
 		return id;
 	}
 
@@ -52,7 +72,7 @@ public class Solde {
 	 *
 	 * @param id the id to set
 	 */
-	public void setId(Long id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -74,18 +94,18 @@ public class Solde {
 
 	/** Getter
 	 *
-	 * @return the typeAbsence
+	 * @return the typeSolde
 	 */
-	public TypeAbsence getTypeAbsence() {
-		return typeAbsence;
+	public TypeSolde getTypeSolde() {
+		return typeSolde;
 	}
 
 	/** Setter
 	 *
-	 * @param typeAbsence the typeAbsence to set
+	 * @param typeSolde the typeSolde to set
 	 */
-	public void setTypeAbsence(TypeAbsence typeAbsence) {
-		this.typeAbsence = typeAbsence;
+	public void setTypeSolde(TypeSolde typeSolde) {
+		this.typeSolde = typeSolde;
 	}
 
 	/** Getter

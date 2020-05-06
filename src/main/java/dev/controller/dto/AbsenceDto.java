@@ -11,7 +11,7 @@ import javax.persistence.Enumerated;
 import dev.entites.Statut;
 import dev.entites.TypeAbsence;
 
-/** Représentation 
+/** Structure modélisant une absence servant à communiquer avec l'extérieur (WEB API).
  *
  * @author KOMINIARZ Anaïs
  *

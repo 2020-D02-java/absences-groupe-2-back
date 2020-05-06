@@ -8,7 +8,7 @@ import dev.entites.Collegue;
 import dev.entites.Role;
 
 /**
- * Structure modèlisant un collègue servant à communiquer avec l'extérieur (WEB API).
+ * Structure modélisant un collègue servant à communiquer avec l'extérieur (WEB API).
  */
 public class CollegueDto {
 
