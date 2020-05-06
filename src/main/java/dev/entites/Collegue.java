@@ -39,6 +39,11 @@ public class Collegue {
 	private List<Solde> soldes;
     
     
+    /** absences du collegue **/
+    @OneToMany(mappedBy = "collegue", cascade = CascadeType.PERSIST)
+	private List<Absence> absences;
+    
+    
     /** manager de plusieurs collegues **/
     @ManyToOne
     private Collegue manager; 

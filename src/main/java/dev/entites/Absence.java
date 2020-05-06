@@ -11,6 +11,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 /** Représentation 
  *
@@ -40,6 +42,31 @@ public class Absence {
 	/** statut de l'absence **/
 	@Enumerated(EnumType.STRING)
 	private Statut statut;
+	
+	/** collegue auquel l'absence est associée **/
+	@ManyToOne
+    @JoinColumn(name = "collegue_id")
+    private Collegue collegue;
+
+	/** Constructeur
+	 *
+	 * @param dateDebut
+	 * @param dateFin
+	 * @param typeAbsence
+	 * @param motif
+	 * @param statut
+	 * @param collegue
+	 */
+	public Absence(LocalDate dateDebut, LocalDate dateFin, TypeAbsence typeAbsence, String motif, Statut statut,
+			Collegue collegue) {
+		super();
+		this.dateDebut = dateDebut;
+		this.dateFin = dateFin;
+		this.typeAbsence = typeAbsence;
+		this.motif = motif;
+		this.statut = statut;
+		this.collegue = collegue;
+	}
 
 	/** Getter
 	 *
@@ -135,6 +162,22 @@ public class Absence {
 	 */
 	public void setStatut(Statut statut) {
 		this.statut = statut;
+	}
+
+	/** Getter
+	 *
+	 * @return the collegue
+	 */
+	public Collegue getCollegue() {
+		return collegue;
+	}
+
+	/** Setter
+	 *
+	 * @param collegue the collegue to set
+	 */
+	public void setCollegue(Collegue collegue) {
+		this.collegue = collegue;
 	}
 	 
 	 
