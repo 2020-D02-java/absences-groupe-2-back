@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 @Entity
@@ -39,7 +40,12 @@ public class Collegue {
     
     
     /** manager de plusieurs collegues **/
+    @ManyToOne
     private Collegue manager; 
+    
+    /** subordonnes d'un manager **/
+    @OneToMany(mappedBy = "manager")
+    List<Collegue> subordonnes;
     
     
     public Long getId() {
