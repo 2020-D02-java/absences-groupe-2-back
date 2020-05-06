@@ -34,7 +34,7 @@ public class AbsenceService {
 	 * @param collegue : Collegue
 	 * @return la liste des absences du collègue passé en paramètres
 	 */
-	public List<AbsenceDto> listerAbsencesCollegue(Long idCollegue) {
+	public List<AbsenceDto> listerAbsencesCollegue(Integer idCollegue) {
 		AbsenceDto absenceDto = new AbsenceDto();
 		List<AbsenceDto> listeAbsences = new ArrayList<>();
 		

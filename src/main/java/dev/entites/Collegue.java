@@ -16,7 +16,7 @@ public class Collegue {
     /** id du collegue **/
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     /** nom du collegue **/
     private String nom;
@@ -53,11 +53,11 @@ public class Collegue {
     List<Collegue> subordonnes;
     
     
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -100,4 +100,68 @@ public class Collegue {
     public void setPrenom(String prenom) {
         this.prenom = prenom;
     }
+
+	/** Getter
+	 *
+	 * @return the soldes
+	 */
+	public List<Solde> getSoldes() {
+		return soldes;
+	}
+
+	/** Setter
+	 *
+	 * @param soldes the soldes to set
+	 */
+	public void setSoldes(List<Solde> soldes) {
+		this.soldes = soldes;
+	}
+
+	/** Getter
+	 *
+	 * @return the absences
+	 */
+	public List<Absence> getAbsences() {
+		return absences;
+	}
+
+	/** Setter
+	 *
+	 * @param absences the absences to set
+	 */
+	public void setAbsences(List<Absence> absences) {
+		this.absences = absences;
+	}
+
+	/** Getter
+	 *
+	 * @return the manager
+	 */
+	public Collegue getManager() {
+		return manager;
+	}
+
+	/** Setter
+	 *
+	 * @param manager the manager to set
+	 */
+	public void setManager(Collegue manager) {
+		this.manager = manager;
+	}
+
+	/** Getter
+	 *
+	 * @return the subordonnes
+	 */
+	public List<Collegue> getSubordonnes() {
+		return subordonnes;
+	}
+
+	/** Setter
+	 *
+	 * @param subordonnes the subordonnes to set
+	 */
+	public void setSubordonnes(List<Collegue> subordonnes) {
+		this.subordonnes = subordonnes;
+	}
 }

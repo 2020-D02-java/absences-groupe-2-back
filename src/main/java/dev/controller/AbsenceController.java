@@ -33,8 +33,12 @@ public class AbsenceController {
 		this.absenceService = absenceService;
 	}
 	
+	/**
+	 * @param id
+	 * @return une liste d'absence Dto
+	 */
 	@GetMapping(("{id}"))
-	public List<AbsenceDto> listerAbsencesCollegue(@PathVariable Long id){
+	public List<AbsenceDto> listerAbsencesCollegue(@PathVariable Integer id){
 		return absenceService.listerAbsencesCollegue(id);
 	}
 	 

@@ -48,6 +48,11 @@ public class Absence {
     @JoinColumn(name = "collegue_id")
     private Collegue collegue;
 
+	
+	public Absence() {
+		
+	}
+	
 	/** Constructeur
 	 *
 	 * @param dateDebut
