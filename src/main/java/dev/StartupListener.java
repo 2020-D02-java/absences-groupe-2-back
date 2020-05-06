@@ -8,9 +8,9 @@ import org.springframework.context.event.EventListener;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import dev.domain.Collegue;
-import dev.domain.Role;
-import dev.domain.RoleCollegue;
+import dev.entites.Collegue;
+import dev.entites.Role;
+import dev.entites.RoleCollegue;
 import dev.repository.CollegueRepo;
 
 /**

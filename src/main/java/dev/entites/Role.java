@@ -1,4 +1,4 @@
-package dev.domain;
+package dev.entites;
 
 /** Enumération des différents rôles 
  *

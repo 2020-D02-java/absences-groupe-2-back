@@ -1,7 +1,7 @@
 /**
  * 
  */
-package dev.domain;
+package dev.entites;
 
 import java.util.List;
 
