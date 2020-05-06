@@ -12,25 +12,36 @@ import javax.persistence.OneToMany;
 @Entity
 public class Collegue {
 
+    /** id du collegue **/
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    /** nom du collegue **/
     private String nom;
 
+    /** prenom du collegue **/
     private String prenom;
 
+    /** email du collegue **/
     private String email;
 
+    /** mot de passe du collegue **/
     private String motDePasse;
 
+    /** roles du collegue **/
     @OneToMany(mappedBy = "collegue", cascade = CascadeType.PERSIST)
     private List<RoleCollegue> roles;
     
+    /** soldes du collegue **/
     @OneToMany(mappedBy = "collegue", cascade = CascadeType.PERSIST)
 	private List<Solde> soldes;
     
-
+    
+    /** manager de plusieurs collegues **/
+    private Collegue manager; 
+    
+    
     public Long getId() {
         return id;
     }

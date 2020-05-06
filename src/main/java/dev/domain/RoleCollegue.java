@@ -2,17 +2,25 @@ package dev.domain;
 
 import javax.persistence.*;
 
+/** Représentation du role d'un collègue
+ *
+ * @author KOMINIARZ Anaïs
+ *
+ */
 @Entity
 public class RoleCollegue {
 
+    /** id du role collegue **/
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    /** collegue **/
     @ManyToOne
     @JoinColumn(name = "collegue_id")
     private Collegue collegue;
 
+    /** role d'un collegue **/
     @Enumerated(EnumType.STRING)
     private Role role;
 
