@@ -1,7 +1,7 @@
 /**
  * 
  */
-package dev.domain;
+package dev.entites;
 
 /** Enumération des différents statuts d'une demande d'absence
  *
