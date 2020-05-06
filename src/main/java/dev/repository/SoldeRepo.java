@@ -5,13 +5,13 @@ package dev.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import dev.entites.Absence;
+import dev.entites.Solde;
 
-/** Repository de l'entité Absence
+/** Repository de l'entité Solde
  *
  * @author KOMINIARZ Anaïs
  *
  */
-public interface AbsenceRepo extends JpaRepository<Absence, Long> {
+public interface SoldeRepo extends JpaRepository<Solde, Integer>{
 
 }

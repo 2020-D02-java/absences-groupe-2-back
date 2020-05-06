@@ -49,6 +49,9 @@ public class Absence {
     private Collegue collegue;
 
 	
+	/** Constructeur
+	 *
+	 */
 	public Absence() {
 		
 	}
