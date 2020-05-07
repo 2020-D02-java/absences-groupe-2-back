@@ -7,7 +7,6 @@ import java.time.LocalDate;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.validation.constraints.NotBlank;
 
 import dev.entites.TypeJourFerme;
 
@@ -17,7 +16,6 @@ public class JourFermeDto {
 	@Enumerated(EnumType.STRING)
 	private TypeJourFerme typeJourFerme;
 	
-	@NotBlank
 	private String commentaire;
 	/** Getter
 	 * @return the date
@@ -60,7 +58,7 @@ public class JourFermeDto {
 	 * @param typeJourFerme
 	 * @param commentaire
 	 */
-	public JourFermeDto(LocalDate date, TypeJourFerme typeJourFerme, @NotBlank String commentaire) {
+	public JourFermeDto(LocalDate date, TypeJourFerme typeJourFerme, String commentaire) {
 		super();
 		this.date = date;
 		this.typeJourFerme = typeJourFerme;
