@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import dev.entites.JourFerme;
 
-/**
+/** Repository des jours ferme
  *
  * @author GIRARD Vincent
  *

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import dev.controller.dto.JourFermeDto;
@@ -32,10 +33,15 @@ public class JourFermeController {
 //		return jourFermeService.listerJourFerme(id);
 //	}
 	
+//	@GetMapping
+//	public List<JourFerme> getAllJourFermes() {
+//
+//		return this.jourFermeService.getAllJourFermes();
+//	}
+	
 	@GetMapping
-	public List<JourFerme> getAllJourFermes() {
-
-		return this.jourFermeService.getAllJourFermes();
+	public List<JourFerme> getJourFermesParDate(@RequestParam Integer annee) {
+		return this.jourFermeService.getJourFermesParDate(annee);
 	}
 	 
 	@PostMapping
