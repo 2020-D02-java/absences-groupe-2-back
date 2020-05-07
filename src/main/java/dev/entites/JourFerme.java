@@ -8,9 +8,11 @@ import java.time.LocalDate;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-/** Représentation des jours fermés
+/**
  *
  * @author KOMINIARZ Anaïs
  *
@@ -20,6 +22,7 @@ public class JourFerme {
 
 	/** id d'un jour ferme **/
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
 	/** date d'un jour ferme **/
@@ -32,6 +35,23 @@ public class JourFerme {
 	/** commentaire du jour ferme **/
 	String commentaire;
 
+	
+	/** Constructeur
+	 * @param id
+	 * @param date
+	 * @param typeJourFerme
+	 * @param commentaire
+	 */
+	public JourFerme(LocalDate date, TypeJourFerme typeJourFerme, String commentaire) {
+		super();
+		this.date = date;
+		this.typeJourFerme = typeJourFerme;
+		this.commentaire = commentaire;
+	}	
+	public JourFerme() {
+	}
+	
+	
 	/** Getter
 	 *
 	 * @return the id
@@ -95,4 +115,6 @@ public class JourFerme {
 	public void setCommentaire(String commentaire) {
 		this.commentaire = commentaire;
 	}
+
+
 }
