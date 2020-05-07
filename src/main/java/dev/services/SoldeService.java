@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import dev.controller.dto.SoldeDto;
 import dev.entites.Collegue;
 import dev.entites.Solde;
-import dev.exceptions.CollegueByIdNotExistException;
+import dev.exceptions.CollegueByEmailNotExistException;
 import dev.repository.CollegueRepo;
 import dev.repository.SoldeRepo;
 
@@ -46,7 +46,7 @@ public class SoldeService {
 		//Vérification que l'id correspond bien à un collègue
 		Optional<Collegue> optionnalCollegue = collegueRepository.findById(id);
 		if (!optionnalCollegue.isPresent()) {
-			throw new CollegueByIdNotExistException("L'id selectionne ne correspond a aucun collegue");
+			throw new CollegueByEmailNotExistException("L'id selectionne ne correspond a aucun collegue");
 		}
 		
 		List<SoldeDto> listeSoldes = new ArrayList<>();
