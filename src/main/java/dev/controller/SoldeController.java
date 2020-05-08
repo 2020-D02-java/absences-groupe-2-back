@@ -9,8 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import dev.controller.dto.ErreurDto;
@@ -34,18 +34,17 @@ public class SoldeController {
 	 * @param soldeService
 	 */
 	public SoldeController(SoldeService soldeService) {
-		super();
 		this.soldeService = soldeService;
 	} 
 	
-	@GetMapping(("{id}"))
-	public List<SoldeDto> listerSoldesCollegue(@PathVariable Integer id) {
-		return soldeService.listerSoldesCollegue(id);
+	@GetMapping
+	public List<SoldeDto> listerSoldesCollegue(@RequestParam String email) {
+		return soldeService.listerSoldesCollegue(email);
 	}
 	
 	//Gestion des erreurs
     @ExceptionHandler(CollegueByEmailNotExistException.class)
-  	public ResponseEntity<ErreurDto> quandCollegueByIdNotExistException(CollegueByEmailNotExistException ex) {
+  	public ResponseEntity<ErreurDto> quandCollegueByEmailNotExistException(CollegueByEmailNotExistException ex) {
     	ErreurDto erreurDto = new ErreurDto();
     	erreurDto.setMessage(ex.getMessage());
     	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erreurDto);

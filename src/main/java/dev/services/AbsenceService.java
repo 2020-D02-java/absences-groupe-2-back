@@ -42,11 +42,11 @@ public class AbsenceService {
 	
 	/**
 	 * @param collegue : Collegue
-	 * @return la liste des absences du collègue dont l'id est passé en paramètres
+	 * @return la liste des absences du collègue dont l'email est passé en paramètres
 	 */
 	public List<AbsenceDto> listerAbsencesCollegue(String email) {
 		
-		//Vérification que l'id correspond bien à un collègue
+		//Vérification que l'email correspond bien à un collègue
 		Optional<Collegue> optionnalCollegue = collegueRepository.findByEmail(email);
 		if (!optionnalCollegue.isPresent()) {
 			throw new CollegueByEmailNotExistException("L'email selectionne ne correspond a aucun collegue");
