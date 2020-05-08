@@ -21,7 +21,7 @@ public class AbsenceDto {
 	private LocalDate dateDebut;
 	private LocalDate dateFin;
 	@Enumerated(EnumType.STRING)
-	private TypeAbsence typeAbsence;
+	private TypeAbsence type;
 	@Enumerated(EnumType.STRING)
 	private Statut statut;
 	
@@ -58,30 +58,31 @@ public class AbsenceDto {
 	 *
 	 * @return the typeAbsence
 	 */
-	public TypeAbsence getTypeAbsence() {
-		return typeAbsence;
+	public TypeAbsence getType() {
+		return type;
 	}
 	/** Setter
 	 *
 	 * @param typeAbsence the typeAbsence to set
 	 */
-	public void setTypeAbsence(TypeAbsence typeAbsence) {
-		this.typeAbsence = typeAbsence;
+	public void setType(TypeAbsence type) {
+		this.type = type;
 	}
 	/** Getter
 	 *
-	 * @return the statut
+	 * @return the statutAbs
 	 */
 	public Statut getStatut() {
 		return statut;
 	}
 	/** Setter
 	 *
-	 * @param statut the statut to set
+	 * @param statutAbs the statutAbs to set
 	 */
 	public void setStatut(Statut statut) {
 		this.statut = statut;
 	}
+
 	
 	
 }

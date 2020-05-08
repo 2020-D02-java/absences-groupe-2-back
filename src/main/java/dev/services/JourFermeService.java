@@ -3,7 +3,9 @@
  */
 package dev.services;
 
+
 import java.time.LocalDate;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,8 +22,8 @@ import dev.exceptions.JourRttUnWeekEndException;
 import dev.exceptions.SaisieJourFeriesUnJourDejaFeriesException;
 import dev.repository.JourFermeRepo;
 
-/**
- * Service de l'entité Jour Ferme
+
+/**Service de l'entité Jour Ferme
  *
  * @author BATIGNES Pierre
  *
@@ -45,32 +47,21 @@ public class JourFermeService {
 		return this.jourFermeRepository.findAll();
 	}
 
+	
 	public List<JourFerme> getJourFermesParDate(Integer annee) {
 		List<JourFerme> listJourFerme = this.jourFermeRepository.findAll();
 		List<JourFerme> list = new ArrayList<>();
-
-		for (JourFerme jour : listJourFerme) {
-			if (jour.getDate().getYear() == annee) {
+		
+		for(JourFerme jour: listJourFerme) {
+			if(jour.getDate().getYear() == annee) {
 				list.add(jour);
 			}
 		}
-
+		
+		
 		return list;
 	}
-
-	public List<JourFerme> getJourFermesParDateDeux(LocalDate date) {
-		List<JourFerme> listJourFerme = this.jourFermeRepository.findAll();
-		List<JourFerme> list = new ArrayList<>();
-
-		for (JourFerme jour : listJourFerme) {
-			if (jour.getDate() == date) {
-				list.add(jour);
-			}
-		}
-
-		return list;
-	}
-
+  
 //	public List<JourFermeDto> listerJourFerme(Long id) {
 //
 //		List<JourFermeDto> listeJourFerme = new ArrayList<>();
