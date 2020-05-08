@@ -16,7 +16,7 @@ import dev.controller.dto.AbsenceDto;
 import dev.controller.dto.ErreurDto;
 import dev.entites.Absence;
 import dev.entites.Collegue;
-import dev.exceptions.CollegueByIdNotExistException;
+import dev.exceptions.CollegueByEmailNotExistException;
 import dev.repository.AbsenceRepo;
 import dev.repository.CollegueRepo;
 
@@ -42,24 +42,24 @@ public class AbsenceService {
 	
 	/**
 	 * @param collegue : Collegue
-	 * @return la liste des absences du collègue dont l'id est passé en paramètres
+	 * @return la liste des absences du collègue dont l'email est passé en paramètres
 	 */
-	public List<AbsenceDto> listerAbsencesCollegue(Integer id) {
+	public List<AbsenceDto> listerAbsencesCollegue(String email) {
 		
-		//Vérification que l'id correspond bien à un collègue
-		Optional<Collegue> optionnalCollegue = collegueRepository.findById(id);
+		//Vérification que l'email correspond bien à un collègue
+		Optional<Collegue> optionnalCollegue = collegueRepository.findByEmail(email);
 		if (!optionnalCollegue.isPresent()) {
-			throw new CollegueByIdNotExistException("L'id selectionne ne correspond a aucun collegue");
+			throw new CollegueByEmailNotExistException("L'email selectionne ne correspond a aucun collegue");
 		}
 		
 		List<AbsenceDto> listeAbsences = new ArrayList<>();
 		
 		for (Absence absence : absenceRepository.findAll()) {
-			if (absence.getCollegue().getId() == id) {
+			if (absence.getCollegue().getEmail().equals(email)) {
 				AbsenceDto absenceDto = new AbsenceDto();
 				absenceDto.setDateDebut(absence.getDateDebut());
 				absenceDto.setDateFin(absence.getDateFin());
-				absenceDto.setTypeAbsence(absence.getTypeAbsence());
+				absenceDto.setType(absence.getType());
 				absenceDto.setStatut(absence.getStatut());
 				listeAbsences.add(absenceDto);
 			}
