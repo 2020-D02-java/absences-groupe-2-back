@@ -16,39 +16,39 @@ import dev.entites.TypeSolde;
 public class SoldeDto {
 
 	@Enumerated(EnumType.STRING)
-	private TypeSolde typeSolde;
+	private TypeSolde type;
 	
-	private Integer nombredeJours;
+	private Integer nombreDeJours;
 
 	/** Getter
 	 *
 	 * @return the typeSolde
 	 */
-	public TypeSolde getTypeSolde() {
-		return typeSolde;
+	public TypeSolde getType() {
+		return type;
 	}
 
 	/** Setter
 	 *
 	 * @param typeSolde the typeSolde to set
 	 */
-	public void setTypeSolde(TypeSolde typeSolde) {
-		this.typeSolde = typeSolde;
+	public void setType(TypeSolde type) {
+		this.type = type;
 	}
 
 	/** Getter
 	 *
 	 * @return the nombredeJours
 	 */
-	public Integer getNombredeJours() {
-		return nombredeJours;
+	public Integer getNombreDeJours() {
+		return nombreDeJours;
 	}
 
 	/** Setter
 	 *
 	 * @param nombredeJours the nombredeJours to set
 	 */
-	public void setNombredeJours(Integer nombredeJours) {
-		this.nombredeJours = nombredeJours;
+	public void setNombreDeJours(Integer nombreDeJours) {
+		this.nombreDeJours = nombreDeJours;
 	}
 }

@@ -30,7 +30,7 @@ public class Solde {
 	
 	/** type de l'absence **/
 	@Enumerated(EnumType.STRING)
-	private TypeSolde typeSolde;
+	private TypeSolde type;
 	
 	/** collegue auquel le solde est associé **/
 	@ManyToOne
@@ -52,10 +52,10 @@ public class Solde {
 	 * @param typeSolde
 	 * @param collegue
 	 */
-	public Solde(Integer nombreDeJours, TypeSolde typeSolde, Collegue collegue) {
+	public Solde(Integer nombreDeJours, TypeSolde type, Collegue collegue) {
 		super();
 		this.nombreDeJours = nombreDeJours;
-		this.typeSolde = typeSolde;
+		this.type = type;
 		this.collegue = collegue;
 	}
 	
@@ -96,16 +96,16 @@ public class Solde {
 	 *
 	 * @return the typeSolde
 	 */
-	public TypeSolde getTypeSolde() {
-		return typeSolde;
+	public TypeSolde getType() {
+		return type;
 	}
 
 	/** Setter
 	 *
 	 * @param typeSolde the typeSolde to set
 	 */
-	public void setTypeSolde(TypeSolde typeSolde) {
-		this.typeSolde = typeSolde;
+	public void setTypeSolde(TypeSolde type) {
+		this.type = type;
 	}
 
 	/** Getter

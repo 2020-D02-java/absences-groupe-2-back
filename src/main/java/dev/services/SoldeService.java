@@ -54,8 +54,8 @@ public class SoldeService {
 		for (Solde solde : soldeRepository.findAll()) {
 			if (solde.getCollegue().getEmail().equals(email)) {
 				SoldeDto soldeDto = new SoldeDto();
-				soldeDto.setTypeSolde(solde.getTypeSolde());
-				soldeDto.setNombredeJours(solde.getNombreDeJours());
+				soldeDto.setType(solde.getType());
+				soldeDto.setNombreDeJours(solde.getNombreDeJours());
 				
 				listeSoldes.add(soldeDto);
 			}

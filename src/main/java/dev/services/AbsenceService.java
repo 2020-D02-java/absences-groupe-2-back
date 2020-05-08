@@ -59,7 +59,7 @@ public class AbsenceService {
 				AbsenceDto absenceDto = new AbsenceDto();
 				absenceDto.setDateDebut(absence.getDateDebut());
 				absenceDto.setDateFin(absence.getDateFin());
-				absenceDto.setTypeAbsence(absence.getTypeAbsence());
+				absenceDto.setType(absence.getType());
 				absenceDto.setStatut(absence.getStatut());
 				listeAbsences.add(absenceDto);
 			}
