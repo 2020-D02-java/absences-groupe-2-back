@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import dev.controller.dto.JourFermeDto;
 import dev.entites.JourFerme;
+import dev.exceptions.CommentaireManquantJourFerieException;
 import dev.exceptions.DateDansLePasseException;
 import dev.services.JourFermeService;
 
@@ -55,7 +56,11 @@ public class JourFermeController {
 	
 	@ExceptionHandler(DateDansLePasseException.class)
 	public ResponseEntity<String> onDateDansLePasseException(DateDansLePasseException e) {
-
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+	}
+	
+	@ExceptionHandler(CommentaireManquantJourFerieException.class)
+	public ResponseEntity<String> onCommentaireManquantJourFerieException(CommentaireManquantJourFerieException e) {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
 	}
 }

@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import dev.controller.dto.JourFermeDto;
 import dev.entites.JourFerme;
+import dev.exceptions.CommentaireManquantJourFerieException;
 import dev.exceptions.DateDansLePasseException;
 import dev.repository.JourFermeRepo;
 
@@ -73,12 +74,21 @@ public class JourFermeService {
 	@Transactional
 	public JourFerme postJourFerme(@Valid JourFermeDto jourFermeDto) {
 		JourFerme jourFerme = new JourFerme(jourFermeDto.getDate(),jourFermeDto.getTypeJourFerme(),jourFermeDto.getCommentaire());
-		if(jourFerme.getDate().isBefore(LocalDate.now())) {
-			throw new DateDansLePasseException("Il n'est pas possible de saisir une date dans le passé ! ");
-		} else {
+		
+		if(jourFerme.getDate().isBefore(LocalDate.now()))  // Cas jour saisi dans le passé, erreur
+		{
+			throw new DateDansLePasseException("Il n'est pas possible de saisir une date dans le passé.");
+		} 
+		else if(jourFerme.getTypeJourFerme().toString().equals("JOURS_FERIES") && jourFerme.getCommentaire().isEmpty()) // Cas jour ferié selectionné, et commentaire manquant
+		{
+			throw new CommentaireManquantJourFerieException("Un commentaire est necessaire lors de la saisie d'un jour ferié.");
+		} 
+		else // cas passant
+		{
 			this.jourFermeRepository.save(jourFerme);
 			return jourFerme;
 		}
+		
 		
 
 	}
