@@ -16,9 +16,12 @@ import dev.controller.dto.JourFermeDto;
 import dev.entites.JourFerme;
 import dev.exceptions.CommentaireManquantJourFerieException;
 import dev.exceptions.DateDansLePasseException;
+import dev.exceptions.JourRttUnWeekEndException;
+import dev.exceptions.SaisieJourFeriesUnJourDejaFeriesException;
 import dev.repository.JourFermeRepo;
 
-/**Service de l'entité Jour Ferme
+/**
+ * Service de l'entité Jour Ferme
  *
  * @author BATIGNES Pierre
  *
@@ -41,21 +44,33 @@ public class JourFermeService {
 
 		return this.jourFermeRepository.findAll();
 	}
-	
+
 	public List<JourFerme> getJourFermesParDate(Integer annee) {
 		List<JourFerme> listJourFerme = this.jourFermeRepository.findAll();
 		List<JourFerme> list = new ArrayList<>();
-		
-		for(JourFerme jour: listJourFerme) {
-			if(jour.getDate().getYear() == annee) {
+
+		for (JourFerme jour : listJourFerme) {
+			if (jour.getDate().getYear() == annee) {
 				list.add(jour);
 			}
 		}
-		
-		
+
 		return list;
 	}
-	
+
+	public List<JourFerme> getJourFermesParDateDeux(LocalDate date) {
+		List<JourFerme> listJourFerme = this.jourFermeRepository.findAll();
+		List<JourFerme> list = new ArrayList<>();
+
+		for (JourFerme jour : listJourFerme) {
+			if (jour.getDate() == date) {
+				list.add(jour);
+			}
+		}
+
+		return list;
+	}
+
 //	public List<JourFermeDto> listerJourFerme(Long id) {
 //
 //		List<JourFermeDto> listeJourFerme = new ArrayList<>();
@@ -73,23 +88,38 @@ public class JourFermeService {
 
 	@Transactional
 	public JourFerme postJourFerme(@Valid JourFermeDto jourFermeDto) {
-		JourFerme jourFerme = new JourFerme(jourFermeDto.getDate(),jourFermeDto.getTypeJourFerme(),jourFermeDto.getCommentaire());
-		
-		if(jourFerme.getDate().isBefore(LocalDate.now()))  // Cas jour saisi dans le passé, erreur
+		JourFerme jourFerme = new JourFerme(jourFermeDto.getDate(), jourFermeDto.getTypeJourFerme(), jourFermeDto.getCommentaire());
+
+		if (jourFerme.getDate().isBefore(LocalDate.now())) // Cas jour saisi dans le passé, erreur
 		{
 			throw new DateDansLePasseException("Il n'est pas possible de saisir une date dans le passé.");
-		} 
-		else if(jourFerme.getTypeJourFerme().toString().equals("JOURS_FERIES") && jourFerme.getCommentaire().isEmpty()) // Cas jour ferié selectionné, et commentaire manquant
+		} else if (jourFerme.getTypeJourFerme().toString().equals("JOURS_FERIES") && jourFerme.getCommentaire().isEmpty()) // Cas jour ferié selectionné, et commentaire manquant
 		{
-			throw new CommentaireManquantJourFerieException("Un commentaire est necessaire lors de la saisie d'un jour ferié.");
-		} 
-		else // cas passant
+			throw new CommentaireManquantJourFerieException("Un commentaire est obligatoire dans le cas ou un jour férié est selectionné.");
+		} else if (jourFerme.getTypeJourFerme().toString().equals("RTT_EMPLOYEUR")
+				&& (jourFerme.getDate().getDayOfWeek().toString() == "SATURDAY" || jourFerme.getDate().getDayOfWeek().toString() == "SUNDAY")) // interdire la saisie de RTT le
+																																				// samedi ou dimanche
 		{
-			this.jourFermeRepository.save(jourFerme);
-			return jourFerme;
+			throw new JourRttUnWeekEndException("Il n'est pas possible de saisir un RTT le week-end.");
+		} else if (jourFerme.getTypeJourFerme().toString().equals("JOURS_FERIES")) // Si jour feriés, on vérifie qu'il n'existe pas déjà un jour ferié à cette date
+		{
+			// System.out.println("merci anaïs");
+			List<JourFerme> listJourFerme = new ArrayList<>();
+			listJourFerme = this.jourFermeRepository.findAll();
+ 
+			System.out.println(listJourFerme);
+
+			for (JourFerme jour : listJourFerme) {
+
+				if ((jour.getDate().toString().equals(jourFerme.getDate().toString()))) {
+					throw new SaisieJourFeriesUnJourDejaFeriesException("Il n'est pas possible de saisir un jour férié à la même date qu'un autre jour férié.");
+				}
+			}
+
 		}
-		
-		
+
+		this.jourFermeRepository.save(jourFerme);
+		return jourFerme;
 
 	}
 }

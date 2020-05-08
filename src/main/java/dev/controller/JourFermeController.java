@@ -21,6 +21,8 @@ import dev.controller.dto.JourFermeDto;
 import dev.entites.JourFerme;
 import dev.exceptions.CommentaireManquantJourFerieException;
 import dev.exceptions.DateDansLePasseException;
+import dev.exceptions.JourRttUnWeekEndException;
+import dev.exceptions.SaisieJourFeriesUnJourDejaFeriesException;
 import dev.services.JourFermeService;
 
 @RestController
@@ -54,13 +56,27 @@ public class JourFermeController {
 		return this.jourFermeService.postJourFerme(jourFermeDto);
 	}
 	
+	// un jour férié ne peut pas être saisi dans le passé
 	@ExceptionHandler(DateDansLePasseException.class)
 	public ResponseEntity<String> onDateDansLePasseException(DateDansLePasseException e) {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
 	}
-	
+
+	// le commentaire est obligatoire pour les jours feriés.
 	@ExceptionHandler(CommentaireManquantJourFerieException.class)
 	public ResponseEntity<String> onCommentaireManquantJourFerieException(CommentaireManquantJourFerieException e) {
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+	}
+
+	// il est interdit de saisir une RTT employeur un samedi ou un dimanche
+	@ExceptionHandler(JourRttUnWeekEndException.class)
+	public ResponseEntity<String> onRttLeWeekEndException(JourRttUnWeekEndException e) {
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+	}
+
+	// il est interdit de saisir un jour férié à la même date qu'un autre jour férié
+	@ExceptionHandler(SaisieJourFeriesUnJourDejaFeriesException.class)
+	public ResponseEntity<String> onSaisieJourFerierSurJourDejaFerieException(SaisieJourFeriesUnJourDejaFeriesException e) {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
 	}
 }
