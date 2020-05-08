@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import dev.controller.dto.SoldeDto;
 import dev.entites.Collegue;
 import dev.entites.Solde;
-import dev.exceptions.CollegueByIdNotExistException;
+import dev.exceptions.CollegueByEmailNotExistException;
 import dev.repository.CollegueRepo;
 import dev.repository.SoldeRepo;
 
@@ -39,20 +39,20 @@ public class SoldeService {
 	
 	/**
 	 * @param id
-	 * @return la liste des soldes du collègue dont l'id est passé en paramètres
+	 * @return la liste des soldes du collègue dont l'email est passé en paramètres
 	 */
-	public List<SoldeDto> listerSoldesCollegue(Integer id){
+	public List<SoldeDto> listerSoldesCollegue(String email){
 		
-		//Vérification que l'id correspond bien à un collègue
-		Optional<Collegue> optionnalCollegue = collegueRepository.findById(id);
+		//Vérification que l'email correspond bien à un collègue
+		Optional<Collegue> optionnalCollegue = collegueRepository.findByEmail(email);
 		if (!optionnalCollegue.isPresent()) {
-			throw new CollegueByIdNotExistException("L'id selectionne ne correspond a aucun collegue");
+			throw new CollegueByEmailNotExistException("L'email selectionne ne correspond a aucun collegue");
 		}
 		
 		List<SoldeDto> listeSoldes = new ArrayList<>();
 		
 		for (Solde solde : soldeRepository.findAll()) {
-			if (solde.getCollegue().getId() == id) {
+			if (solde.getCollegue().getEmail().equals(email)) {
 				SoldeDto soldeDto = new SoldeDto();
 				soldeDto.setTypeSolde(solde.getTypeSolde());
 				soldeDto.setNombredeJours(solde.getNombreDeJours());
