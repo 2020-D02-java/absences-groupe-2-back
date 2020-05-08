@@ -34,7 +34,7 @@ public class Absence {
 	
 	/** type de l'absence **/
 	@Enumerated(EnumType.STRING)
-	private TypeAbsence typeAbsence;
+	private TypeAbsence type;
 	 
 	/** motif de l'absence **/
 	private String motif;
@@ -65,12 +65,12 @@ public class Absence {
 	 * @param statut
 	 * @param collegue
 	 */
-	public Absence(LocalDate dateDebut, LocalDate dateFin, TypeAbsence typeAbsence, String motif, Statut statut,
+	public Absence(LocalDate dateDebut, LocalDate dateFin, TypeAbsence type, String motif, Statut statut,
 			Collegue collegue) {
 		super();
 		this.dateDebut = dateDebut;
 		this.dateFin = dateFin;
-		this.typeAbsence = typeAbsence;
+		this.type = type;
 		this.motif = motif;
 		this.statut = statut;
 		this.collegue = collegue;
@@ -128,16 +128,16 @@ public class Absence {
 	 *
 	 * @return the typeAbsence
 	 */
-	public TypeAbsence getTypeAbsence() {
-		return typeAbsence;
+	public TypeAbsence getType() {
+		return type;
 	}
 
 	/** Setter
 	 *
 	 * @param typeAbsence the typeAbsence to set
 	 */
-	public void setTypeAbsence(TypeAbsence typeAbsence) {
-		this.typeAbsence = typeAbsence;
+	public void setType(TypeAbsence type) {
+		this.type = type;
 	}
 
 	/** Getter
