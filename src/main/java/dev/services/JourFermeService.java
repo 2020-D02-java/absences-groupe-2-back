@@ -3,6 +3,8 @@
  */
 package dev.services;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -12,8 +14,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import dev.controller.dto.JourFermeDto;
 import dev.entites.JourFerme;
+import dev.exceptions.DateDansLePasseException;
 import dev.repository.JourFermeRepo;
 
+/**Service de l'entité Jour Ferme
+ *
+ * @author BATIGNES Pierre
+ *
+ */
 @Service
 public class JourFermeService {
 
@@ -31,6 +39,20 @@ public class JourFermeService {
 	public List<JourFerme> getAllJourFermes() {
 
 		return this.jourFermeRepository.findAll();
+	}
+	
+	public List<JourFerme> getJourFermesParDate(Integer annee) {
+		List<JourFerme> listJourFerme = this.jourFermeRepository.findAll();
+		List<JourFerme> list = new ArrayList<>();
+		
+		for(JourFerme jour: listJourFerme) {
+			if(jour.getDate().getYear() == annee) {
+				list.add(jour);
+			}
+		}
+		
+		
+		return list;
 	}
 	
 //	public List<JourFermeDto> listerJourFerme(Long id) {
@@ -51,9 +73,13 @@ public class JourFermeService {
 	@Transactional
 	public JourFerme postJourFerme(@Valid JourFermeDto jourFermeDto) {
 		JourFerme jourFerme = new JourFerme(jourFermeDto.getDate(),jourFermeDto.getTypeJourFerme(),jourFermeDto.getCommentaire());
-
-		this.jourFermeRepository.save(jourFerme);
-		return jourFerme;
+		if(jourFerme.getDate().isBefore(LocalDate.now())) {
+			throw new DateDansLePasseException("Il n'est pas possible de saisir une date dans le passé ! ");
+		} else {
+			this.jourFermeRepository.save(jourFerme);
+			return jourFerme;
+		}
+		
 
 	}
 }
