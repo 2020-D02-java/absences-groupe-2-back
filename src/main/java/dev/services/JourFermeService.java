@@ -2,7 +2,6 @@
  * 
  */
 package dev.services;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +43,7 @@ public class JourFermeService {
 
 		return this.jourFermeRepository.findAll();
 	}
-	
+
 	public List<JourFerme> getJourFermesParDate(Integer annee) {
 		List<JourFerme> listJourFerme = this.jourFermeRepository.findAll();
 		List<JourFerme> list = new ArrayList<>();
@@ -58,6 +57,7 @@ public class JourFermeService {
 		
 		return list;
 	}
+
 	
 //	public List<JourFermeDto> listerJourFerme(Long id) {
 //
