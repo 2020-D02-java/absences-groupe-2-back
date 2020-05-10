@@ -88,7 +88,7 @@ public class JourFerme {
 	 *
 	 * @return the typeJourFerme
 	 */
-	public TypeJourFerme getTypeJourFerme() {
+	public TypeJourFerme getType() {
 		return type;
 	}
 
@@ -96,7 +96,7 @@ public class JourFerme {
 	 *
 	 * @param typeJourFerme the typeJourFerme to set
 	 */
-	public void setTypeJourFerme(TypeJourFerme type) {
+	public void setType(TypeJourFerme type) {
 		this.type = type;
 	}
 
