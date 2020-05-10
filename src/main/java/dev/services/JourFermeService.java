@@ -81,15 +81,15 @@ public class JourFermeService {
 		if (jourFerme.getDate().isBefore(LocalDate.now())) // Cas jour saisi dans le passé, erreur
 		{
 			throw new DateDansLePasseException("Il n'est pas possible de saisir une date dans le passé.");
-		} else if (jourFerme.getTypeJourFerme().toString().equals("JOURS_FERIES") && jourFerme.getCommentaire().isEmpty()) // Cas jour ferié selectionné, et commentaire manquant
+		} else if (jourFerme.getType().toString().equals("JOURS_FERIES") && jourFerme.getCommentaire().isEmpty()) // Cas jour ferié selectionné, et commentaire manquant
 		{
 			throw new CommentaireManquantJourFerieException("Un commentaire est obligatoire dans le cas ou un jour férié est selectionné.");
-		} else if (jourFerme.getTypeJourFerme().toString().equals("RTT_EMPLOYEUR")
+		} else if (jourFerme.getType().toString().equals("RTT_EMPLOYEUR")
 				&& (jourFerme.getDate().getDayOfWeek().toString() == "SATURDAY" || jourFerme.getDate().getDayOfWeek().toString() == "SUNDAY")) // interdire la saisie de RTT le
 																																				// samedi ou dimanche
 		{
 			throw new JourRttUnWeekEndException("Il n'est pas possible de saisir un RTT le week-end.");
-		} else if (jourFerme.getTypeJourFerme().toString().equals("JOURS_FERIES")) // Si jour feriés, on vérifie qu'il n'existe pas déjà un jour ferié à cette date
+		} else if (jourFerme.getType().toString().equals("JOURS_FERIES")) // Si jour feriés, on vérifie qu'il n'existe pas déjà un jour ferié à cette date
 		{
 			// System.out.println("merci anaïs");
 			List<JourFerme> listJourFerme = new ArrayList<>();
