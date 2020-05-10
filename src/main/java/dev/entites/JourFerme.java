@@ -42,10 +42,10 @@ public class JourFerme {
 	 * @param typeJourFerme
 	 * @param commentaire
 	 */
-	public JourFerme(LocalDate date, TypeJourFerme type, String commentaire) {
+	public JourFerme(LocalDate date, TypeJourFerme typeJourFerme, String commentaire) {
 		super();
 		this.date = date;
-		this.type = type;
+		this.typeJourFerme = typeJourFerme;
 		this.commentaire = commentaire;
 	}	
 	public JourFerme() {
