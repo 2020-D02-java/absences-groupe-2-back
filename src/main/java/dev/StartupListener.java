@@ -56,7 +56,7 @@ public class StartupListener {
         // TESTS POUR UN COLLEGUE (recup des absences et des soldes)
         
         //creation d'une absence *********
-        Absence abs1col1 = new Absence(LocalDate.of(2020, 02, 04), LocalDate.of(2020, 02, 14), TypeAbsence.CONGES_PAYES, "vacances au soleil", Statut.INITIALE, col1);
+        Absence abs1col1 = new Absence(LocalDate.of(2020, 02, 04), LocalDate.of(2020, 02, 14), TypeAbsence.CONGES_PAYES, "vacances au soleil", Statut.EN_ATTENTE_VALIDATION, col1);
         Absence abs2col1 = new Absence(LocalDate.of(2020, 07, 15), LocalDate.of(2020, 8, 02), TypeAbsence.CONGES_PAYES, "vacances au soleil avec bluelagoon", Statut.INITIALE, col1);
         
         List<Absence> listeAbsences = new ArrayList<>();

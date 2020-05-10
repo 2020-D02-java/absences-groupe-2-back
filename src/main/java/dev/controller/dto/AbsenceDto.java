@@ -22,10 +22,12 @@ public class AbsenceDto {
 	private LocalDate dateFin;
 	@Enumerated(EnumType.STRING)
 	private TypeAbsence type;
+	private String motif;
 	@Enumerated(EnumType.STRING)
 	private Statut statut;
+
 	
-	
+
 	/** Getter
 	 *
 	 * @return the dateDebut
@@ -67,6 +69,20 @@ public class AbsenceDto {
 	 */
 	public void setType(TypeAbsence type) {
 		this.type = type;
+	}
+	/** Getter
+	 *
+	 * @return the motif
+	 */
+	public String getMotif() {
+		return motif;
+	}
+	/** Setter
+	 *
+	 * @param motif the motif to set
+	 */
+	public void setMotif(String motif) {
+		this.motif = motif;
 	}
 	/** Getter
 	 *

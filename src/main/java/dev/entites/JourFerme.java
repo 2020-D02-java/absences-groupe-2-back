@@ -30,7 +30,7 @@ public class JourFerme {
 	
 	/** type d'un jour ferme **/
 	@Enumerated(EnumType.STRING)
-	private TypeJourFerme typeJourFerme;
+	private TypeJourFerme type;
 	
 	/** commentaire du jour ferme **/
 	String commentaire;
@@ -42,10 +42,10 @@ public class JourFerme {
 	 * @param typeJourFerme
 	 * @param commentaire
 	 */
-	public JourFerme(LocalDate date, TypeJourFerme typeJourFerme, String commentaire) {
+	public JourFerme(LocalDate date, TypeJourFerme type, String commentaire) {
 		super();
 		this.date = date;
-		this.typeJourFerme = typeJourFerme;
+		this.type = type;
 		this.commentaire = commentaire;
 	}	
 	public JourFerme() {
@@ -89,15 +89,15 @@ public class JourFerme {
 	 * @return the typeJourFerme
 	 */
 	public TypeJourFerme getTypeJourFerme() {
-		return typeJourFerme;
+		return type;
 	}
 
 	/** Setter
 	 *
 	 * @param typeJourFerme the typeJourFerme to set
 	 */
-	public void setTypeJourFerme(TypeJourFerme typeJourFerme) {
-		this.typeJourFerme = typeJourFerme;
+	public void setTypeJourFerme(TypeJourFerme type) {
+		this.type = type;
 	}
 
 	/** Getter

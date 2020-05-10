@@ -7,15 +7,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import dev.controller.dto.AbsenceDto;
-import dev.controller.dto.ErreurDto;
 import dev.entites.Absence;
 import dev.entites.Collegue;
+import dev.entites.Solde;
+import dev.entites.Statut;
+import dev.entites.TypeAbsence;
+import dev.entites.TypeSolde;
 import dev.exceptions.CollegueByEmailNotExistException;
 import dev.repository.AbsenceRepo;
 import dev.repository.CollegueRepo;
@@ -67,4 +67,31 @@ public class AbsenceService {
 		return listeAbsences;
 	}
 	
+	
+	/**
+	 * traitement de nuit des demandes d'absences
+	 */
+	public void traitementDeNuit() {
+		
+		List<Solde> soldes = new ArrayList<>();
+		
+		for(Absence absence : absenceRepository.findAll()) {
+			/* si RTT employeur, changer la demande en validée et baisser le compteur de RTT de tous les collegues */
+			if (absence.getType().equals(TypeAbsence.RTT_EMPLOYEUR)) {
+				absence.setStatut(Statut.VALIDEE);
+				for (Collegue collegue : collegueRepository.findAll()) {
+					for (Solde solde : collegue.getSoldes()) {
+						if (solde.getType() == TypeSolde.RTT_EMPLOYE) {
+							solde.setNombreDeJours(solde.getNombreDeJours()-1);
+						}
+					}
+				}
+			} else {
+				soldes = absence.getCollegue().getSoldes();
+				for (Solde solde : soldes) {
+					//if (solde.getNombreDeJours() )
+				}
+			}
+		}
+	}
 }
