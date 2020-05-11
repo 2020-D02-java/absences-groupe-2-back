@@ -13,5 +13,5 @@ import dev.entites.JourFerme;
  *
  */
 public interface JourFermeRepo extends JpaRepository<JourFerme, Long> {
-
+	
 }

@@ -8,13 +8,19 @@ import java.time.LocalDate;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
+import dev.entites.Statut;
 import dev.entites.TypeJourFerme;
 
 public class JourFermeDto {
 
+	private Long id;
+	
 	private LocalDate date;
 	@Enumerated(EnumType.STRING)
 	private TypeJourFerme typeJourFerme;
+	
+	@Enumerated(EnumType.STRING)
+	private Statut statut;
 	
 	private String commentaire;
 	/** Getter
@@ -63,6 +69,33 @@ public class JourFermeDto {
 		this.date = date;
 		this.typeJourFerme = typeJourFerme;
 		this.commentaire = commentaire;
+		this.statut = Statut.INITIALE;
 	}
+	/** Getter
+	 * @return the id
+	 */
+	public Long getId() {
+		return id;
+	}
+	/** Setter
+	 * @param id the id to set
+	 */
+	public void setId(Long id) {
+		this.id = id;
+	}
+	/** Getter
+	 * @return the statut
+	 */
+	public Statut getStatut() {
+		return statut;
+	}
+	/** Setter
+	 * @param statut the statut to set
+	 */
+	public void setStatut(Statut statut) {
+		this.statut = statut;
+	}
+	
+	
 	
 }

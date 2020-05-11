@@ -12,11 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-/**
- *
- * @author KOMINIARZ Anaïs
- *
- */
+
 @Entity
 public class JourFerme {
 
@@ -33,8 +29,10 @@ public class JourFerme {
 	private TypeJourFerme type;
 	
 	/** commentaire du jour ferme **/
-	String commentaire;
+	private String commentaire;
 
+	@Enumerated(EnumType.STRING)
+	private Statut statut;
 	
 	/** Constructeur
 	 * @param id
@@ -47,6 +45,7 @@ public class JourFerme {
 		this.date = date;
 		this.type = type;
 		this.commentaire = commentaire;
+		this.statut = Statut.INITIALE;
 	}	
 	public JourFerme() {
 	}
@@ -114,6 +113,18 @@ public class JourFerme {
 	 */
 	public void setCommentaire(String commentaire) {
 		this.commentaire = commentaire;
+	}
+	/** Getter
+	 * @return the statut
+	 */
+	public Statut getStatut() {
+		return statut;
+	}
+	/** Setter
+	 * @param statut the statut to set
+	 */
+	public void setStatut(Statut statut) {
+		this.statut = statut;
 	}
 
 
