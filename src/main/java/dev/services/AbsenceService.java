@@ -6,18 +6,20 @@ package dev.services;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import dev.controller.dto.AbsenceDto;
+import dev.controller.dto.CollegueDto;
 import dev.entites.Absence;
+import dev.entites.AbsenceCollegue;
 import dev.entites.Collegue;
 import dev.entites.JourFerme;
-import dev.entites.Solde;
-import dev.entites.Statut;
-import dev.entites.TypeSolde;
-import dev.exceptions.CollegueByEmailNotExistException;
+import dev.exceptions.AbsenceChevauchementException;
+import dev.exceptions.AbsenceDateException;
+import dev.exceptions.AbsenceDateFinException;
+import dev.exceptions.AbsenceMotifManquantException;
 import dev.repository.AbsenceRepo;
 import dev.repository.CollegueRepo;
 import dev.repository.JourFermeRepo;
@@ -98,6 +100,54 @@ public class AbsenceService {
 
 		return nombreDeJours - nombreDeSamediEtDimanche - nombreDeJoursFermes;
 	}
+	
+	
+	// Création d'une demande d'absence 
+		@Transactional
+		public AbsenceCollegue demandeAbsence (AbsenceDto absenceDto, CollegueDto collegueDto) {
+			
+			Collegue colAbs = new Collegue(collegueDto.getNom(),collegueDto.getPrenom(), collegueDto.getEmail(), collegueDto.getSoldes(), collegueDto.getRoles());
+			AbsenceCollegue absence = new AbsenceCollegue (colAbs,new Absence(absenceDto.getDateDebut(),absenceDto.getDateFin(), absenceDto.getType(), absenceDto.getMotif(), absenceDto.getStatut()));
+			
+			
+			if (absence.getAbsence().getDateDebut().isBefore(LocalDate.now()) || (absence.getAbsence().getDateDebut().isEqual(LocalDate.now()))) // Cas jour saisi dans le passé ou aujourd'hui, erreur
+			{
+				throw new AbsenceDateException("Une demande d'absence ne peut être saisie sur une date ultérieur ou le jour présent.");
+			} else if (absence.getAbsence().getDateFin().isBefore(absence.getAbsence().getDateDebut())) // Cas DateFin < DateDebut
+			{
+				throw new AbsenceDateFinException("La date de fin ne peut-être inférieure à la date du début de votre absence.");
+			} 
+			else if (absence.getAbsence().getType().toString().equals("CONGES_SANS_SOLDE") && absence.getAbsence().getMotif().isEmpty()) // Cas congès sans solde, et motif manquant
+			{
+				throw new AbsenceMotifManquantException("Un motif est obligatoire dans le cas où vous souhaitez demander un congés sans solde.");
+			} else if (!absence.getAbsence().getStatut().toString().equals("REJETEE")) // Impossible de saisir une demande qui chevauche une autre sauf si celle-ci est en statut REJETEE
+			{
+				
+				List<AbsenceCollegue> listAbsences = new ArrayList<>();
+				listAbsences = this.absenceRepository.findAll();
+	 
+				System.out.println(listAbsences);
+
+				for (AbsenceCollegue abs : listAbsences) {
+
+					if ((abs.getAbsence().getDateDebut().toString().equals(absence.getAbsence().getDateDebut().toString()))) {
+						throw new AbsenceChevauchementException("Une demande est déjà en cours à cette date");
+					}
+				}
+
+			}
+			List <AbsenceCollegue> absences = new ArrayList<>();
+			if (!colAbs.getAbsences().isEmpty()) {
+				for (AbsenceCollegue absI : colAbs.getAbsences())
+					absences.add(absI);				
+			}
+			
+			absences.add(absence);
+			//this.collegueRepository.ajoutAbsence(colAbs.getAbsences(),absences);
+			this.absenceRepository.save(absence);
+			return absence;
+
+		}
 
 	/**
 	 * traitement de nuit des demandes d'absences
