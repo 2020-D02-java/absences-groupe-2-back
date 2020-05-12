@@ -7,7 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import dev.controller.dto.AbsenceDto;
 import dev.entites.Absence;
@@ -57,10 +60,15 @@ public class AbsenceService {
 		for (Absence absence : absenceRepository.findAll()) {
 			if (absence.getCollegue().getEmail().equals(email)) {
 				AbsenceDto absenceDto = new AbsenceDto();
+
+				// ID Necessaire pour la modale suppression front
+				absenceDto.setId(absence.getId());
 				absenceDto.setDateDebut(absence.getDateDebut());
 				absenceDto.setDateFin(absence.getDateFin());
 				absenceDto.setType(absence.getType());
 				absenceDto.setStatut(absence.getStatut());
+				// Motif Necessaire pour la modale suppression front
+				absenceDto.setMotif(absence.getMotif());
 				listeAbsences.add(absenceDto);
 			}
 		}
@@ -94,4 +102,25 @@ public class AbsenceService {
 			}
 		}
 	}
+	
+	// Supprimer jour ferme
+		/*
+		 * Règles métier: 
+		 * 
+		 * supprimer une demande d'absence qui n'est pas de type mission
+		 */
+		@Transactional
+		public String deleteAbsence(@Valid Long id) {
+			Optional<Absence> absence = this.absenceRepository.findById(id);
+
+			if (absence.isPresent()) {
+				
+				this.absenceRepository.delete(absence.get());
+				return "\"absence supprimee\"";
+
+			} else {
+				return "\"erreur dans la suppression\"";
+			}
+
+		}
 }
