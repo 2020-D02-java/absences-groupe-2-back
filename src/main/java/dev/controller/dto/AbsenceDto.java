@@ -28,6 +28,26 @@ public class AbsenceDto {
 
 	
 
+	public AbsenceDto() {
+		
+	}
+
+	/** Constructeur
+	 *
+	 * @param dateDebut
+	 * @param dateFin
+	 * @param type
+	 * @param motif
+	 * @param statut
+	 */
+	public AbsenceDto(LocalDate dateDebut, LocalDate dateFin, TypeAbsence type, String motif, Statut statut) {
+		super();
+		this.dateDebut = dateDebut;
+		this.dateFin = dateFin;
+		this.type = type;
+		this.motif = motif;
+		this.statut = statut;
+	}
 	/** Getter
 	 *
 	 * @return the dateDebut
