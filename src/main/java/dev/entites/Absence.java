@@ -5,34 +5,46 @@ package dev.entites;
 
 import java.time.LocalDate;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
+import javax.persistence.Embeddable;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 
 /** Représentation 
  *
  * @author KOMINIARZ Anaïs
  *
  */
-@Entity
+@Embeddable
 public class Absence {
-	
-	/** id de l'absence**/
-	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 	
 	/** date de debut de l'absence **/
 	private LocalDate dateDebut;
 	/** date de fin de l'absence **/
 	private LocalDate dateFin;
 	
+	
+	public Absence() {
+		
+	}
+	
+	
+	/** Constructeur
+	 *
+	 * @param dateDebut
+	 * @param dateFin
+	 * @param type
+	 * @param motif
+	 * @param statut
+	 */
+	public Absence(LocalDate dateDebut, LocalDate dateFin, TypeAbsence type, String motif, Statut statut) {
+		super();
+		this.dateDebut = dateDebut;
+		this.dateFin = dateFin;
+		this.type = type;
+		this.motif = motif;
+		this.statut = statut;
+	}
+
 	/** type de l'absence **/
 	@Enumerated(EnumType.STRING)
 	private TypeAbsence type;
@@ -40,59 +52,6 @@ public class Absence {
 	/** motif de l'absence **/
 	private String motif;
 	 
-	/** statut de l'absence **/
-	@Enumerated(EnumType.STRING)
-	private Statut statut;
-	
-	/** collegue auquel l'absence est associée **/
-	@ManyToOne
-    @JoinColumn(name = "collegue_id")
-    private Collegue collegue;
-
-	
-	/** Constructeur
-	 *
-	 */
-	public Absence() {
-		
-	}
-	
-	/** Constructeur
-	 *
-	 * @param dateDebut
-	 * @param dateFin
-	 * @param typeAbsence
-	 * @param motif
-	 * @param statut
-	 * @param collegue
-	 */
-	public Absence(LocalDate dateDebut, LocalDate dateFin, TypeAbsence type, String motif, Statut statut,
-			Collegue collegue) {
-		super();
-		this.dateDebut = dateDebut;
-		this.dateFin = dateFin;
-		this.type = type;
-		this.motif = motif;
-		this.statut = statut;
-		this.collegue = collegue;
-	}
-
-	/** Getter
-	 *
-	 * @return the id
-	 */
-	public Long getId() {
-		return id;
-	}
-
-	/** Setter
-	 *
-	 * @param id the id to set
-	 */
-	public void setId(Long id) {
-		this.id = id;
-	}
-
 	/** Getter
 	 *
 	 * @return the dateDebut
@@ -127,7 +86,7 @@ public class Absence {
 
 	/** Getter
 	 *
-	 * @return the typeAbsence
+	 * @return the type
 	 */
 	public TypeAbsence getType() {
 		return type;
@@ -135,7 +94,7 @@ public class Absence {
 
 	/** Setter
 	 *
-	 * @param typeAbsence the typeAbsence to set
+	 * @param type the type to set
 	 */
 	public void setType(TypeAbsence type) {
 		this.type = type;
@@ -173,23 +132,8 @@ public class Absence {
 		this.statut = statut;
 	}
 
-	/** Getter
-	 *
-	 * @return the collegue
-	 */
-	public Collegue getCollegue() {
-		return collegue;
-	}
-
-	/** Setter
-	 *
-	 * @param collegue the collegue to set
-	 */
-	public void setCollegue(Collegue collegue) {
-		this.collegue = collegue;
-	}
-	 
-	 
-
+	/** statut de l'absence **/
+	@Enumerated(EnumType.STRING)
+	private Statut statut;
 
 }

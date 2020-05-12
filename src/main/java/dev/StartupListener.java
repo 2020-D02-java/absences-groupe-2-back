@@ -13,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import dev.entites.Absence;
+import dev.entites.AbsenceCollegue;
 import dev.entites.Collegue;
 import dev.entites.Role;
 import dev.entites.RoleCollegue;
@@ -59,17 +60,17 @@ public class StartupListener {
         // TESTS POUR UN COLLEGUE (recup des absences et des soldes)
         
         //creation d'une absence *********
-        Absence abs1col1 = new Absence(LocalDate.of(2020, 02, 04), LocalDate.of(2020, 02, 14), TypeAbsence.CONGES_PAYES, "vacances au soleil", Statut.EN_ATTENTE_VALIDATION, col1);
-        Absence abs2col1 = new Absence(LocalDate.of(2020, 07, 15), LocalDate.of(2020, 8, 02), TypeAbsence.CONGES_PAYES, "vacances au soleil avec bluelagoon", Statut.INITIALE, col1);
+        Absence abs1col1 = new Absence(LocalDate.of(2020, 02, 04), LocalDate.of(2020, 02, 14), TypeAbsence.CONGES_PAYES, "vacances au soleil", Statut.EN_ATTENTE_VALIDATION);
+        Absence abs2col1 = new Absence(LocalDate.of(2020, 07, 15), LocalDate.of(2020, 8, 02), TypeAbsence.CONGES_PAYES, "vacances au soleil avec bluelagoon", Statut.INITIALE);
         
-        List<Absence> listeAbsences = new ArrayList<>();
-        listeAbsences.add(abs1col1);
-        listeAbsences.add(abs2col1);
+        AbsenceCollegue abs1col1collegue = new AbsenceCollegue(col1, abs1col1);
+        AbsenceCollegue abs2col1collegue = new AbsenceCollegue(col1, abs2col1);
+        
+        List<AbsenceCollegue> listeAbsences = new ArrayList<>();
+        listeAbsences.add(abs1col1collegue);
+        listeAbsences.add(abs2col1collegue);
         col1.setAbsences(listeAbsences);
-        
-        //System.out.println("listeAbsences[0] = " + listeAbsences.get(0).getDateDebut());
-        //System.out.println("listeAbsences[1] = " + listeAbsences.get(1).getDateDebut());
-       
+
         // ****************************************
         
         // création des deux soldes CP + RTT *********
@@ -84,9 +85,7 @@ public class StartupListener {
    
  
         this.collegueRepo.save(col1);
-        this.absenceRepository.save(abs1col1);
-        
-       System.out.println(abs1col1.getId());
+      //  this.absenceRepository.save(abs1col1);
         
         Collegue col2 = new Collegue();
         col2.setNom("User");

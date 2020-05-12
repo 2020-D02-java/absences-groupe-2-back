@@ -45,14 +45,14 @@ public class AbsenceController {
 	 * @return une liste d'absence Dto
 	 */
 	@GetMapping
-	public List<AbsenceDto> listerAbsencesCollegue(@RequestParam String email){
+	/*public List<AbsenceDto> listerAbsencesCollegue(@RequestParam String email){
 		return absenceService.listerAbsencesCollegue(email);
 	}
 	 
 	@PostMapping
 	public void traitementDeNuit() {
 		absenceService.traitementDeNuit();
-	}
+	}*/
 	
 	//Gestion des erreurs
     @ExceptionHandler(CollegueByEmailNotExistException.class)

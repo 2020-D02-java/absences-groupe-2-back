@@ -41,7 +41,7 @@ public class Collegue {
     
     /** absences du collegue **/
     @OneToMany(mappedBy = "collegue", cascade = CascadeType.PERSIST)
-	private List<Absence> absences;
+	private List<AbsenceCollegue> absences;
     
     
     /** manager de plusieurs collegues **/
@@ -117,11 +117,13 @@ public class Collegue {
 		this.soldes = soldes;
 	}
 
+
+
 	/** Getter
 	 *
 	 * @return the absences
 	 */
-	public List<Absence> getAbsences() {
+	public List<AbsenceCollegue> getAbsences() {
 		return absences;
 	}
 
@@ -129,7 +131,7 @@ public class Collegue {
 	 *
 	 * @param absences the absences to set
 	 */
-	public void setAbsences(List<Absence> absences) {
+	public void setAbsences(List<AbsenceCollegue> absences) {
 		this.absences = absences;
 	}
 

@@ -52,7 +52,7 @@ public class AbsenceService {
 	 * @return la liste des absences du collègue dont l'email est passé en
 	 *         paramètres
 	 */
-	public List<AbsenceDto> listerAbsencesCollegue(String email) {
+/*	public List<AbsenceDto> listerAbsencesCollegue(String email) {
 
 		// Vérification que l'email correspond bien à un collègue
 		Optional<Collegue> optionnalCollegue = collegueRepository.findByEmail(email);
@@ -75,7 +75,7 @@ public class AbsenceService {
 
 		return listeAbsences;
 
-	}
+	}*/
 
 	/**
 	 * @param dateDebut 1ere date
@@ -102,14 +102,14 @@ public class AbsenceService {
 	/**
 	 * traitement de nuit des demandes d'absences
 	 */
-	public void traitementDeNuit() {
+	/*public void traitementDeNuit() {
 
 		List<Solde> soldes = new ArrayList<>();
 
-		/*
-		 * si RTT employeur, changer la demande en validée et baisser le compteur de RTT
-		 * de tous les collegues
-		 */
+		
+		  si RTT employeur, changer la demande en validée et baisser le compteur de RTT
+		  de tous les collegues
+		 
 		for (JourFerme jourFerme : jourFermeRepository.findAll()) {
 			if (jourFerme.getStatut().equals(Statut.INITIALE)) {
 				jourFerme.setStatut(Statut.VALIDEE);
@@ -137,5 +137,5 @@ public class AbsenceService {
 					}
 				}
 			}
-		}
+		}*/
 }
