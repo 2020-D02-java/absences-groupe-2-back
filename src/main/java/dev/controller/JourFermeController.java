@@ -9,6 +9,8 @@ import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,6 +24,7 @@ import dev.entites.JourFerme;
 import dev.exceptions.CommentaireManquantJourFerieException;
 import dev.exceptions.DateDansLePasseException;
 import dev.exceptions.JourRttUnWeekEndException;
+import dev.exceptions.RttEmployeurDejaValideException;
 import dev.exceptions.SaisieJourFeriesUnJourDejaFeriesException;
 import dev.services.JourFermeService;
 
@@ -31,7 +34,7 @@ public class JourFermeController {
 
 	private JourFermeService jourFermeService;
 
-	public JourFermeController(JourFermeService jourFermeService) {
+	public JourFermeController(JourFermeService jourFermeService ) {
 		this.jourFermeService = jourFermeService;
 	}
 
@@ -56,6 +59,17 @@ public class JourFermeController {
 		return this.jourFermeService.postJourFerme(jourFermeDto);
 	}
 	
+	// ** SUPPRESSION JOUR FERME [via ID] **//
+	@DeleteMapping
+	@RequestMapping(value = "/delete")
+	@CrossOrigin
+	public String supprimerJourFerme(@RequestParam("id") Long id) {
+
+		return this.jourFermeService.deleteJourFerme(id);
+        
+	}
+	
+	
 	// un jour férié ne peut pas être saisi dans le passé
 	@ExceptionHandler(DateDansLePasseException.class)
 	public ResponseEntity<String> onDateDansLePasseException(DateDansLePasseException e) {
@@ -77,6 +91,12 @@ public class JourFermeController {
 	// il est interdit de saisir un jour férié à la même date qu'un autre jour férié
 	@ExceptionHandler(SaisieJourFeriesUnJourDejaFeriesException.class)
 	public ResponseEntity<String> onSaisieJourFerierSurJourDejaFerieException(SaisieJourFeriesUnJourDejaFeriesException e) {
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+	}
+	
+	// il est interdit de saisir un jour férié à la même date qu'un autre jour férié
+	@ExceptionHandler(RttEmployeurDejaValideException.class)
+	public ResponseEntity<String> onDeleteRttDejaValideException(RttEmployeurDejaValideException e) {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
 	}
 }
