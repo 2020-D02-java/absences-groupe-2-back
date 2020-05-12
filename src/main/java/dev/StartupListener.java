@@ -1,6 +1,5 @@
 package dev;
 
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,6 +20,7 @@ import dev.entites.Solde;
 import dev.entites.Statut;
 import dev.entites.TypeAbsence;
 import dev.entites.TypeSolde;
+import dev.repository.AbsenceRepo;
 import dev.repository.CollegueRepo;
 
 /**
@@ -35,11 +35,13 @@ public class StartupListener {
 	private String appVersion;
     private PasswordEncoder passwordEncoder;
     private CollegueRepo collegueRepo;
+    private AbsenceRepo absenceRepository;
  
-    public StartupListener(@Value("${app.version}") String appVersion, PasswordEncoder passwordEncoder, CollegueRepo collegueRepo) {
+    public StartupListener(@Value("${app.version}") String appVersion, PasswordEncoder passwordEncoder, CollegueRepo collegueRepo, AbsenceRepo absenceRepository) {
         this.appVersion = appVersion;
         this.passwordEncoder = passwordEncoder;
         this.collegueRepo = collegueRepo;
+        this.absenceRepository = absenceRepository;
     }
 
     @EventListener(ContextRefreshedEvent.class)
@@ -79,9 +81,12 @@ public class StartupListener {
        listeSoldesCol1.add(solde1CP);
        col1.setSoldes(listeSoldesCol1);
        //************************************************* 
-        
+   
+ 
         this.collegueRepo.save(col1);
+        this.absenceRepository.save(abs1col1);
         
+       System.out.println(abs1col1.getId());
         
         Collegue col2 = new Collegue();
         col2.setNom("User");

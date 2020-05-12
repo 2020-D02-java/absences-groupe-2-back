@@ -16,7 +16,6 @@ import dev.entites.Collegue;
 import dev.entites.JourFerme;
 import dev.entites.Solde;
 import dev.entites.Statut;
-import dev.entites.TypeAbsence;
 import dev.entites.TypeSolde;
 import dev.exceptions.CollegueByEmailNotExistException;
 import dev.repository.AbsenceRepo;
@@ -78,6 +77,11 @@ public class AbsenceService {
 
 	}
 
+	/**
+	 * @param dateDebut 1ere date
+	 * @param dateFin 	2eme date
+	 * @return le nombre de jours ouvrés entre deux dates
+	 */
 	public int joursOuvresEntreDeuxDates(LocalDate dateDebut, LocalDate dateFin) {
 
 		int numeroJour = dateDebut.getDayOfWeek().getValue();
@@ -106,8 +110,10 @@ public class AbsenceService {
 		 * si RTT employeur, changer la demande en validée et baisser le compteur de RTT
 		 * de tous les collegues
 		 */
-		for (JourFerme jourFermes : jourFermeRepository.findAll()) {
-			//jourFermes.setStatut(Statut.VALIDEE);
+		for (JourFerme jourFerme : jourFermeRepository.findAll()) {
+			if (jourFerme.getStatut().equals(Statut.INITIALE)) {
+				jourFerme.setStatut(Statut.VALIDEE);
+			}
 			for (Collegue collegue : collegueRepository.findAll()) {
 				for (Solde solde : collegue.getSoldes()) {
 					if (solde.getType() == TypeSolde.RTT_EMPLOYE) {
@@ -117,16 +123,18 @@ public class AbsenceService {
 			}
 		}
 		for (Absence absence : absenceRepository.findAll()) {
-				int nombreDeJoursOuvresPendantAbsence = joursOuvresEntreDeuxDates(absence.getDateDebut(),
-						absence.getDateFin());
+				int nombreDeJoursOuvresPendantAbsence = joursOuvresEntreDeuxDates(absence.getDateDebut(),absence.getDateFin());
 
 				soldes = absence.getCollegue().getSoldes();
 				for (Solde solde : soldes) {
 					if (solde.getType().toString().equals(absence.getType().toString())) {
-
+						if (solde.getNombreDeJours() - nombreDeJoursOuvresPendantAbsence < 0) {
+							absence.setStatut(Statut.REJETEE);
+						} else {
+							absence.setStatut(Statut.EN_ATTENTE_VALIDATION);
+							//envoyer un mail au manager
+						}
 					}
-					// if (solde.getNombreDeJours())
-					// if date.d
 				}
 			}
 		}
