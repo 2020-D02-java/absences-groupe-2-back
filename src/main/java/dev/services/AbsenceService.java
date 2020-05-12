@@ -103,7 +103,7 @@ public class AbsenceService {
 		}
 	}
 	
-	// Supprimer jour ferme
+	// Supprimer une absence
 		/*
 		 * Règles métier: 
 		 * 
