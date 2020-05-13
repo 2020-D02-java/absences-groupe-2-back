@@ -18,6 +18,7 @@ import dev.controller.dto.AbsenceDemandeDto;
 import dev.controller.dto.AbsenceVisualisationDto;
 import dev.controller.dto.ErreurDto;
 import dev.exceptions.CollegueByEmailNotExistException;
+import dev.repository.AbsenceRepo;
 import dev.services.AbsenceService;
 
 /** Controller de l'entité Absence
@@ -49,6 +50,10 @@ public class AbsenceController {
 		return absenceService.listerAbsencesCollegue();
 	}
 	 
+	@PostMapping
+	public void traitementDeNuit() {
+		absenceService.traitementDeNuit();
+	}
 	
 	@PostMapping
 	public ResponseEntity<?> demandeAbsence(@RequestBody AbsenceDemandeDto absenceDto) {
@@ -63,5 +68,7 @@ public class AbsenceController {
     	erreurDto.setMessage(ex.getMessage());
     	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erreurDto);
   	}
+    
+    
 	
 }

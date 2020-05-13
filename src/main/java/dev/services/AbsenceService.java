@@ -15,9 +15,9 @@ import dev.controller.dto.AbsenceDemandeDto;
 import dev.controller.dto.AbsenceVisualisationDto;
 import dev.entites.Absence;
 import dev.entites.Collegue;
+import dev.entites.JourFerme;
 import dev.entites.Solde;
 import dev.entites.Statut;
-import dev.entites.TypeAbsence;
 import dev.entites.TypeSolde;
 import dev.exceptions.AbsenceChevauchementException;
 import dev.exceptions.AbsenceDateException;
@@ -26,8 +26,10 @@ import dev.exceptions.AbsenceMotifManquantException;
 import dev.exceptions.CollegueByEmailNotExistException;
 import dev.repository.AbsenceRepo;
 import dev.repository.CollegueRepo;
+import dev.repository.JourFermeRepo;
 
-/** Service de l'entité Absence
+/**
+ * Service de l'entité Absence
  *
  * @author KOMINIARZ Anaïs
  *
@@ -37,26 +39,31 @@ public class AbsenceService {
 
 	private AbsenceRepo absenceRepository;
 	private CollegueRepo collegueRepository;
-	
-	/** Constructeur
+	private JourFermeRepo jourFermeRepository;
+
+	/**
+	 * Constructeur
 	 *
 	 * @param absenceRepository
 	 */
-	public AbsenceService(AbsenceRepo absenceRepository, CollegueRepo collegueRepository) {
+	public AbsenceService(AbsenceRepo absenceRepository, CollegueRepo collegueRepository,
+			JourFermeRepo jourFermeRepository) {
 		this.absenceRepository = absenceRepository;
 		this.collegueRepository = collegueRepository;
+		this.jourFermeRepository = jourFermeRepository;
 	}
-	
+
 	/**
 	 * @param collegue : Collegue
-	 * @return la liste des absences du collègue dont l'email est passé en paramètres
+	 * @return la liste des absences du collègue dont l'email est passé en
+	 *         paramètres
 	 */
 	public List<AbsenceVisualisationDto> listerAbsencesCollegue() {
 		
 		String email = SecurityContextHolder.getContext().getAuthentication().getName(); 
 		
 		List<AbsenceVisualisationDto> listeAbsences = new ArrayList<>();
-		
+	
 		for (Absence absence : absenceRepository.findAll()) {
 			if (absence.getCollegue().getEmail().equals(email)) {
 				AbsenceVisualisationDto absenceDto = new AbsenceVisualisationDto(absence.getDateDebut(), absence.getDateFin(), absence.getType(), absence.getStatut());
@@ -64,6 +71,7 @@ public class AbsenceService {
 			}
 		} 
 		return listeAbsences;
+
 	}
 	
 	
@@ -111,33 +119,67 @@ public class AbsenceService {
 		
 		this.absenceRepository.save(absence);
 		return new AbsenceDemandeDto(absence.getDateDebut(), absence.getDateFin(), absence.getType(), absence.getMotif(), absence.getStatut());
+}
 
+	/**
+	 * @param dateDebut 1ere date
+	 * @param dateFin 	2eme date
+	 * @return le nombre de jours ouvrés entre deux dates
+	 */
+	public int joursOuvresEntreDeuxDates(LocalDate dateDebut, LocalDate dateFin) {
+
+		int numeroJour = dateDebut.getDayOfWeek().getValue();
+		int nombreDeJours = dateFin.compareTo(dateDebut) + 1;
+		int nombreDeJoursFermes = 0;
+
+		int nombreDeSamediEtDimanche = nombreDeJours / (9 - numeroJour) * 2;
+
+		for (JourFerme jourFerme : jourFermeRepository.findAll()) {
+			if (!(jourFerme.getDate().isBefore(dateDebut)) && !(jourFerme.getDate().isAfter(dateFin))) {
+				nombreDeJoursFermes += 1;
+			}
+		}
+
+		return nombreDeJours - nombreDeSamediEtDimanche - nombreDeJoursFermes;
 	}
 
 	/**
 	 * traitement de nuit des demandes d'absences
 	 */
 	public void traitementDeNuit() {
-		
+
 		List<Solde> soldes = new ArrayList<>();
-		
-		for(Absence absence : absenceRepository.findAll()) {
-			/* si RTT employeur, changer la demande en validée et baisser le compteur de RTT de tous les collegues */
-			if (absence.getType().equals(TypeAbsence.RTT_EMPLOYEUR)) {
-				absence.setStatut(Statut.VALIDEE);
-				for (Collegue collegue : collegueRepository.findAll()) {
-					for (Solde solde : collegue.getSoldes()) {
-						if (solde.getType() == TypeSolde.RTT_EMPLOYE) {
-							solde.setNombreDeJours(solde.getNombreDeJours()-1);
-						}
+
+		/*
+		 * si RTT employeur, changer la demande en validée et baisser le compteur de RTT
+		 * de tous les collegues
+		 */
+		for (JourFerme jourFerme : jourFermeRepository.findAll()) {
+			if (jourFerme.getStatut().equals(Statut.INITIALE)) {
+				jourFerme.setStatut(Statut.VALIDEE);
+			}
+			for (Collegue collegue : collegueRepository.findAll()) {
+				for (Solde solde : collegue.getSoldes()) {
+					if (solde.getType() == TypeSolde.RTT_EMPLOYE) {
+						solde.setNombreDeJours(solde.getNombreDeJours() - 1);
 					}
-				}
-			} else {
-				soldes = absence.getCollegue().getSoldes();
-				for (Solde solde : soldes) {
-					//if (solde.getNombreDeJours() )
 				}
 			}
 		}
-	}
+		for (Absence absence : absenceRepository.findAll()) {
+				int nombreDeJoursOuvresPendantAbsence = joursOuvresEntreDeuxDates(absence.getDateDebut(),absence.getDateFin());
+
+				soldes = absence.getCollegue().getSoldes();
+				for (Solde solde : soldes) {
+					if (solde.getType().toString().equals(absence.getType().toString())) {
+						if (solde.getNombreDeJours() - nombreDeJoursOuvresPendantAbsence < 0) {
+							absence.setStatut(Statut.REJETEE);
+						} else {
+							absence.setStatut(Statut.EN_ATTENTE_VALIDATION);
+							//envoyer un mail au manager
+						}
+					}
+				}
+			}
+		}
 }
