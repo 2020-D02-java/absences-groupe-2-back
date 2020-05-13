@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import dev.controller.dto.AbsenceDemandeModificationSuppressionDto;
-import dev.controller.dto.AbsenceVisualisationDto;
+import dev.controller.dto.AbsenceDemandeDto;
+import dev.controller.dto.AbsenceVisualisationModificationSuppressionDto;
 import dev.controller.dto.ErreurDto;
 import dev.exceptions.CollegueAuthentifieNonRecupereException;
 import dev.services.AbsenceService;
@@ -48,7 +48,7 @@ public class AbsenceController {
 	 * @return une liste d'absence Dto
 	 */
 	@GetMapping
-	public List<AbsenceVisualisationDto> listerAbsencesCollegue(){
+	public List<AbsenceVisualisationModificationSuppressionDto> listerAbsencesCollegue(){
 		return absenceService.listerAbsencesCollegue();
 	}
 	
@@ -68,8 +68,8 @@ public class AbsenceController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<?> demandeAbsence(@RequestBody AbsenceDemandeModificationSuppressionDto absenceDto) {
-			AbsenceDemandeModificationSuppressionDto saveAbsence = absenceService.demandeAbsence(absenceDto);
+	public ResponseEntity<?> demandeAbsence(@RequestBody AbsenceDemandeDto absenceDto) {
+		AbsenceDemandeDto saveAbsence = absenceService.demandeAbsence(absenceDto);
 		return ResponseEntity.status(HttpStatus.ACCEPTED).header("resultat", "l'absence a été créée").body(saveAbsence);
 	}
 	

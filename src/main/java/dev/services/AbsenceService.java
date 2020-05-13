@@ -14,8 +14,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import dev.controller.dto.AbsenceDemandeModificationSuppressionDto;
-import dev.controller.dto.AbsenceVisualisationDto;
+import dev.controller.dto.AbsenceDemandeDto;
+import dev.controller.dto.AbsenceVisualisationModificationSuppressionDto;
 import dev.entites.Absence;
 import dev.entites.Collegue;
 import dev.entites.JourFerme;
@@ -61,15 +61,15 @@ public class AbsenceService {
 	 * @return la liste des absences du collègue dont l'email est passé en
 	 *         paramètres
 	 */
-	public List<AbsenceVisualisationDto> listerAbsencesCollegue() {
+	public List<AbsenceVisualisationModificationSuppressionDto> listerAbsencesCollegue() {
 		
 		String email = SecurityContextHolder.getContext().getAuthentication().getName(); 
 		
-		List<AbsenceVisualisationDto> listeAbsences = new ArrayList<>();
+		List<AbsenceVisualisationModificationSuppressionDto> listeAbsences = new ArrayList<>();
 	
 		for (Absence absence : absenceRepository.findAll()) {
 			if (absence.getCollegue().getEmail().equals(email)) {
-				AbsenceVisualisationDto absenceDto = new AbsenceVisualisationDto(absence.getDateDebut(), absence.getDateFin(), absence.getType(), absence.getStatut());
+				AbsenceVisualisationModificationSuppressionDto absenceDto = new AbsenceVisualisationModificationSuppressionDto(absence.getDateDebut(), absence.getDateFin(), absence.getType(), absence.getMotif(), absence.getStatut());
 				listeAbsences.add(absenceDto);
 			}
 		} 
@@ -84,7 +84,7 @@ public class AbsenceService {
 	 * @return une AbsenceVisualisationDto
 	 */
 	@Transactional
-	public AbsenceDemandeModificationSuppressionDto demandeAbsence(AbsenceDemandeModificationSuppressionDto absenceDemandeDto) {
+	public AbsenceDemandeDto demandeAbsence(AbsenceDemandeDto absenceDemandeDto) {
 		
 		String email = SecurityContextHolder.getContext().getAuthentication().getName(); 
 		
@@ -121,7 +121,7 @@ public class AbsenceService {
 		}
 		
 		this.absenceRepository.save(absence);
-		return new AbsenceDemandeModificationSuppressionDto(absence.getDateDebut(), absence.getDateFin(), absence.getType(), absence.getMotif(), absence.getStatut());
+		return new AbsenceDemandeDto(absence.getDateDebut(), absence.getDateFin(), absence.getType(), absence.getMotif(), absence.getStatut());
 }
 
 	/**

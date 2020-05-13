@@ -5,9 +5,6 @@ package dev.controller.dto;
 
 import java.time.LocalDate;
 
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-
 import dev.entites.Statut;
 import dev.entites.TypeAbsence;
 
@@ -16,37 +13,41 @@ import dev.entites.TypeAbsence;
  * @author KOMINIARZ Anaïs
  *
  */
-public class AbsenceVisualisationDto {
+public class AbsenceVisualisationModificationSuppressionDto {
 
-	private Long id;
-	
+	private Integer id;
 	private LocalDate dateDebut;
 	private LocalDate dateFin;
-	@Enumerated(EnumType.STRING)
 	private TypeAbsence type;
-	@Enumerated(EnumType.STRING)
+	private String motif;
 	private Statut statut;
 
 	
-
-	public AbsenceVisualisationDto() {
-		
-	}
 
 	/** Constructeur
 	 *
 	 * @param dateDebut
 	 * @param dateFin
 	 * @param type
+	 * @param motif
 	 * @param statut
 	 */
-	public AbsenceVisualisationDto(LocalDate dateDebut, LocalDate dateFin, TypeAbsence type, Statut statut) {
+	public AbsenceVisualisationModificationSuppressionDto(LocalDate dateDebut, LocalDate dateFin, TypeAbsence type,
+			String motif, Statut statut) {
 		super();
 		this.dateDebut = dateDebut;
 		this.dateFin = dateFin;
 		this.type = type;
+		this.motif = motif;
 		this.statut = statut;
 	}
+
+
+	public AbsenceVisualisationModificationSuppressionDto() {
+		
+	}
+
+	
 	/** Getter
 	 *
 	 * @return the dateDebut
@@ -91,6 +92,24 @@ public class AbsenceVisualisationDto {
 	}
 	/** Getter
 	 *
+	 * @return the motif
+	 */
+	public String getMotif() {
+		return motif;
+	}
+
+
+	/** Setter
+	 *
+	 * @param motif the motif to set
+	 */
+	public void setMotif(String motif) {
+		this.motif = motif;
+	}
+
+
+	/** Getter
+	 *
 	 * @return the statutAbs
 	 */
 	public Statut getStatut() {
@@ -106,13 +125,13 @@ public class AbsenceVisualisationDto {
 	/** Getter
 	 * @return the id
 	 */
-	public Long getId() {
+	public Integer getId() {
 		return id;
 	}
 	/** Setter
 	 * @param id the id to set
 	 */
-	public void setId(Long id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

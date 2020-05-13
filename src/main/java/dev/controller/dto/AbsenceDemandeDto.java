@@ -5,9 +5,6 @@ package dev.controller.dto;
 
 import java.time.LocalDate;
 
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-
 import dev.entites.Statut;
 import dev.entites.TypeAbsence;
 
@@ -16,14 +13,12 @@ import dev.entites.TypeAbsence;
  * @author KOMINIARZ Anaïs
  *
  */
-public class AbsenceDemandeModificationSuppressionDto {
+public class AbsenceDemandeDto {
 
 	private LocalDate dateDebut;
 	private LocalDate dateFin;
-	@Enumerated(EnumType.STRING)
 	private TypeAbsence type;
 	private String motif;
-	@Enumerated(EnumType.STRING)
 	private Statut statut;
 	
 	/** Constructeur
@@ -34,7 +29,7 @@ public class AbsenceDemandeModificationSuppressionDto {
 	 * @param motif
 	 * @param statut
 	 */
-	public AbsenceDemandeModificationSuppressionDto(LocalDate dateDebut, LocalDate dateFin, TypeAbsence type, String motif, Statut statut) {
+	public AbsenceDemandeDto(LocalDate dateDebut, LocalDate dateFin, TypeAbsence type, String motif, Statut statut) {
 		super();
 		this.dateDebut = dateDebut;
 		this.dateFin = dateFin;
