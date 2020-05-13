@@ -26,15 +26,12 @@ import dev.repository.SoldeRepo;
 public class SoldeService {
 	
 	private SoldeRepo soldeRepository;
-	private CollegueRepo collegueRepository;
-	
 	/** Constructeur
 	 *
 	 * @param soldeRepository
 	 */
-	public SoldeService(SoldeRepo soldeRepository, CollegueRepo collegueRepository) {
+	public SoldeService(SoldeRepo soldeRepository) {
 		this.soldeRepository = soldeRepository;
-		this.collegueRepository = collegueRepository;
 	}
 	
 	

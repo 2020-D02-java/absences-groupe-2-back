@@ -13,7 +13,7 @@ import dev.entites.TypeAbsence;
  * @author KOMINIARZ Anaïs
  *
  */
-public class AbsenceVisualisationModificationSuppressionDto {
+public class AbsenceVisualisationDto {
 
 	private Integer id;
 	private LocalDate dateDebut;
@@ -32,7 +32,7 @@ public class AbsenceVisualisationModificationSuppressionDto {
 	 * @param motif
 	 * @param statut
 	 */
-	public AbsenceVisualisationModificationSuppressionDto(LocalDate dateDebut, LocalDate dateFin, TypeAbsence type,
+	public AbsenceVisualisationDto(LocalDate dateDebut, LocalDate dateFin, TypeAbsence type,
 			String motif, Statut statut) {
 		super();
 		this.dateDebut = dateDebut;
@@ -43,7 +43,7 @@ public class AbsenceVisualisationModificationSuppressionDto {
 	}
 
 
-	public AbsenceVisualisationModificationSuppressionDto() {
+	public AbsenceVisualisationDto() {
 		
 	}
 

@@ -15,9 +15,8 @@ import dev.entites.TypeSolde;
  */
 public class SoldeDto {
 
-	@Enumerated(EnumType.STRING)
-	private TypeSolde type;
 	
+	private TypeSolde type;
 	private Integer nombreDeJours;
 
 	/** Constructeur

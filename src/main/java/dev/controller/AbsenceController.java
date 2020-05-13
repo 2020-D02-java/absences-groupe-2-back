@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import dev.controller.dto.AbsenceDemandeDto;
-import dev.controller.dto.AbsenceVisualisationModificationSuppressionDto;
+import dev.controller.dto.AbsenceVisualisationDto;
 import dev.controller.dto.ErreurDto;
 import dev.exceptions.CollegueAuthentifieNonRecupereException;
 import dev.services.AbsenceService;
@@ -48,7 +48,7 @@ public class AbsenceController {
 	 * @return une liste d'absence Dto
 	 */
 	@GetMapping
-	public List<AbsenceVisualisationModificationSuppressionDto> listerAbsencesCollegue(){
+	public List<AbsenceVisualisationDto> listerAbsencesCollegue(){
 		return absenceService.listerAbsencesCollegue();
 	}
 	
