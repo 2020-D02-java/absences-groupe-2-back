@@ -11,24 +11,23 @@ import javax.persistence.Enumerated;
 import dev.entites.Statut;
 import dev.entites.TypeAbsence;
 
-/** Structure modélisant une absence servant à communiquer avec l'extérieur (WEB API).
+/** Structure modélisant une visualisation d'absence servant à communiquer avec l'extérieur (WEB API).
  *
  * @author KOMINIARZ Anaïs
  *
  */
-public class AbsenceDto {
+public class AbsenceVisualisationDto {
 
 	private LocalDate dateDebut;
 	private LocalDate dateFin;
 	@Enumerated(EnumType.STRING)
 	private TypeAbsence type;
-	private String motif;
 	@Enumerated(EnumType.STRING)
 	private Statut statut;
 
 	
 
-	public AbsenceDto() {
+	public AbsenceVisualisationDto() {
 		
 	}
 
@@ -37,15 +36,13 @@ public class AbsenceDto {
 	 * @param dateDebut
 	 * @param dateFin
 	 * @param type
-	 * @param motif
 	 * @param statut
 	 */
-	public AbsenceDto(LocalDate dateDebut, LocalDate dateFin, TypeAbsence type, String motif, Statut statut) {
+	public AbsenceVisualisationDto(LocalDate dateDebut, LocalDate dateFin, TypeAbsence type, Statut statut) {
 		super();
 		this.dateDebut = dateDebut;
 		this.dateFin = dateFin;
 		this.type = type;
-		this.motif = motif;
 		this.statut = statut;
 	}
 	/** Getter
@@ -89,20 +86,6 @@ public class AbsenceDto {
 	 */
 	public void setType(TypeAbsence type) {
 		this.type = type;
-	}
-	/** Getter
-	 *
-	 * @return the motif
-	 */
-	public String getMotif() {
-		return motif;
-	}
-	/** Setter
-	 *
-	 * @param motif the motif to set
-	 */
-	public void setMotif(String motif) {
-		this.motif = motif;
 	}
 	/** Getter
 	 *

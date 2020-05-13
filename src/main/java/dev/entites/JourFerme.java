@@ -19,7 +19,7 @@ public class JourFerme {
 	/** id d'un jour ferme **/
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private Integer id;
 	
 	/** date d'un jour ferme **/
 	LocalDate date;
@@ -55,7 +55,7 @@ public class JourFerme {
 	 *
 	 * @return the id
 	 */
-	public Long getId() {
+	public Integer getId() {
 		return id;
 	}
 
@@ -63,7 +63,7 @@ public class JourFerme {
 	 *
 	 * @param id the id to set
 	 */
-	public void setId(Long id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

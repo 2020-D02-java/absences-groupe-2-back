@@ -6,14 +6,13 @@ package dev.services;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.function.Supplier;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import dev.controller.dto.AbsenceDto;
+import dev.controller.dto.AbsenceDemandeDto;
+import dev.controller.dto.AbsenceVisualisationDto;
 import dev.entites.Absence;
 import dev.entites.Collegue;
 import dev.entites.Solde;
@@ -52,25 +51,15 @@ public class AbsenceService {
 	 * @param collegue : Collegue
 	 * @return la liste des absences du collègue dont l'email est passé en paramètres
 	 */
-	public List<AbsenceDto> listerAbsencesCollegue() {
+	public List<AbsenceVisualisationDto> listerAbsencesCollegue() {
 		
 		String email = SecurityContextHolder.getContext().getAuthentication().getName(); 
 		
-		//Vérification que l'email correspond bien à un collègue
-		/*Optional<Collegue> optionnalCollegue = collegueRepository.findByEmail(email);
-		if (!optionnalCollegue.isPresent()) {
-			throw new CollegueByEmailNotExistException("L'email selectionne ne correspond a aucun collegue");
-		}*/
-		
-		List<AbsenceDto> listeAbsences = new ArrayList<>();
+		List<AbsenceVisualisationDto> listeAbsences = new ArrayList<>();
 		
 		for (Absence absence : absenceRepository.findAll()) {
 			if (absence.getCollegue().getEmail().equals(email)) {
-				AbsenceDto absenceDto = new AbsenceDto();
-				absenceDto.setDateDebut(absence.getDateDebut());
-				absenceDto.setDateFin(absence.getDateFin());
-				absenceDto.setType(absence.getType());
-				absenceDto.setStatut(absence.getStatut());
+				AbsenceVisualisationDto absenceDto = new AbsenceVisualisationDto(absence.getDateDebut(), absence.getDateFin(), absence.getType(), absence.getStatut());
 				listeAbsences.add(absenceDto);
 			}
 		} 
@@ -78,17 +67,20 @@ public class AbsenceService {
 	}
 	
 	
-	// Création d'une demande d'absence 
+	
+	/**
+	 * @param absenceDto
+	 * @return une AbsenceVisualisationDto
+	 */
 	@Transactional
-	public AbsenceDto demandeAbsence(AbsenceDto absenceDto) {
+	public AbsenceDemandeDto demandeAbsence(AbsenceDemandeDto absenceDemandeDto) {
 		
 		String email = SecurityContextHolder.getContext().getAuthentication().getName(); 
 		
 		Collegue collegue = collegueRepository.findByEmail(email)
 				.orElseThrow(() -> new CollegueByEmailNotExistException("L'email selectionne ne correspond a aucun collegue"));
 		
-		//Collegue colAbs = new Collegue(collegueDto.getNom(),collegueDto.getPrenom(), collegueDto.getEmail(), collegueDto.getSoldes(), collegueDto.getRoles());
-		Absence absence = new Absence (absenceDto.getDateDebut(),absenceDto.getDateFin(), absenceDto.getType(), absenceDto.getMotif(), absenceDto.getStatut(), collegue);
+		Absence absence = new Absence (absenceDemandeDto.getDateDebut(),absenceDemandeDto.getDateFin(), absenceDemandeDto.getType(), absenceDemandeDto.getMotif(), absenceDemandeDto.getStatut(), collegue);
 		
 		if (absence.getDateDebut().isBefore(LocalDate.now()) || (absence.getDateDebut().isEqual(LocalDate.now()))) // Cas jour saisi dans le passé ou aujourd'hui, erreur
 		{
@@ -116,17 +108,9 @@ public class AbsenceService {
 			}
 
 		}
-		List <Absence> absences = new ArrayList<>();
-		if (!collegue.getAbsences().isEmpty()) {
-			for (Absence absI : collegue.getAbsences())
-				absences.add(absI);				
-		}
 		
-		absences.add(absence);
-		//this.collegueRepository.ajoutAbsence(collegue.getAbsences(),absences);
 		this.absenceRepository.save(absence);
-	
-		return new AbsenceDto(absence.getDateDebut(), absence.getDateFin(), absence.getType(), absence.getMotif(), absence.getStatut());
+		return new AbsenceDemandeDto(absence.getDateDebut(), absence.getDateFin(), absence.getType(), absence.getMotif(), absence.getStatut());
 
 	}
 
