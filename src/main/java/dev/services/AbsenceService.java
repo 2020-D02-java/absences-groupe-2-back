@@ -69,7 +69,7 @@ public class AbsenceService {
 	
 		for (Absence absence : absenceRepository.findAll()) {
 			if (absence.getCollegue().getEmail().equals(email)) {
-				AbsenceVisualisationDto absenceDto = new AbsenceVisualisationDto(absence.getDateDebut(), absence.getDateFin(), absence.getType(), absence.getMotif(), absence.getStatut());
+				AbsenceVisualisationDto absenceDto = new AbsenceVisualisationDto(absence.getId(), absence.getDateDebut(), absence.getDateFin(), absence.getType(), absence.getMotif(), absence.getStatut());
 				listeAbsences.add(absenceDto);
 			}
 		} 

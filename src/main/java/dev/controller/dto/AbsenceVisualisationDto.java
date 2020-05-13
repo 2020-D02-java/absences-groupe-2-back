@@ -22,19 +22,20 @@ public class AbsenceVisualisationDto {
 	private String motif;
 	private Statut statut;
 
-	
 
 	/** Constructeur
 	 *
+	 * @param id
 	 * @param dateDebut
 	 * @param dateFin
 	 * @param type
 	 * @param motif
 	 * @param statut
 	 */
-	public AbsenceVisualisationDto(LocalDate dateDebut, LocalDate dateFin, TypeAbsence type,
-			String motif, Statut statut) {
+	public AbsenceVisualisationDto(Integer id, LocalDate dateDebut, LocalDate dateFin, TypeAbsence type, String motif,
+			Statut statut) {
 		super();
+		this.id = id;
 		this.dateDebut = dateDebut;
 		this.dateFin = dateFin;
 		this.type = type;
