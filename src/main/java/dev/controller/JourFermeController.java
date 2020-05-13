@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -43,15 +45,25 @@ public class JourFermeController {
 //		return jourFermeService.listerJourFerme(id);
 //	}
 	
-//	@GetMapping
-//	public List<JourFerme> getAllJourFermes() {
-//
-//		return this.jourFermeService.getAllJourFermes();
-//	}
-	
 	@GetMapping
-	public List<JourFerme> getJourFermesParDate(@RequestParam Integer annee) {
+	public List<JourFerme> getAllJourFermes() {
+
+		return this.jourFermeService.getAllJourFermes();
+	}
+	
+	@GetMapping("/date")
+	public List<JourFerme> getJourFermesParDate(@RequestParam("annee") Integer annee) {
 		return this.jourFermeService.getJourFermesParDate(annee);
+	}
+	
+	@GetMapping("/id")
+	public JourFerme getJourFermesParId(@RequestParam("id") Long id) {
+		return this.jourFermeService.getJourFermesParId(id);
+	}
+	
+	@PutMapping("/modification")
+	public JourFerme putJourFerme(@RequestBody @Valid JourFermeDto jourFermeDto, @RequestParam("id") Long id) {
+		return this.jourFermeService.putJourFerme(jourFermeDto, id);
 	}
 	 
 	@PostMapping
