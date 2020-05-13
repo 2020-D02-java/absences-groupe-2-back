@@ -1,6 +1,3 @@
-/**
- * 
- */
 package dev.controller.dto;
 
 import java.time.LocalDate;
@@ -8,20 +5,22 @@ import java.time.LocalDate;
 import dev.entites.Statut;
 import dev.entites.TypeAbsence;
 
-/** Représentation 
+/**
  *
- * @author KOMINIARZ Anaïs
+ * @author KOMINIARZ Anaïs, SAGAN Jonathan, BATIGNES Pierre, GIRARD Vincent.
  *
  */
 public class AbsenceDemandeDto {
 
+	// Déclarations
 	private LocalDate dateDebut;
 	private LocalDate dateFin;
 	private TypeAbsence type;
 	private String motif;
 	private Statut statut;
-	
-	/** Constructeur
+
+	/**
+	 * Constructeur
 	 *
 	 * @param dateDebut
 	 * @param dateFin
@@ -37,70 +36,90 @@ public class AbsenceDemandeDto {
 		this.motif = motif;
 		this.statut = statut;
 	}
-	/** Getter
+
+	/**
+	 * Getter
 	 *
 	 * @return the dateDebut
 	 */
 	public LocalDate getDateDebut() {
 		return dateDebut;
 	}
-	/** Setter
+
+	/**
+	 * Setter
 	 *
 	 * @param dateDebut the dateDebut to set
 	 */
 	public void setDateDebut(LocalDate dateDebut) {
 		this.dateDebut = dateDebut;
 	}
-	/** Getter
+
+	/**
+	 * Getter
 	 *
 	 * @return the dateFin
 	 */
 	public LocalDate getDateFin() {
 		return dateFin;
 	}
-	/** Setter
+
+	/**
+	 * Setter
 	 *
 	 * @param dateFin the dateFin to set
 	 */
 	public void setDateFin(LocalDate dateFin) {
 		this.dateFin = dateFin;
 	}
-	/** Getter
+
+	/**
+	 * Getter
 	 *
 	 * @return the type
 	 */
 	public TypeAbsence getType() {
 		return type;
 	}
-	/** Setter
+
+	/**
+	 * Setter
 	 *
 	 * @param type the type to set
 	 */
 	public void setType(TypeAbsence type) {
 		this.type = type;
 	}
-	/** Getter
+
+	/**
+	 * Getter
 	 *
 	 * @return the motif
 	 */
 	public String getMotif() {
 		return motif;
 	}
-	/** Setter
+
+	/**
+	 * Setter
 	 *
 	 * @param motif the motif to set
 	 */
 	public void setMotif(String motif) {
 		this.motif = motif;
 	}
-	/** Getter
+
+	/**
+	 * Getter
 	 *
 	 * @return the statut
 	 */
 	public Statut getStatut() {
 		return statut;
 	}
-	/** Setter
+
+	/**
+	 * Setter
 	 *
 	 * @param statut the statut to set
 	 */

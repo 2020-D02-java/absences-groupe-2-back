@@ -7,9 +7,9 @@ import org.springframework.stereotype.Repository;
 
 import dev.entites.JourFerme;
 
-/** Repository de l'absence
- *
- * @author KOMINIARZ Anaïs
+/**
+ * 
+ * @author KOMINIARZ Anaïs, SAGAN Jonathan, BATIGNES Pierre, GIRARD Vincent.
  *
  */
 @Repository

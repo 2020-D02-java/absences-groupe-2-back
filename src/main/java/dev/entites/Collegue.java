@@ -10,9 +10,16 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+/**
+ * Entité collegue
+ * 
+ * @author KOMINIARZ Anaïs, SAGAN Jonathan, BATIGNES Pierre, GIRARD Vincent.
+ *
+ */
 @Entity
 public class Collegue {
 
+	// Déclarations
     /** id du collegue **/
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -5,6 +5,8 @@ package dev.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -30,13 +33,14 @@ import dev.services.AbsenceService;
 /**
  * Controller de l'entité Absence
  *
- * @author KOMINIARZ Anaïs
+ * @author KOMINIARZ Anaïs, SAGAN Jonathan, BATIGNES Pierre, GIRARD Vincent.
  *
  */
 @RestController
 @RequestMapping("absences")
 public class AbsenceController {
 
+	// Déclarations
 	private AbsenceService absenceService;
 
 	/**
@@ -49,6 +53,8 @@ public class AbsenceController {
 	}
 
 	/**
+	 * LISTER ABSENCES
+	 * 
 	 * @param id
 	 * @return une liste d'absence Dto
 	 */
@@ -57,7 +63,35 @@ public class AbsenceController {
 		return absenceService.listerAbsencesCollegue();
 	}
 
-	// ** SUPPRESSION JOUR FERME [via ID] **//
+	/**
+	 * RECUPERER ABSENCE VIA ID
+	 * 
+	 * @param id
+	 * @return
+	 */
+	@GetMapping("/id")
+	public AbsenceVisualisationDto getAbsenceParId(@RequestParam("id") Integer id) {
+		return this.absenceService.getAbsenceParId(id);
+	}
+
+	/**
+	 * MODIFICATION ABSENCE
+	 * 
+	 * @param absenceDto
+	 * @param id
+	 * @return
+	 */
+	@PutMapping("/modification")
+	public AbsenceVisualisationDto putAbsence(@RequestBody @Valid AbsenceVisualisationDto absenceDto, @RequestParam("id") Integer id) {
+		return this.absenceService.putAbsence(absenceDto, id);
+	}
+
+	/**
+	 * SUPPRESSION ABSENCE VIA ID
+	 * 
+	 * @param id
+	 * @return
+	 */
 	@DeleteMapping
 	@RequestMapping(value = "/delete")
 	@CrossOrigin
@@ -67,16 +101,29 @@ public class AbsenceController {
 
 	}
 
+	/**
+	 * TRAITEMENT DE NUIT
+	 */
 	@PostMapping(value = "/traitement-de-nuit")
 	public void traitementDeNuit() {
 		absenceService.traitementDeNuit();
 	}
 
+	/**
+	 * DEMANDE D'ABSENCE
+	 * 
+	 * @param absenceDto
+	 * @return
+	 */
 	@PostMapping
 	public ResponseEntity<?> demandeAbsence(@RequestBody AbsenceDemandeDto absenceDto) {
 		AbsenceDemandeDto saveAbsence = absenceService.demandeAbsence(absenceDto);
 		return ResponseEntity.status(HttpStatus.ACCEPTED).header("resultat", "l'absence a été créée").body(saveAbsence);
 	}
+
+	// ----------------------------- //
+	// ---- GESTION DES ERREURS ---- //
+	// ----------------------------- //
 
 	// Gestion des erreurs des demandes d'absence
 	@ExceptionHandler(CollegueAuthentifieNonRecupereException.class)
@@ -101,7 +148,7 @@ public class AbsenceController {
 		erreurDto.setMessage(ex.getMessage());
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erreurDto);
 	}
-	
+
 	// Cas congès sans solde, et motif manquant
 	@ExceptionHandler(AbsenceMotifManquantException.class)
 	public ResponseEntity<ErreurDto> quandAbsenceMotifManquantException(AbsenceMotifManquantException ex) {
@@ -109,8 +156,9 @@ public class AbsenceController {
 		erreurDto.setMessage(ex.getMessage());
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erreurDto);
 	}
-	
-	// Impossible de saisir une demande qui chevauche une autre sauf si celle-ci est en statut REJETEE
+
+	// Impossible de saisir une demande qui chevauche une autre sauf si celle-ci est
+	// en statut REJETEE
 	@ExceptionHandler(AbsenceChevauchementException.class)
 	public ResponseEntity<ErreurDto> quandAbsenceChevauchementException(AbsenceChevauchementException ex) {
 		ErreurDto erreurDto = new ErreurDto();

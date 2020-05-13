@@ -14,14 +14,17 @@ import org.springframework.stereotype.Component;
 
 import dev.entites.Absence;
 import dev.entites.Collegue;
+import dev.entites.JourFerme;
 import dev.entites.Role;
 import dev.entites.RoleCollegue;
 import dev.entites.Solde;
 import dev.entites.Statut;
 import dev.entites.TypeAbsence;
+import dev.entites.TypeJourFerme;
 import dev.entites.TypeSolde;
 import dev.repository.AbsenceRepo;
 import dev.repository.CollegueRepo;
+import dev.repository.JourFermeRepo;
 
 /**
  * Code de démarrage de l'application.
@@ -36,12 +39,14 @@ public class StartupListener {
     private PasswordEncoder passwordEncoder;
     private CollegueRepo collegueRepo;
     private AbsenceRepo absenceRepo;
+    private JourFermeRepo jourFermeRepo;
  
-    public StartupListener(@Value("${app.version}") String appVersion, PasswordEncoder passwordEncoder, CollegueRepo collegueRepo, AbsenceRepo absenceRepo) {
+    public StartupListener(@Value("${app.version}") String appVersion, PasswordEncoder passwordEncoder, CollegueRepo collegueRepo, AbsenceRepo absenceRepo, JourFermeRepo jourFermeRepo) {
         this.appVersion = appVersion;
         this.passwordEncoder = passwordEncoder;
         this.collegueRepo = collegueRepo;
         this.absenceRepo = absenceRepo;
+        this.jourFermeRepo = jourFermeRepo;
     }
 
     @EventListener(ContextRefreshedEvent.class)
@@ -58,9 +63,15 @@ public class StartupListener {
         
         // TESTS POUR UN COLLEGUE (recup des absences et des soldes)
          
+      //creation d'une absence *********
+        JourFerme jourFerme1 = new JourFerme(LocalDate.of(2020, 06, 12), TypeJourFerme.JOURS_FERIES, "Jour ferme numero 1");
+        JourFerme jourFerme2 = new JourFerme(LocalDate.of(2020, 11, 02), TypeJourFerme.RTT_EMPLOYEUR, "Jour ferme numero 2");
+        JourFerme jourFerme3 = new JourFerme(LocalDate.of(2020, 07, 12), TypeJourFerme.JOURS_FERIES, "Jour ferme numero 3");
+
         //creation d'une absence *********
-        Absence abs1col1 = new Absence(LocalDate.of(2020, 02, 04), LocalDate.of(2020, 02, 14), TypeAbsence.CONGES_PAYES, "vacances au soleil", Statut.EN_ATTENTE_VALIDATION, col1);
-        Absence abs2col1 = new Absence(LocalDate.of(2020, 07, 15), LocalDate.of(2020, 8, 02), TypeAbsence.CONGES_PAYES, "vacances au soleil avec bluelagoon", Statut.INITIALE, col1);
+        Absence abs1col1 = new Absence(LocalDate.of(2020, 06, 12), LocalDate.of(2020, 06, 15), TypeAbsence.CONGES_PAYES, "vacances au soleil", Statut.EN_ATTENTE_VALIDATION, col1);
+        Absence abs2col1 = new Absence(LocalDate.of(2020, 11, 02), LocalDate.of(2020, 11, 20), TypeAbsence.CONGES_PAYES, "vacances au soleil avec bluelagoon", Statut.INITIALE, col1);
+        Absence abs3col1 = new Absence(LocalDate.of(2021, 01, 01), LocalDate.of(2021, 02, 10), TypeAbsence.CONGES_PAYES, "tour du monde en vélo, avec les petites roues", Statut.REJETEE, col1);
         
         List<Absence> listeAbsences = new ArrayList<>();
         listeAbsences.add(abs1col1);
@@ -86,6 +97,13 @@ public class StartupListener {
         this.collegueRepo.save(col1);
         this.absenceRepo.save(abs1col1);
         this.absenceRepo.save(abs2col1);
+        this.absenceRepo.save(abs3col1);
+        
+        // -- JOUR FERME
+
+        this.jourFermeRepo.save(jourFerme1);
+        this.jourFermeRepo.save(jourFerme2);
+        this.jourFermeRepo.save(jourFerme3); 
         
       // System.out.println(abs1col1.getId());
         

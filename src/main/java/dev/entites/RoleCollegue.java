@@ -1,53 +1,72 @@
 package dev.entites;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
-/** Représentation du role d'un collègue
- *
- * @author KOMINIARZ Anaïs
+/**
+ * Représentation du role d'un collègue
+ * 
+ * @author KOMINIARZ Anaïs, SAGAN Jonathan, BATIGNES Pierre, GIRARD Vincent.
  *
  */
 @Entity
 public class RoleCollegue {
 
-    /** id du role collegue **/
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+	// Déclarations
+	/** id du role collegue **/
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
 
-    /** collegue **/
-    @ManyToOne
-    @JoinColumn(name = "collegue_id")
-    private Collegue collegue;
+	/** collegue **/
+	@ManyToOne
+	@JoinColumn(name = "collegue_id")
+	private Collegue collegue;
 
-    /** role d'un collegue **/
-    @Enumerated(EnumType.STRING)
-    private Role role;
+	/** role d'un collegue **/
+	@Enumerated(EnumType.STRING)
+	private Role role;
 
-    public RoleCollegue() {
-    }
+	/**
+	 * Constructeur
+	 * 
+	 * @param collegue
+	 * @param role
+	 */
+	public RoleCollegue(Collegue collegue, Role role) {
+		this.collegue = collegue;
+		this.role = role;
+	}
 
-    public RoleCollegue(Collegue collegue, Role role) {
-        this.collegue = collegue;
-        this.role = role;
-    }
+	/**
+	 * Constructeur vide
+	 */
+	public RoleCollegue() {
+	}
 
-    public Integer getId() {
-        return id;
-    }
+	public Integer getId() {
+		return id;
+	}
 
-    public void setId(Long id) {
-    }
+	public void setId(Long id) {
+	}
 
-    public Collegue getCollegue() {
-        return collegue;
-    }
+	public Collegue getCollegue() {
+		return collegue;
+	}
 
-    public void setCollegue(Collegue collegue) {
-        this.collegue = collegue;
-    }
+	public void setCollegue(Collegue collegue) {
+		this.collegue = collegue;
+	}
 
-	/** Getter
+	/**
+	 * Getter
 	 *
 	 * @return the role
 	 */
@@ -55,7 +74,8 @@ public class RoleCollegue {
 		return role;
 	}
 
-	/** Setter
+	/**
+	 * Setter
 	 *
 	 * @param role the role to set
 	 */

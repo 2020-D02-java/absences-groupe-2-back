@@ -3,9 +3,10 @@
  */
 package dev.entites;
 
-/** Enumération des différents types d'absence
- *
- * @author KOMINIARZ Anaïs
+/**
+ * Enumération des différents types d'absence
+ * 
+ * @author KOMINIARZ Anaïs, SAGAN Jonathan, BATIGNES Pierre, GIRARD Vincent.
  *
  */
 public enum TypeAbsence {

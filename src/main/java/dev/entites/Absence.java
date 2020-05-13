@@ -5,7 +5,6 @@ package dev.entites;
 
 import java.time.LocalDate;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -15,49 +14,44 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-/** Représentation 
- *
- * @author KOMINIARZ Anaïs
+/**
+ * Entité absence
+ * 
+ * @author KOMINIARZ Anaïs, SAGAN Jonathan, BATIGNES Pierre, GIRARD Vincent.
  *
  */
 @Entity
 public class Absence {
-	
-	/** id de l'absence**/
+
+	// Déclarations
+	/** id de l'absence **/
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-	
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
+
 	/** date de debut de l'absence **/
 	private LocalDate dateDebut;
 	/** date de fin de l'absence **/
 	private LocalDate dateFin;
-	
+
 	/** type de l'absence **/
 	@Enumerated(EnumType.STRING)
 	private TypeAbsence type;
-	 
+
 	/** motif de l'absence **/
 	private String motif;
-	 
+
 	/** statut de l'absence **/
 	@Enumerated(EnumType.STRING)
 	private Statut statut;
-	
+
 	/** collegue auquel l'absence est associée **/
 	@ManyToOne
-    @JoinColumn(name = "collegue_id")
-    private Collegue collegue;
+	@JoinColumn(name = "collegue_id")
+	private Collegue collegue;
 
-	
-	/** Constructeur
-	 *
-	 */
-	public Absence() {
-		
-	}
-	
-	/** Constructeur
+	/**
+	 * Constructeur
 	 *
 	 * @param dateDebut
 	 * @param dateFin
@@ -66,8 +60,7 @@ public class Absence {
 	 * @param statut
 	 * @param collegue
 	 */
-	public Absence(LocalDate dateDebut, LocalDate dateFin, TypeAbsence type, String motif, Statut statut,
-			Collegue collegue) {
+	public Absence(LocalDate dateDebut, LocalDate dateFin, TypeAbsence type, String motif, Statut statut, Collegue collegue) {
 		super();
 		this.dateDebut = dateDebut;
 		this.dateFin = dateFin;
@@ -77,7 +70,15 @@ public class Absence {
 		this.collegue = collegue;
 	}
 
-	/** Getter
+	/**
+	 * Constructeur vide
+	 */
+	public Absence() {
+
+	}
+
+	/**
+	 * Getter
 	 *
 	 * @return the id
 	 */
@@ -85,7 +86,8 @@ public class Absence {
 		return id;
 	}
 
-	/** Setter
+	/**
+	 * Setter
 	 *
 	 * @param id the id to set
 	 */
@@ -93,7 +95,8 @@ public class Absence {
 		this.id = id;
 	}
 
-	/** Getter
+	/**
+	 * Getter
 	 *
 	 * @return the dateDebut
 	 */
@@ -101,7 +104,8 @@ public class Absence {
 		return dateDebut;
 	}
 
-	/** Setter
+	/**
+	 * Setter
 	 *
 	 * @param dateDebut the dateDebut to set
 	 */
@@ -109,7 +113,8 @@ public class Absence {
 		this.dateDebut = dateDebut;
 	}
 
-	/** Getter
+	/**
+	 * Getter
 	 *
 	 * @return the dateFin
 	 */
@@ -117,7 +122,8 @@ public class Absence {
 		return dateFin;
 	}
 
-	/** Setter
+	/**
+	 * Setter
 	 *
 	 * @param dateFin the dateFin to set
 	 */
@@ -125,7 +131,8 @@ public class Absence {
 		this.dateFin = dateFin;
 	}
 
-	/** Getter
+	/**
+	 * Getter
 	 *
 	 * @return the typeAbsence
 	 */
@@ -133,7 +140,8 @@ public class Absence {
 		return type;
 	}
 
-	/** Setter
+	/**
+	 * Setter
 	 *
 	 * @param typeAbsence the typeAbsence to set
 	 */
@@ -141,7 +149,8 @@ public class Absence {
 		this.type = type;
 	}
 
-	/** Getter
+	/**
+	 * Getter
 	 *
 	 * @return the motif
 	 */
@@ -149,7 +158,8 @@ public class Absence {
 		return motif;
 	}
 
-	/** Setter
+	/**
+	 * Setter
 	 *
 	 * @param motif the motif to set
 	 */
@@ -157,7 +167,8 @@ public class Absence {
 		this.motif = motif;
 	}
 
-	/** Getter
+	/**
+	 * Getter
 	 *
 	 * @return the statut
 	 */
@@ -165,7 +176,8 @@ public class Absence {
 		return statut;
 	}
 
-	/** Setter
+	/**
+	 * Setter
 	 *
 	 * @param statut the statut to set
 	 */
@@ -173,7 +185,8 @@ public class Absence {
 		this.statut = statut;
 	}
 
-	/** Getter
+	/**
+	 * Getter
 	 *
 	 * @return the collegue
 	 */
@@ -181,15 +194,12 @@ public class Absence {
 		return collegue;
 	}
 
-	/** Setter
+	/**
+	 * Setter
 	 *
 	 * @param collegue the collegue to set
 	 */
 	public void setCollegue(Collegue collegue) {
 		this.collegue = collegue;
 	}
-	 
-	 
-
-
 }

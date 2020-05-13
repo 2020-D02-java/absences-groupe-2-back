@@ -12,41 +12,35 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-/** Représentation des différents compteurs
- *
- * @author KOMINIARZ Anaïs
+/**
+ * Représentation des différents compteurs
+ * 
+ * @author KOMINIARZ Anaïs, SAGAN Jonathan, BATIGNES Pierre, GIRARD Vincent.
  *
  */
 @Entity
 public class Solde {
-	
+
+	// Déclarations
 	/** id du solde **/
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-	
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
+
 	/** nombre de jours pour le solde **/
 	private Integer nombreDeJours;
-	
+
 	/** type de l'absence **/
 	@Enumerated(EnumType.STRING)
 	private TypeSolde type;
-	
+
 	/** collegue auquel le solde est associé **/
 	@ManyToOne
-    @JoinColumn(name = "collegue_id")
-    private Collegue collegue;
+	@JoinColumn(name = "collegue_id")
+	private Collegue collegue;
 
-	
-	/** Constructeur
-	 *
-	 */
-	public Solde() {
-		
-	}
-
-	
-	/** Constructeur
+	/**
+	 * Constructeur
 	 *
 	 * @param nombreDeJours
 	 * @param typeSolde
@@ -58,9 +52,16 @@ public class Solde {
 		this.type = type;
 		this.collegue = collegue;
 	}
-	
-	
-	/** Getter
+
+	/**
+	 * Constructeur vide
+	 */
+	public Solde() {
+
+	}
+
+	/**
+	 * Getter
 	 *
 	 * @return the id
 	 */
@@ -68,7 +69,8 @@ public class Solde {
 		return id;
 	}
 
-	/** Setter
+	/**
+	 * Setter
 	 *
 	 * @param id the id to set
 	 */
@@ -76,7 +78,8 @@ public class Solde {
 		this.id = id;
 	}
 
-	/** Getter
+	/**
+	 * Getter
 	 *
 	 * @return the nombreDeJours
 	 */
@@ -84,7 +87,8 @@ public class Solde {
 		return nombreDeJours;
 	}
 
-	/** Setter
+	/**
+	 * Setter
 	 *
 	 * @param nombreDeJours the nombreDeJours to set
 	 */
@@ -92,7 +96,8 @@ public class Solde {
 		this.nombreDeJours = nombreDeJours;
 	}
 
-	/** Getter
+	/**
+	 * Getter
 	 *
 	 * @return the typeSolde
 	 */
@@ -100,7 +105,8 @@ public class Solde {
 		return type;
 	}
 
-	/** Setter
+	/**
+	 * Setter
 	 *
 	 * @param typeSolde the typeSolde to set
 	 */
@@ -108,7 +114,8 @@ public class Solde {
 		this.type = type;
 	}
 
-	/** Getter
+	/**
+	 * Getter
 	 *
 	 * @return the collegue
 	 */
@@ -116,14 +123,12 @@ public class Solde {
 		return collegue;
 	}
 
-	/** Setter
+	/**
+	 * Setter
 	 *
 	 * @param collegue the collegue to set
 	 */
 	public void setCollegue(Collegue collegue) {
 		this.collegue = collegue;
 	}
-	
-
-
 }
