@@ -13,7 +13,8 @@ import javax.validation.Valid;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import dev.controller.dto.JourFermeDto;
+import dev.controller.dto.JourFermeAjoutDto;
+import dev.controller.dto.JourFermeVisualisationDto;
 import dev.entites.JourFerme;
 import dev.entites.Statut;
 import dev.entites.TypeJourFerme;
@@ -44,29 +45,37 @@ public class JourFermeService {
 		this.jourFermeRepository = jourFermeRepository;
 	}
 
-	public List<JourFerme> getAllJourFermes() {
+	public List<JourFermeVisualisationDto> getAllJourFermes() {
 
-		return this.jourFermeRepository.findAll();
+		List<JourFermeVisualisationDto> listeJourFerme = new ArrayList<>();
+		
+		for (JourFerme jourFerme : jourFermeRepository.findAll()) {
+			
+			JourFermeVisualisationDto jourFermeDto = new JourFermeVisualisationDto(jourFerme.getId(), jourFerme.getDate(), jourFerme.getType(), jourFerme.getCommentaire());
+			listeJourFerme.add(jourFermeDto);
+			
+		} 
+		return listeJourFerme;
 	}
 
-	public List<JourFerme> getJourFermesParDate(Integer annee) {
-		List<JourFerme> listJourFerme = this.jourFermeRepository.findAll();
-		List<JourFerme> list = new ArrayList<>();
+	public List<JourFermeVisualisationDto> getJourFermesParDate(Integer annee) {
 
-		for (JourFerme jour : listJourFerme) {
-			if (jour.getDate().getYear() == annee) {
-				list.add(jour);
-			}
-		}
-
-		return list;
+		List<JourFermeVisualisationDto> listeJourFerme = new ArrayList<>();
+		
+		for (JourFerme jourFerme : jourFermeRepository.findAll()) {
+			
+			JourFermeVisualisationDto jourFermeDto = new JourFermeVisualisationDto(jourFerme.getId(), jourFerme.getDate(), jourFerme.getType(), jourFerme.getCommentaire());
+			listeJourFerme.add(jourFermeDto);
+			
+		} 
+		return listeJourFerme;
+		
 	}
 
 	// Ajouter jour ferme + regles métier
 	@Transactional
-	public JourFerme postJourFerme(@Valid JourFermeDto jourFermeDto) {
-		JourFerme jourFerme = new JourFerme(jourFermeDto.getDate(), jourFermeDto.getTypeJourFerme(), jourFermeDto.getCommentaire());
-
+	public JourFermeAjoutDto postJourFerme(@Valid JourFermeAjoutDto jourFermeDto) {
+		JourFerme jourFerme = new JourFerme(jourFermeDto.getDate(), jourFermeDto.getType(), jourFermeDto.getCommentaire());
 		// Cas jour saisi dans le passé, erreur
 		if (jourFerme.getDate().isBefore(LocalDate.now())) 
 		{
@@ -101,7 +110,8 @@ public class JourFermeService {
 
 		// Tous les cas sont passant, je sauvegarde le jour
 		this.jourFermeRepository.save(jourFerme);
-		return jourFerme;
+		
+		return new JourFermeAjoutDto(jourFerme.getDate(), jourFerme.getType(), jourFerme.getCommentaire());
 
 	}
 
@@ -117,7 +127,6 @@ public class JourFermeService {
 		Optional<JourFerme> jourFerme = this.jourFermeRepository.findById(id);
 
 		if (jourFerme.isPresent()) {
-			System.out.println(jourFerme.get().getStatut());
 			// il n'est pas possible de supprimer un jour férié ou une RTT employeur dans le passé
 			if (jourFerme.get().getDate().isBefore(LocalDate.now())) 
 			{
