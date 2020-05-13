@@ -6,12 +6,15 @@ package dev.services;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
+import javax.validation.Valid;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import dev.controller.dto.AbsenceDemandeDto;
+import dev.controller.dto.AbsenceDemandeModificationSuppressionDto;
 import dev.controller.dto.AbsenceVisualisationDto;
 import dev.entites.Absence;
 import dev.entites.Collegue;
@@ -23,7 +26,7 @@ import dev.exceptions.AbsenceChevauchementException;
 import dev.exceptions.AbsenceDateException;
 import dev.exceptions.AbsenceDateFinException;
 import dev.exceptions.AbsenceMotifManquantException;
-import dev.exceptions.CollegueByEmailNotExistException;
+import dev.exceptions.CollegueAuthentifieNonRecupereException;
 import dev.repository.AbsenceRepo;
 import dev.repository.CollegueRepo;
 import dev.repository.JourFermeRepo;
@@ -81,12 +84,12 @@ public class AbsenceService {
 	 * @return une AbsenceVisualisationDto
 	 */
 	@Transactional
-	public AbsenceDemandeDto demandeAbsence(AbsenceDemandeDto absenceDemandeDto) {
+	public AbsenceDemandeModificationSuppressionDto demandeAbsence(AbsenceDemandeModificationSuppressionDto absenceDemandeDto) {
 		
 		String email = SecurityContextHolder.getContext().getAuthentication().getName(); 
 		
 		Collegue collegue = collegueRepository.findByEmail(email)
-				.orElseThrow(() -> new CollegueByEmailNotExistException("L'email selectionne ne correspond a aucun collegue"));
+				.orElseThrow(() -> new CollegueAuthentifieNonRecupereException("Le collegue authentifie n a pas ete recupere"));
 		
 		Absence absence = new Absence (absenceDemandeDto.getDateDebut(),absenceDemandeDto.getDateFin(), absenceDemandeDto.getType(), absenceDemandeDto.getMotif(), absenceDemandeDto.getStatut(), collegue);
 		
@@ -118,7 +121,7 @@ public class AbsenceService {
 		}
 		
 		this.absenceRepository.save(absence);
-		return new AbsenceDemandeDto(absence.getDateDebut(), absence.getDateFin(), absence.getType(), absence.getMotif(), absence.getStatut());
+		return new AbsenceDemandeModificationSuppressionDto(absence.getDateDebut(), absence.getDateFin(), absence.getType(), absence.getMotif(), absence.getStatut());
 }
 
 	/**
@@ -142,6 +145,7 @@ public class AbsenceService {
 
 		return nombreDeJours - nombreDeSamediEtDimanche - nombreDeJoursFermes;
 	}
+	
 
 	/**
 	 * traitement de nuit des demandes d'absences
@@ -167,19 +171,40 @@ public class AbsenceService {
 			}
 		}
 		for (Absence absence : absenceRepository.findAll()) {
-				int nombreDeJoursOuvresPendantAbsence = joursOuvresEntreDeuxDates(absence.getDateDebut(),absence.getDateFin());
+			int nombreDeJoursOuvresPendantAbsence = joursOuvresEntreDeuxDates(absence.getDateDebut(),absence.getDateFin());
 
-				soldes = absence.getCollegue().getSoldes();
-				for (Solde solde : soldes) {
-					if (solde.getType().toString().equals(absence.getType().toString())) {
-						if (solde.getNombreDeJours() - nombreDeJoursOuvresPendantAbsence < 0) {
-							absence.setStatut(Statut.REJETEE);
-						} else {
-							absence.setStatut(Statut.EN_ATTENTE_VALIDATION);
-							//envoyer un mail au manager
-						}
+			soldes = absence.getCollegue().getSoldes();
+			for (Solde solde : soldes) {
+				if (solde.getType().toString().equals(absence.getType().toString())) {
+					if (solde.getNombreDeJours() - nombreDeJoursOuvresPendantAbsence < 0) {
+						absence.setStatut(Statut.REJETEE);
+					} else {
+						absence.setStatut(Statut.EN_ATTENTE_VALIDATION);
+						//envoyer un mail au manager
 					}
 				}
 			}
+		}
+	}
+	
+	// Supprimer une absence
+		/*
+		 * Règles métier: 
+		 * 
+		 * supprimer une demande d'absence qui n'est pas de type mission
+		 */
+		@Transactional
+		public String deleteAbsence(@Valid Integer id) {
+			Optional<Absence> absence = this.absenceRepository.findById(id);
+
+			if (absence.isPresent()) {
+				
+				this.absenceRepository.delete(absence.get());
+				return "\"absence supprimee\"";
+
+			} else {
+				return "\"erreur dans la suppression\"";
+			}
+
 		}
 }

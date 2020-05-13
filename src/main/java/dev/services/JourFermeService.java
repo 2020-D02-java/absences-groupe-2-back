@@ -113,7 +113,7 @@ public class JourFermeService {
 	 * passé il n'est pas possible de supprimer une RTT employeur validée
 	 */
 	@Transactional
-	public String deleteJourFerme(@Valid Long id) {
+	public String deleteJourFerme(@Valid Integer id) {
 		Optional<JourFerme> jourFerme = this.jourFermeRepository.findById(id);
 
 		if (jourFerme.isPresent()) {

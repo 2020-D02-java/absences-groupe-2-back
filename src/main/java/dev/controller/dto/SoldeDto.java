@@ -20,6 +20,17 @@ public class SoldeDto {
 	
 	private Integer nombreDeJours;
 
+	/** Constructeur
+	 *
+	 * @param type
+	 * @param nombreDeJours
+	 */
+	public SoldeDto(TypeSolde type, Integer nombreDeJours) {
+		super();
+		this.type = type;
+		this.nombreDeJours = nombreDeJours;
+	}
+
 	/** Getter
 	 *
 	 * @return the typeSolde

@@ -16,7 +16,7 @@ import dev.entites.TypeAbsence;
  * @author KOMINIARZ Anaïs
  *
  */
-public class AbsenceDemandeDto {
+public class AbsenceDemandeModificationSuppressionDto {
 
 	private LocalDate dateDebut;
 	private LocalDate dateFin;
@@ -34,7 +34,7 @@ public class AbsenceDemandeDto {
 	 * @param motif
 	 * @param statut
 	 */
-	public AbsenceDemandeDto(LocalDate dateDebut, LocalDate dateFin, TypeAbsence type, String motif, Statut statut) {
+	public AbsenceDemandeModificationSuppressionDto(LocalDate dateDebut, LocalDate dateFin, TypeAbsence type, String motif, Statut statut) {
 		super();
 		this.dateDebut = dateDebut;
 		this.dateFin = dateFin;
