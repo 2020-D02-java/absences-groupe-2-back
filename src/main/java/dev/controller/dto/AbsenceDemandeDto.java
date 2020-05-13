@@ -5,29 +5,38 @@ package dev.controller.dto;
 
 import java.time.LocalDate;
 
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-
 import dev.entites.Statut;
 import dev.entites.TypeAbsence;
 
-/** Structure modélisant une absence servant à communiquer avec l'extérieur (WEB API).
+/** Représentation 
  *
  * @author KOMINIARZ Anaïs
  *
  */
-public class AbsenceDto {
+public class AbsenceDemandeDto {
 
 	private LocalDate dateDebut;
 	private LocalDate dateFin;
-	@Enumerated(EnumType.STRING)
 	private TypeAbsence type;
 	private String motif;
-	@Enumerated(EnumType.STRING)
 	private Statut statut;
-
 	
-
+	/** Constructeur
+	 *
+	 * @param dateDebut
+	 * @param dateFin
+	 * @param type
+	 * @param motif
+	 * @param statut
+	 */
+	public AbsenceDemandeDto(LocalDate dateDebut, LocalDate dateFin, TypeAbsence type, String motif, Statut statut) {
+		super();
+		this.dateDebut = dateDebut;
+		this.dateFin = dateFin;
+		this.type = type;
+		this.motif = motif;
+		this.statut = statut;
+	}
 	/** Getter
 	 *
 	 * @return the dateDebut
@@ -58,14 +67,14 @@ public class AbsenceDto {
 	}
 	/** Getter
 	 *
-	 * @return the typeAbsence
+	 * @return the type
 	 */
 	public TypeAbsence getType() {
 		return type;
 	}
 	/** Setter
 	 *
-	 * @param typeAbsence the typeAbsence to set
+	 * @param type the type to set
 	 */
 	public void setType(TypeAbsence type) {
 		this.type = type;
@@ -86,19 +95,16 @@ public class AbsenceDto {
 	}
 	/** Getter
 	 *
-	 * @return the statutAbs
+	 * @return the statut
 	 */
 	public Statut getStatut() {
 		return statut;
 	}
 	/** Setter
 	 *
-	 * @param statutAbs the statutAbs to set
+	 * @param statut the statut to set
 	 */
 	public void setStatut(Statut statut) {
 		this.statut = statut;
 	}
-
-	
-	
 }

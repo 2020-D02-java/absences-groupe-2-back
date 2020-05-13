@@ -15,10 +15,20 @@ import dev.entites.TypeSolde;
  */
 public class SoldeDto {
 
-	@Enumerated(EnumType.STRING)
-	private TypeSolde type;
 	
+	private TypeSolde type;
 	private Integer nombreDeJours;
+
+	/** Constructeur
+	 *
+	 * @param type
+	 * @param nombreDeJours
+	 */
+	public SoldeDto(TypeSolde type, Integer nombreDeJours) {
+		super();
+		this.type = type;
+		this.nombreDeJours = nombreDeJours;
+	}
 
 	/** Getter
 	 *

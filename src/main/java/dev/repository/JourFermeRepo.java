@@ -12,6 +12,6 @@ import dev.entites.JourFerme;
  * @author GIRARD Vincent
  *
  */
-public interface JourFermeRepo extends JpaRepository<JourFerme, Long> {
+public interface JourFermeRepo extends JpaRepository<JourFerme, Integer> {
 	
 }

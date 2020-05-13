@@ -7,12 +7,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import dev.controller.dto.SoldeDto;
 import dev.entites.Collegue;
 import dev.entites.Solde;
-import dev.exceptions.CollegueByEmailNotExistException;
+import dev.exceptions.CollegueAuthentifieNonRecupereException;
 import dev.repository.CollegueRepo;
 import dev.repository.SoldeRepo;
 
@@ -25,37 +26,28 @@ import dev.repository.SoldeRepo;
 public class SoldeService {
 	
 	private SoldeRepo soldeRepository;
-	private CollegueRepo collegueRepository;
-	
 	/** Constructeur
 	 *
 	 * @param soldeRepository
 	 */
-	public SoldeService(SoldeRepo soldeRepository, CollegueRepo collegueRepository) {
+	public SoldeService(SoldeRepo soldeRepository) {
 		this.soldeRepository = soldeRepository;
-		this.collegueRepository = collegueRepository;
 	}
 	
 	
 	/**
 	 * @param id
-	 * @return la liste des soldes du collègue dont l'email est passé en paramètres
+	 * @return la liste des soldes du collègue authentifié
 	 */
-	public List<SoldeDto> listerSoldesCollegue(String email){
+	public List<SoldeDto> listerSoldesCollegue(){
 		
-		//Vérification que l'email correspond bien à un collègue
-		Optional<Collegue> optionnalCollegue = collegueRepository.findByEmail(email);
-		if (!optionnalCollegue.isPresent()) {
-			throw new CollegueByEmailNotExistException("L'email selectionne ne correspond a aucun collegue");
-		}
+		String email = SecurityContextHolder.getContext().getAuthentication().getName(); 
 		
 		List<SoldeDto> listeSoldes = new ArrayList<>();
 		
 		for (Solde solde : soldeRepository.findAll()) {
 			if (solde.getCollegue().getEmail().equals(email)) {
-				SoldeDto soldeDto = new SoldeDto();
-				soldeDto.setType(solde.getType());
-				soldeDto.setNombreDeJours(solde.getNombreDeJours());
+				SoldeDto soldeDto = new SoldeDto(solde.getType(), solde.getNombreDeJours());
 				
 				listeSoldes.add(soldeDto);
 			}

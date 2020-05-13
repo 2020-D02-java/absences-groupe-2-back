@@ -21,8 +21,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import dev.controller.dto.JourFermeDto;
-import dev.entites.JourFerme;
+import dev.controller.dto.ErreurDto;
+import dev.controller.dto.JourFermeAjoutDto;
+import dev.controller.dto.JourFermeVisualisationDto;
 import dev.exceptions.CommentaireManquantJourFerieException;
 import dev.exceptions.DateDansLePasseException;
 import dev.exceptions.JourRttUnWeekEndException;
@@ -45,29 +46,30 @@ public class JourFermeController {
 //		return jourFermeService.listerJourFerme(id);
 //	}
 	
-	@GetMapping
-	public List<JourFerme> getAllJourFermes() {
 
-		return this.jourFermeService.getAllJourFermes();
-	}
+//	@GetMapping
+//	public List<JourFerme> getAllJourFermes() {
+//
+//		return this.jourFermeService.getAllJourFermes();
+//	}
 	
 	@GetMapping("/date")
-	public List<JourFerme> getJourFermesParDate(@RequestParam("annee") Integer annee) {
+	public List<JourFermeVisualisationDto> getJourFermesParDate(@RequestParam Integer annee) {
 		return this.jourFermeService.getJourFermesParDate(annee);
 	}
 	
 	@GetMapping("/id")
-	public JourFerme getJourFermesParId(@RequestParam("id") Long id) {
+	public JourFermeVisualisationDto getJourFermesParId(@RequestParam("id") Integer id) {
 		return this.jourFermeService.getJourFermesParId(id);
 	}
 	
 	@PutMapping("/modification")
-	public JourFerme putJourFerme(@RequestBody @Valid JourFermeDto jourFermeDto, @RequestParam("id") Long id) {
+	public JourFermeVisualisationDto putJourFerme(@RequestBody @Valid JourFermeVisualisationDto jourFermeDto, @RequestParam("id") Integer id) {
 		return this.jourFermeService.putJourFerme(jourFermeDto, id);
 	}
 	 
 	@PostMapping
-	public JourFerme postJourFerme(@RequestBody @Valid JourFermeDto jourFermeDto) {
+	public JourFermeAjoutDto postJourFerme(@RequestBody @Valid JourFermeAjoutDto jourFermeDto) {
 		return this.jourFermeService.postJourFerme(jourFermeDto);
 	}
 	
@@ -75,7 +77,7 @@ public class JourFermeController {
 	@DeleteMapping
 	@RequestMapping(value = "/delete")
 	@CrossOrigin
-	public String supprimerJourFerme(@RequestParam("id") Long id) {
+	public String supprimerJourFerme(@RequestParam("id") Integer id) {
 
 		return this.jourFermeService.deleteJourFerme(id);
         
@@ -84,31 +86,41 @@ public class JourFermeController {
 	
 	// un jour férié ne peut pas être saisi dans le passé
 	@ExceptionHandler(DateDansLePasseException.class)
-	public ResponseEntity<String> onDateDansLePasseException(DateDansLePasseException e) {
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+	public ResponseEntity<ErreurDto> onDateDansLePasseException(DateDansLePasseException ex) {
+    	ErreurDto erreurDto = new ErreurDto();
+    	erreurDto.setMessage(ex.getMessage());
+    	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erreurDto);
 	}
 
 	// le commentaire est obligatoire pour les jours feriés.
 	@ExceptionHandler(CommentaireManquantJourFerieException.class)
-	public ResponseEntity<String> onCommentaireManquantJourFerieException(CommentaireManquantJourFerieException e) {
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+	public ResponseEntity<ErreurDto> onCommentaireManquantJourFerieException(CommentaireManquantJourFerieException ex) {
+    	ErreurDto erreurDto = new ErreurDto();
+    	erreurDto.setMessage(ex.getMessage());
+    	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erreurDto);
 	}
 
 	// il est interdit de saisir une RTT employeur un samedi ou un dimanche
 	@ExceptionHandler(JourRttUnWeekEndException.class)
-	public ResponseEntity<String> onRttLeWeekEndException(JourRttUnWeekEndException e) {
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+	public ResponseEntity<ErreurDto> onRttLeWeekEndException(JourRttUnWeekEndException ex) {
+    	ErreurDto erreurDto = new ErreurDto();
+    	erreurDto.setMessage(ex.getMessage());
+    	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erreurDto);
 	}
 
 	// il est interdit de saisir un jour férié à la même date qu'un autre jour férié
 	@ExceptionHandler(SaisieJourFeriesUnJourDejaFeriesException.class)
-	public ResponseEntity<String> onSaisieJourFerierSurJourDejaFerieException(SaisieJourFeriesUnJourDejaFeriesException e) {
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+	public ResponseEntity<ErreurDto> onSaisieJourFerierSurJourDejaFerieException(SaisieJourFeriesUnJourDejaFeriesException ex) {
+    	ErreurDto erreurDto = new ErreurDto();
+    	erreurDto.setMessage(ex.getMessage());
+    	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erreurDto);
 	}
 	
 	// il est interdit de saisir un jour férié à la même date qu'un autre jour férié
 	@ExceptionHandler(RttEmployeurDejaValideException.class)
-	public ResponseEntity<String> onDeleteRttDejaValideException(RttEmployeurDejaValideException e) {
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+	public ResponseEntity<ErreurDto> onDeleteRttDejaValideException(RttEmployeurDejaValideException ex) {
+    	ErreurDto erreurDto = new ErreurDto();
+    	erreurDto.setMessage(ex.getMessage());
+    	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erreurDto);
 	}
 }

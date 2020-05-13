@@ -23,6 +23,9 @@ public class CollegueDto {
         this.prenom = col.getPrenom();
         this.roles = col.getRoles().stream().map(roleCollegue -> roleCollegue.getRole()).collect(Collectors.toList());
     } 
+    public CollegueDto() {
+    } 
+
 
     public String getEmail() {
         return email;
