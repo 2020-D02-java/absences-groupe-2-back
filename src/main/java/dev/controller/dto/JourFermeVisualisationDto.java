@@ -5,21 +5,14 @@ package dev.controller.dto;
 
 import java.time.LocalDate;
 
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-
 import dev.entites.Statut;
 import dev.entites.TypeJourFerme;
 
-public class JourFermeDto {
+public class JourFermeVisualisationDto {
 
-	private Long id;
-	
+	private Integer id;
 	private LocalDate date;
-	@Enumerated(EnumType.STRING)
-	private TypeJourFerme typeJourFerme;
-	
-	@Enumerated(EnumType.STRING)
+	private TypeJourFerme type;
 	private Statut statut;
 	
 	private String commentaire;
@@ -38,14 +31,14 @@ public class JourFermeDto {
 	/** Getter
 	 * @return the typeJourFerme
 	 */
-	public TypeJourFerme getTypeJourFerme() {
-		return typeJourFerme;
+	public TypeJourFerme getType() {
+		return type;
 	}
 	/** Setter
 	 * @param typeJourFerme the typeJourFerme to set
 	 */
-	public void setTypeJourFerme(TypeJourFerme typeJourFerme) {
-		this.typeJourFerme = typeJourFerme;
+	public void setType(TypeJourFerme type) {
+		this.type = type;
 	}
 	/** Getter
 	 * @return the commentaire
@@ -64,23 +57,24 @@ public class JourFermeDto {
 	 * @param typeJourFerme
 	 * @param commentaire
 	 */
-	public JourFermeDto(LocalDate date, TypeJourFerme typeJourFerme, String commentaire) {
+	public JourFermeVisualisationDto(Integer id , LocalDate date, TypeJourFerme type, String commentaire) {
 		super();
+		this.id = id;
 		this.date = date;
-		this.typeJourFerme = typeJourFerme;
+		this.type = type;
 		this.commentaire = commentaire;
 		this.statut = Statut.INITIALE;
 	}
 	/** Getter
 	 * @return the id
 	 */
-	public Long getId() {
+	public Integer getId() {
 		return id;
 	}
 	/** Setter
 	 * @param id the id to set
 	 */
-	public void setId(Long id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 	/** Getter
