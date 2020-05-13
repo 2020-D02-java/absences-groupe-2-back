@@ -50,7 +50,7 @@ public class AbsenceController {
 		return absenceService.listerAbsencesCollegue();
 	}
 	 
-	@PostMapping
+	@PostMapping(value = "/traitement-de-nuit")
 	public void traitementDeNuit() {
 		absenceService.traitementDeNuit();
 	}
