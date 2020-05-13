@@ -7,6 +7,8 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -45,6 +47,16 @@ public class AbsenceController {
 	@GetMapping
 	public List<AbsenceDto> listerAbsencesCollegue(@RequestParam String email){
 		return absenceService.listerAbsencesCollegue(email);
+	}
+	
+	// ** SUPPRESSION JOUR FERME [via ID] **//
+	@DeleteMapping
+	@RequestMapping(value = "/delete")
+	@CrossOrigin
+	public String supprimerAbsence(@RequestParam("id") Long id) {
+
+		return this.absenceService.deleteAbsence(id);
+        
 	}
 	 
 	

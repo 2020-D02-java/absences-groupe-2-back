@@ -20,6 +20,7 @@ import dev.entites.Solde;
 import dev.entites.Statut;
 import dev.entites.TypeAbsence;
 import dev.entites.TypeSolde;
+import dev.repository.AbsenceRepo;
 import dev.repository.CollegueRepo;
 
 /**
@@ -34,11 +35,13 @@ public class StartupListener {
 	private String appVersion;
     private PasswordEncoder passwordEncoder;
     private CollegueRepo collegueRepo;
+    private AbsenceRepo absenceRepo;
  
-    public StartupListener(@Value("${app.version}") String appVersion, PasswordEncoder passwordEncoder, CollegueRepo collegueRepo) {
+    public StartupListener(@Value("${app.version}") String appVersion, PasswordEncoder passwordEncoder, CollegueRepo collegueRepo, AbsenceRepo absenceRepo) {
         this.appVersion = appVersion;
         this.passwordEncoder = passwordEncoder;
         this.collegueRepo = collegueRepo;
+        this.absenceRepo = absenceRepo;
     }
 
     @EventListener(ContextRefreshedEvent.class)
@@ -54,7 +57,7 @@ public class StartupListener {
         col1.setRoles(Arrays.asList(new RoleCollegue(col1, Role.ROLE_ADMINISTRATEUR), new RoleCollegue(col1, Role.ROLE_EMPLOYE)));
         
         // TESTS POUR UN COLLEGUE (recup des absences et des soldes)
-        
+         
         //creation d'une absence *********
         Absence abs1col1 = new Absence(LocalDate.of(2020, 02, 04), LocalDate.of(2020, 02, 14), TypeAbsence.CONGES_PAYES, "vacances au soleil", Statut.EN_ATTENTE_VALIDATION, col1);
         Absence abs2col1 = new Absence(LocalDate.of(2020, 07, 15), LocalDate.of(2020, 8, 02), TypeAbsence.CONGES_PAYES, "vacances au soleil avec bluelagoon", Statut.INITIALE, col1);
@@ -80,6 +83,8 @@ public class StartupListener {
        //************************************************* 
         
         this.collegueRepo.save(col1);
+        this.absenceRepo.save(abs1col1);
+        this.absenceRepo.save(abs2col1);
         
         
         Collegue col2 = new Collegue();

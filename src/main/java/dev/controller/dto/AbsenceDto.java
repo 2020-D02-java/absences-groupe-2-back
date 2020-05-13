@@ -18,6 +18,8 @@ import dev.entites.TypeAbsence;
  */
 public class AbsenceDto {
 
+	private Long id;
+	
 	private LocalDate dateDebut;
 	private LocalDate dateFin;
 	@Enumerated(EnumType.STRING)
@@ -97,6 +99,18 @@ public class AbsenceDto {
 	 */
 	public void setStatut(Statut statut) {
 		this.statut = statut;
+	}
+	/** Getter
+	 * @return the id
+	 */
+	public Long getId() {
+		return id;
+	}
+	/** Setter
+	 * @param id the id to set
+	 */
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	
