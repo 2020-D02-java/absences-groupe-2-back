@@ -63,7 +63,7 @@ public class JourFermeController {
 	@DeleteMapping
 	@RequestMapping(value = "/delete")
 	@CrossOrigin
-	public String supprimerJourFerme(@RequestParam("id") Long id) {
+	public String supprimerJourFerme(@RequestParam("id") Integer id) {
 
 		return this.jourFermeService.deleteJourFerme(id);
         

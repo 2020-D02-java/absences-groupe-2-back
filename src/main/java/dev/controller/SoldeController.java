@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import dev.controller.dto.ErreurDto;
 import dev.controller.dto.SoldeDto;
-import dev.exceptions.CollegueByEmailNotExistException;
+import dev.exceptions.CollegueAuthentifieNonRecupereException;
 import dev.services.SoldeService;
 
 /** Controller de l'entité Solde
@@ -38,13 +38,13 @@ public class SoldeController {
 	} 
 	
 	@GetMapping
-	public List<SoldeDto> listerSoldesCollegue(@RequestParam String email) {
-		return soldeService.listerSoldesCollegue(email);
+	public List<SoldeDto> listerSoldesCollegue() {
+		return soldeService.listerSoldesCollegue();
 	}
 	
 	//Gestion des erreurs
-    @ExceptionHandler(CollegueByEmailNotExistException.class)
-  	public ResponseEntity<ErreurDto> quandCollegueByEmailNotExistException(CollegueByEmailNotExistException ex) {
+    @ExceptionHandler(CollegueAuthentifieNonRecupereException.class)
+  	public ResponseEntity<ErreurDto> quandCollegueByEmailNotExistException(CollegueAuthentifieNonRecupereException ex) {
     	ErreurDto erreurDto = new ErreurDto();
     	erreurDto.setMessage(ex.getMessage());
     	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erreurDto);

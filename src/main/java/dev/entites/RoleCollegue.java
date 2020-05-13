@@ -13,7 +13,7 @@ public class RoleCollegue {
     /** id du role collegue **/
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     /** collegue **/
     @ManyToOne
@@ -32,7 +32,7 @@ public class RoleCollegue {
         this.role = role;
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 

@@ -81,11 +81,13 @@ public class StartupListener {
        listeSoldesCol1.add(solde1CP);
        col1.setSoldes(listeSoldesCol1);
        //************************************************* 
-        
+   
+ 
         this.collegueRepo.save(col1);
         this.absenceRepo.save(abs1col1);
         this.absenceRepo.save(abs2col1);
         
+      // System.out.println(abs1col1.getId());
         
         Collegue col2 = new Collegue();
         col2.setNom("User");

@@ -12,6 +12,6 @@ import dev.entites.Absence;
  * @author KOMINIARZ Anaïs
  *
  */
-public interface AbsenceRepo extends JpaRepository<Absence, Long> {
+public interface AbsenceRepo extends JpaRepository<Absence, Integer> {
 
 }
