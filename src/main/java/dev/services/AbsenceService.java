@@ -109,7 +109,7 @@ public class AbsenceService {
 		Collegue collegue = collegueRepository.findByEmail(email).orElseThrow(() -> new CollegueAuthentifieNonRecupereException("Le collegue authentifie n a pas ete recupere"));
 
 		AbsenceVisualisationDto absence = this.getAbsenceParId(id);
-
+		
 		if (abenceDto.getDateDebut().isBefore(LocalDate.now()) || (abenceDto.getDateDebut().isEqual(LocalDate.now()))) // Cas jour saisi dans le passé ou aujourd'hui, erreur
 		{
 			throw new AbsenceDateException("Une demande d'absence ne peut être saisie sur une date ultérieur ou le jour présent.");
@@ -120,7 +120,7 @@ public class AbsenceService {
 		{
 			throw new AbsenceMotifManquantException("Un motif est obligatoire dans le cas où vous souhaitez demander un congés sans solde.");
 		}
-		else if ((!abenceDto.getStatut().toString().equals("REJETEE"))||(!abenceDto.getStatut().toString().equals("INITIALE"))) // Impossible de saisir une demande qui chevauche une autre sauf si celle-ci est en statut REJETEE
+		else if ((abenceDto.getStatut().toString().equals("EN_ATTENTE_VALIDATION"))||(abenceDto.getStatut().toString().equals("VALIDEE"))) // Impossible de saisir une demande qui chevauche une autre sauf si celle-ci est en statut REJETEE
 		{
 			
 			List<Absence> listAbsences = new ArrayList<>();
@@ -131,7 +131,7 @@ public class AbsenceService {
 			for (Absence abs : listAbsences) {
 
 				if ((abs.getDateDebut().toString().equals(abenceDto.getDateDebut().toString()))) {
-					throw new AbsenceChevauchementException("Une demande est déjà en cours à cette date");
+					throw new AbsenceChevauchementException("Une demande est déjà en cours à cette date test");
 				}
 			}
 
@@ -175,7 +175,7 @@ public class AbsenceService {
 		} else if (absence.getType().toString().equals("CONGES_SANS_SOLDE") && absence.getMotif().isEmpty()) // Cas congès sans solde, et motif manquant
 		{
 			throw new AbsenceMotifManquantException("Un motif est obligatoire dans le cas où vous souhaitez demander un congés sans solde.");
-		} else if((!absence.getStatut().toString().equals("REJETEE"))||(!absence.getStatut().toString().equals("INITIALE"))) // Impossible de saisir une demande qui chevauche une autre sauf si celle-ci est
+		} else if((absence.getStatut().toString().equals("EN_ATTENTE_VALIDATION"))||(absence.getStatut().toString().equals("VALIDEE"))) // Impossible de saisir une demande qui chevauche une autre sauf si celle-ci est
 																															// en statut REJETEE
 		{
 			List<Absence> listAbsences = new ArrayList<>();
