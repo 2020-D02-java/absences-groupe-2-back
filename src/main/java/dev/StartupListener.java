@@ -75,7 +75,7 @@ public class StartupListener {
         
         List<Absence> listeAbsences = new ArrayList<>();
         listeAbsences.add(abs1col1);
-        listeAbsences.add(abs2col1);
+        listeAbsences.add(abs2col1); 
         col1.setAbsences(listeAbsences);
         
         //System.out.println("listeAbsences[0] = " + listeAbsences.get(0).getDateDebut());

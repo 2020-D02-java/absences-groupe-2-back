@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import dev.controller.dto.ErreurDto;
@@ -19,6 +18,11 @@ import dev.exceptions.CollegueAuthentifieNonRecupereException;
 import dev.services.SoldeService;
 
 /** Controller de l'entité Solde
+ *
+ * @author KOMINIARZ Anaïs, SAGAN Jonathan, BATIGNES Pierre, GIRARD Vincent.
+ *
+ */
+/** Représentation 
  *
  * @author KOMINIARZ Anaïs
  *
@@ -37,12 +41,20 @@ public class SoldeController {
 		this.soldeService = soldeService;
 	} 
 	
+	/**
+	 *  LISTER SOLDES 
+	 *  
+	 * @return une liste de soldes Dto
+	 */
 	@GetMapping
 	public List<SoldeDto> listerSoldesCollegue() {
 		return soldeService.listerSoldesCollegue();
 	}
 	
-	//Gestion des erreurs
+	// ----------------------------- //
+	// ---- GESTION DES ERREURS ---- //
+	// ----------------------------- //
+	
     @ExceptionHandler(CollegueAuthentifieNonRecupereException.class)
   	public ResponseEntity<ErreurDto> quandCollegueByEmailNotExistException(CollegueAuthentifieNonRecupereException ex) {
     	ErreurDto erreurDto = new ErreurDto();

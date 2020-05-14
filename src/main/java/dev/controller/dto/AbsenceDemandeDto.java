@@ -6,7 +6,9 @@ import dev.entites.Statut;
 import dev.entites.TypeAbsence;
 
 /**
- *
+ * Structure modélisant une demande d'absence servant à communiquer avec 
+ * l'extérieur (WEB API).
+ * 
  * @author KOMINIARZ Anaïs, SAGAN Jonathan, BATIGNES Pierre, GIRARD Vincent.
  *
  */

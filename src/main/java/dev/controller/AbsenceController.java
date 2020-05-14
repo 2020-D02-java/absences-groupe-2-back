@@ -104,7 +104,7 @@ public class AbsenceController {
 	/**
 	 * TRAITEMENT DE NUIT
 	 */
-	@PostMapping(value = "/traitement-de-nuit")
+	@PostMapping("/traitement-de-nuit")
 	public void traitementDeNuit() {
 		absenceService.traitementDeNuit();
 	}

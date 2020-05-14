@@ -6,8 +6,8 @@ package dev.controller.dto;
 import dev.entites.TypeSolde;
 
 /**
- * Structure modélisant un solde servant à communiquer avec l'extérieur (WEB
- * API).
+ * Structure modélisant un solde servant à communiquer avec 
+ * l'extérieur (WEB API).
  *
  * @author KOMINIARZ Anaïs, SAGAN Jonathan, BATIGNES Pierre, GIRARD Vincent.
  *
