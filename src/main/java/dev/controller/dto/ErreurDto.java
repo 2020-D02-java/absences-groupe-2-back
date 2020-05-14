@@ -3,16 +3,26 @@
  */
 package dev.controller.dto;
 
-/** Structure modélisant une erreur servant à communiquer avec l'extérieur (WEB API)
+/**
+ * Structure modélisant une erreur servant à communiquer avec l'extérieur (WEB
+ * API)
  *
- * @author KOMINIARZ Anaïs
+ * @author KOMINIARZ Anaïs, SAGAN Jonathan, BATIGNES Pierre, GIRARD Vincent.
  *
  */
 public class ErreurDto {
-	
+
+	// Déclarations
 	private String message;
-	
-	/** Getter
+
+	/**
+	 * Constructeur vide
+	 */
+	public ErreurDto() {
+	}
+
+	/**
+	 * Getter
 	 *
 	 * @return the message
 	 */
@@ -20,16 +30,13 @@ public class ErreurDto {
 		return message;
 	}
 
-	/** Setter
+	/**
+	 * Setter
 	 *
 	 * @param message the message to set
 	 */
 	public void setMessage(String message) {
 		this.message = message;
 	}
-
-	public ErreurDto() {
-	}
-	
 
 }

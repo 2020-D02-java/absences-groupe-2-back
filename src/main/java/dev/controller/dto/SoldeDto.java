@@ -3,23 +3,23 @@
  */
 package dev.controller.dto;
 
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-
 import dev.entites.TypeSolde;
 
-/** Structure modélisant un solde servant à communiquer avec l'extérieur (WEB API).
+/**
+ * Structure modélisant un solde servant à communiquer avec l'extérieur (WEB
+ * API).
  *
- * @author KOMINIARZ Anaïs
+ * @author KOMINIARZ Anaïs, SAGAN Jonathan, BATIGNES Pierre, GIRARD Vincent.
  *
  */
 public class SoldeDto {
 
-	
+	// Déclarations
 	private TypeSolde type;
 	private Integer nombreDeJours;
 
-	/** Constructeur
+	/**
+	 * Constructeur
 	 *
 	 * @param type
 	 * @param nombreDeJours
@@ -30,7 +30,8 @@ public class SoldeDto {
 		this.nombreDeJours = nombreDeJours;
 	}
 
-	/** Getter
+	/**
+	 * Getter
 	 *
 	 * @return the typeSolde
 	 */
@@ -38,7 +39,8 @@ public class SoldeDto {
 		return type;
 	}
 
-	/** Setter
+	/**
+	 * Setter
 	 *
 	 * @param typeSolde the typeSolde to set
 	 */
@@ -46,7 +48,8 @@ public class SoldeDto {
 		this.type = type;
 	}
 
-	/** Getter
+	/**
+	 * Getter
 	 *
 	 * @return the nombredeJours
 	 */
@@ -54,7 +57,8 @@ public class SoldeDto {
 		return nombreDeJours;
 	}
 
-	/** Setter
+	/**
+	 * Setter
 	 *
 	 * @param nombredeJours the nombredeJours to set
 	 */

@@ -1,8 +1,8 @@
 package dev.entites;
 
 /** Enumération des différents rôles 
- *
- * @author KOMINIARZ Anaïs
+ * 
+ * @author KOMINIARZ Anaïs, SAGAN Jonathan, BATIGNES Pierre, GIRARD Vincent.
  *
  */
 public enum Role {

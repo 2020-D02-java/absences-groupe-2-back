@@ -13,13 +13,14 @@ import dev.entites.Collegue;
 import dev.repository.CollegueRepo;
 
 /**
- *
- * @author GIRARD Vincent
+ * 
+ * @author KOMINIARZ Anaïs, SAGAN Jonathan, BATIGNES Pierre, GIRARD Vincent.
  *
  */
 @Service
 public class CollegueService {
 
+	// Déclarations
 	private CollegueRepo collegueRepo;
 
 	/**
@@ -32,19 +33,16 @@ public class CollegueService {
 	}
 
 	/**
-	 * @return Lister les collegues
+	 * Lister tous les collegues
+	 * 
+	 * @return
 	 */
 	public List<CollegueDto> getAllCollegues() {
 		List<CollegueDto> listeCollegues = new ArrayList<>();
-		//return listeCollegues;
-		
-		
+
 		for (Collegue collegue : collegueRepo.findAll()) {
 
 			CollegueDto collegueDto = new CollegueDto();
-
-			// ID Necessaire pour la modale suppression front
-//			collegueDto.setId(collegue.getId());
 			collegueDto.setEmail(collegue.getEmail());
 			collegueDto.setNom(collegue.getNom());
 			collegueDto.setPrenom(collegue.getPrenom());

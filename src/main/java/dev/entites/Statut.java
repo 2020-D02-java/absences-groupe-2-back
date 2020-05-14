@@ -3,9 +3,10 @@
  */
 package dev.entites;
 
-/** Enumération des différents statuts d'une demande d'absence
- *
- * @author KOMINIARZ Anaïs
+/**
+ * Enumération des différents statuts d'une demande d'absence
+ * 
+ * @author KOMINIARZ Anaïs, SAGAN Jonathan, BATIGNES Pierre, GIRARD Vincent.
  *
  */
 public enum Statut {

@@ -8,13 +8,16 @@ import java.time.LocalDate;
 import dev.entites.Statut;
 import dev.entites.TypeAbsence;
 
-/** Structure modélisant une visualisation d'absence servant à communiquer avec l'extérieur (WEB API).
+/**
+ * Structure modélisant une visualisation d'absence servant à communiquer avec
+ * l'extérieur (WEB API).
  *
- * @author KOMINIARZ Anaïs
+ * @author KOMINIARZ Anaïs, SAGAN Jonathan, BATIGNES Pierre, GIRARD Vincent.
  *
  */
 public class AbsenceVisualisationDto {
 
+	// Declarations
 	private Integer id;
 	private LocalDate dateDebut;
 	private LocalDate dateFin;
@@ -22,8 +25,8 @@ public class AbsenceVisualisationDto {
 	private String motif;
 	private Statut statut;
 
-
-	/** Constructeur
+	/**
+	 * Constructeur
 	 *
 	 * @param id
 	 * @param dateDebut
@@ -32,8 +35,7 @@ public class AbsenceVisualisationDto {
 	 * @param motif
 	 * @param statut
 	 */
-	public AbsenceVisualisationDto(Integer id, LocalDate dateDebut, LocalDate dateFin, TypeAbsence type, String motif,
-			Statut statut) {
+	public AbsenceVisualisationDto(Integer id, LocalDate dateDebut, LocalDate dateFin, TypeAbsence type, String motif, Statut statut) {
 		super();
 		this.id = id;
 		this.dateDebut = dateDebut;
@@ -43,55 +45,70 @@ public class AbsenceVisualisationDto {
 		this.statut = statut;
 	}
 
-
+	/**
+	 * Constructeur vide
+	 *
+	 */
 	public AbsenceVisualisationDto() {
-		
+
 	}
 
-	
-	/** Getter
+	/**
+	 * Getter
 	 *
 	 * @return the dateDebut
 	 */
 	public LocalDate getDateDebut() {
 		return dateDebut;
 	}
-	/** Setter
+
+	/**
+	 * Setter
 	 *
 	 * @param dateDebut the dateDebut to set
 	 */
 	public void setDateDebut(LocalDate dateDebut) {
 		this.dateDebut = dateDebut;
 	}
-	/** Getter
+
+	/**
+	 * Getter
 	 *
 	 * @return the dateFin
 	 */
 	public LocalDate getDateFin() {
 		return dateFin;
 	}
-	/** Setter
+
+	/**
+	 * Setter
 	 *
 	 * @param dateFin the dateFin to set
 	 */
 	public void setDateFin(LocalDate dateFin) {
 		this.dateFin = dateFin;
 	}
-	/** Getter
+
+	/**
+	 * Getter
 	 *
 	 * @return the typeAbsence
 	 */
 	public TypeAbsence getType() {
 		return type;
 	}
-	/** Setter
+
+	/**
+	 * Setter
 	 *
 	 * @param typeAbsence the typeAbsence to set
 	 */
 	public void setType(TypeAbsence type) {
 		this.type = type;
 	}
-	/** Getter
+
+	/**
+	 * Getter
 	 *
 	 * @return the motif
 	 */
@@ -99,8 +116,8 @@ public class AbsenceVisualisationDto {
 		return motif;
 	}
 
-
-	/** Setter
+	/**
+	 * Setter
 	 *
 	 * @param motif the motif to set
 	 */
@@ -108,34 +125,39 @@ public class AbsenceVisualisationDto {
 		this.motif = motif;
 	}
 
-
-	/** Getter
+	/**
+	 * Getter
 	 *
 	 * @return the statutAbs
 	 */
 	public Statut getStatut() {
 		return statut;
 	}
-	/** Setter
+
+	/**
+	 * Setter
 	 *
 	 * @param statutAbs the statutAbs to set
 	 */
 	public void setStatut(Statut statut) {
 		this.statut = statut;
 	}
-	/** Getter
+
+	/**
+	 * Getter
+	 * 
 	 * @return the id
 	 */
 	public Integer getId() {
 		return id;
 	}
-	/** Setter
+
+	/**
+	 * Setter
+	 * 
 	 * @param id the id to set
 	 */
 	public void setId(Integer id) {
 		this.id = id;
 	}
-
-	
-	
 }

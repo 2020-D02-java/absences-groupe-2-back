@@ -8,56 +8,28 @@ import java.time.LocalDate;
 import dev.entites.Statut;
 import dev.entites.TypeJourFerme;
 
+/**
+ *
+ * @author KOMINIARZ Anaïs, SAGAN Jonathan, BATIGNES Pierre, GIRARD Vincent.
+ *
+ */
 public class JourFermeVisualisationDto {
 
+	// Déclarations
 	private Integer id;
 	private LocalDate date;
 	private TypeJourFerme type;
 	private Statut statut;
-	
 	private String commentaire;
-	/** Getter
-	 * @return the date
-	 */
-	public LocalDate getDate() {
-		return date;
-	}
-	/** Setter
-	 * @param date the date to set
-	 */
-	public void setDate(LocalDate date) {
-		this.date = date;
-	}
-	/** Getter
-	 * @return the typeJourFerme
-	 */
-	public TypeJourFerme getType() {
-		return type;
-	}
-	/** Setter
-	 * @param typeJourFerme the typeJourFerme to set
-	 */
-	public void setType(TypeJourFerme type) {
-		this.type = type;
-	}
-	/** Getter
-	 * @return the commentaire
-	 */
-	public String getCommentaire() {
-		return commentaire;
-	}
-	/** Setter
-	 * @param commentaire the commentaire to set
-	 */
-	public void setCommentaire(String commentaire) {
-		this.commentaire = commentaire;
-	}
-	/** Constructeur
+
+	/**
+	 * Constructeur
+	 * 
 	 * @param date
 	 * @param typeJourFerme
 	 * @param commentaire
 	 */
-	public JourFermeVisualisationDto(Integer id , LocalDate date, TypeJourFerme type, String commentaire) {
+	public JourFermeVisualisationDto(Integer id, LocalDate date, TypeJourFerme type, String commentaire) {
 		super();
 		this.id = id;
 		this.date = date;
@@ -65,31 +37,95 @@ public class JourFermeVisualisationDto {
 		this.commentaire = commentaire;
 		this.statut = Statut.INITIALE;
 	}
-	/** Getter
+
+	/**
+	 * Getter
+	 * 
+	 * @return the date
+	 */
+	public LocalDate getDate() {
+		return date;
+	}
+
+	/**
+	 * Setter
+	 * 
+	 * @param date the date to set
+	 */
+	public void setDate(LocalDate date) {
+		this.date = date;
+	}
+
+	/**
+	 * Getter
+	 * 
+	 * @return the typeJourFerme
+	 */
+	public TypeJourFerme getType() {
+		return type;
+	}
+
+	/**
+	 * Setter
+	 * 
+	 * @param typeJourFerme the typeJourFerme to set
+	 */
+	public void setType(TypeJourFerme type) {
+		this.type = type;
+	}
+
+	/**
+	 * Getter
+	 * 
+	 * @return the commentaire
+	 */
+	public String getCommentaire() {
+		return commentaire;
+	}
+
+	/**
+	 * Setter
+	 * 
+	 * @param commentaire the commentaire to set
+	 */
+	public void setCommentaire(String commentaire) {
+		this.commentaire = commentaire;
+	}
+
+	/**
+	 * Getter
+	 * 
 	 * @return the id
 	 */
 	public Integer getId() {
 		return id;
 	}
-	/** Setter
+
+	/**
+	 * Setter
+	 * 
 	 * @param id the id to set
 	 */
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	/** Getter
+
+	/**
+	 * Getter
+	 * 
 	 * @return the statut
 	 */
 	public Statut getStatut() {
 		return statut;
 	}
-	/** Setter
+
+	/**
+	 * Setter
+	 * 
 	 * @param statut the statut to set
 	 */
 	public void setStatut(Statut statut) {
 		this.statut = statut;
 	}
-	
-	
-	
+
 }

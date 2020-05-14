@@ -12,29 +12,37 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-
+/**
+ * Entité jour ferme
+ * 
+ * @author KOMINIARZ Anaïs, SAGAN Jonathan, BATIGNES Pierre, GIRARD Vincent.
+ *
+ */
 @Entity
 public class JourFerme {
 
+	// Déclarations
 	/** id d'un jour ferme **/
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
+
 	/** date d'un jour ferme **/
 	LocalDate date;
-	
+
 	/** type d'un jour ferme **/
 	@Enumerated(EnumType.STRING)
 	private TypeJourFerme type;
-	
+
 	/** commentaire du jour ferme **/
 	private String commentaire;
 
 	@Enumerated(EnumType.STRING)
 	private Statut statut;
-	
-	/** Constructeur
+
+	/**
+	 * Constructeur
+	 * 
 	 * @param id
 	 * @param date
 	 * @param type
@@ -46,12 +54,16 @@ public class JourFerme {
 		this.type = type;
 		this.commentaire = commentaire;
 		this.statut = Statut.INITIALE;
-	}	
+	}
+
+	/**
+	 * Constructeur vide
+	 */
 	public JourFerme() {
 	}
-	
-	
-	/** Getter
+
+	/**
+	 * Getter
 	 *
 	 * @return the id
 	 */
@@ -59,7 +71,8 @@ public class JourFerme {
 		return id;
 	}
 
-	/** Setter
+	/**
+	 * Setter
 	 *
 	 * @param id the id to set
 	 */
@@ -67,7 +80,8 @@ public class JourFerme {
 		this.id = id;
 	}
 
-	/** Getter
+	/**
+	 * Getter
 	 *
 	 * @return the date
 	 */
@@ -75,7 +89,8 @@ public class JourFerme {
 		return date;
 	}
 
-	/** Setter
+	/**
+	 * Setter
 	 *
 	 * @param date the date to set
 	 */
@@ -83,7 +98,8 @@ public class JourFerme {
 		this.date = date;
 	}
 
-	/** Getter
+	/**
+	 * Getter
 	 *
 	 * @return the typeJourFerme
 	 */
@@ -91,7 +107,8 @@ public class JourFerme {
 		return type;
 	}
 
-	/** Setter
+	/**
+	 * Setter
 	 *
 	 * @param typeJourFerme the typeJourFerme to set
 	 */
@@ -99,7 +116,8 @@ public class JourFerme {
 		this.type = type;
 	}
 
-	/** Getter
+	/**
+	 * Getter
 	 *
 	 * @return the commentaire
 	 */
@@ -107,25 +125,30 @@ public class JourFerme {
 		return commentaire;
 	}
 
-	/** Setter
+	/**
+	 * Setter
 	 *
 	 * @param commentaire the commentaire to set
 	 */
 	public void setCommentaire(String commentaire) {
 		this.commentaire = commentaire;
 	}
-	/** Getter
+
+	/**
+	 * Getter
+	 * 
 	 * @return the statut
 	 */
 	public Statut getStatut() {
 		return statut;
 	}
-	/** Setter
+
+	/**
+	 * Setter
+	 * 
 	 * @param statut the statut to set
 	 */
 	public void setStatut(Statut statut) {
 		this.statut = statut;
 	}
-
-
 }
