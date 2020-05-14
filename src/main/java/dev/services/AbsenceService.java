@@ -120,7 +120,7 @@ public class AbsenceService {
 		{
 			throw new AbsenceMotifManquantException("Un motif est obligatoire dans le cas où vous souhaitez demander un congés sans solde.");
 		}
-		else if (!abenceDto.getStatut().toString().equals("REJETEE")||!abenceDto.getStatut().toString().equals("INITIALE")) // Impossible de saisir une demande qui chevauche une autre sauf si celle-ci est en statut REJETEE
+		else if ((!abenceDto.getStatut().toString().equals("REJETEE"))||(!abenceDto.getStatut().toString().equals("INITIALE"))) // Impossible de saisir une demande qui chevauche une autre sauf si celle-ci est en statut REJETEE
 		{
 			
 			List<Absence> listAbsences = new ArrayList<>();
