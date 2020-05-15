@@ -218,7 +218,8 @@ public class AbsenceService {
 		int nombreDeJoursFermes = 0;
  
 		for (JourFerme jourFerme : jourFermeRepository.findAll()) {
-			if (!(jourFerme.getDate().isBefore(dateDebut)) && !(jourFerme.getDate().isAfter(dateFin))) {
+			if (!(jourFerme.getDate().isBefore(dateDebut)) && !(jourFerme.getDate().isAfter(dateFin)) 
+					&&!(jourFerme.getDate().getDayOfWeek().getValue() == 6) &&!(jourFerme.getDate().getDayOfWeek().getValue()==7)) {
 				nombreDeJoursFermes += 1;
 			}
 		} 
