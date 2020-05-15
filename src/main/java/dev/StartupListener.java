@@ -72,6 +72,7 @@ public class StartupListener {
         Absence abs1col1 = new Absence(LocalDate.of(2020, 06, 12), LocalDate.of(2020, 06, 15), TypeAbsence.CONGES_PAYES, "vacances au soleil", Statut.EN_ATTENTE_VALIDATION, col1);
         Absence abs2col1 = new Absence(LocalDate.of(2020, 11, 02), LocalDate.of(2020, 11, 20), TypeAbsence.CONGES_PAYES, "vacances au soleil avec bluelagoon", Statut.INITIALE, col1);
         Absence abs3col1 = new Absence(LocalDate.of(2021, 01, 01), LocalDate.of(2021, 02, 10), TypeAbsence.CONGES_PAYES, "tour du monde en vélo, avec les petites roues", Statut.REJETEE, col1);
+        Absence abs4col1 = new Absence(LocalDate.of(2020, 11, 27), LocalDate.of(2021, 01, 8), TypeAbsence.CONGES_PAYES, "Vacances de Noël en Islande", Statut.INITIALE, col1);
         
         List<Absence> listeAbsences = new ArrayList<>();
         listeAbsences.add(abs1col1);
@@ -98,7 +99,7 @@ public class StartupListener {
         this.absenceRepo.save(abs1col1);
         this.absenceRepo.save(abs2col1);
         this.absenceRepo.save(abs3col1);
-        
+        this.absenceRepo.save(abs4col1);
         // -- JOUR FERME
 
         this.jourFermeRepo.save(jourFerme1);

@@ -4,6 +4,7 @@
 package dev.services;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -28,6 +29,7 @@ import dev.exceptions.AbsenceChevauchementException;
 import dev.exceptions.AbsenceDateException;
 import dev.exceptions.AbsenceDateFinException;
 import dev.exceptions.AbsenceMotifManquantException;
+import dev.exceptions.AbsencesNotFindByStatutException;
 import dev.exceptions.CollegueAuthentifieNonRecupereException;
 import dev.repository.AbsenceRepo;
 import dev.repository.CollegueRepo;
@@ -202,11 +204,16 @@ public class AbsenceService {
 	 * @return le nombre de jours ouvrés entre deux dates
 	 */
 	public int joursOuvresEntreDeuxDates(LocalDate dateDebut, LocalDate dateFin) {
- 
+		
+		int nombreDeSamediEtDimanche;
 		int numeroJour = dateDebut.getDayOfWeek().getValue();
-		int nombreDeJours = dateFin.compareTo(dateDebut) + 1;
-		System.out.println("nb jours = " + nombreDeJours);
-		int nombreDeSamediEtDimanche = 2 + (((nombreDeJours - (9- numeroJour)) / 7) *2);
+		int nombreDeJours = (int) ChronoUnit.DAYS.between(dateDebut, dateFin) + 1;
+		
+		if ((numeroJour - 1 + nombreDeJours) <= 5) {
+			nombreDeSamediEtDimanche = 0;
+		} else {
+			nombreDeSamediEtDimanche = 2 + (((nombreDeJours - (9- numeroJour)) / 7) *2);
+		}
 		
 		int nombreDeJoursFermes = 0;
  
@@ -217,15 +224,14 @@ public class AbsenceService {
 		} 
 
 		return nombreDeJours - nombreDeSamediEtDimanche - nombreDeJoursFermes;
-	}
+	} 
 
 	/**
 	 * traitement de nuit des demandes d'absences
 	 */
 	public void traitementDeNuit() {
-  
-		List<Solde> soldes = new ArrayList<>();
 
+		// traitement des RTT Employeur
 		for (JourFerme jourFerme : jourFermeRepository.findAll()) {
 			if (jourFerme.getStatut().equals(Statut.INITIALE)) {
 				jourFerme.setStatut(Statut.VALIDEE);
@@ -242,31 +248,80 @@ public class AbsenceService {
 				}
 			}
 		}
-		for (Absence absence : absenceRepository.findAll()) {
+		
+		//Traitement des absences par collegue
+		for (Collegue collegue : collegueRepository.findAll()) {
 			
-			if (absence.getStatut().equals(Statut.INITIALE)) {
-				int nombreDeJoursOuvresPendantAbsence = joursOuvresEntreDeuxDates(absence.getDateDebut(), absence.getDateFin());
+			// récupération des soldes du collègue
+			List<Solde> soldes = collegue.getSoldes();
+			
+			int soldeRTT = 0;
+			int soldeCongesPayes = 0;
+			for (Solde solde : soldes) {
+				if (solde.getType().equals(TypeSolde.RTT_EMPLOYE)) {
+					soldeRTT = solde.getNombreDeJours();
+				} else {
+					soldeCongesPayes = solde.getNombreDeJours();
+				}
+			}
+			
+			List<Absence> listeAbsences = collegue.getAbsences();
 	
-				soldes = absence.getCollegue().getSoldes();
-				for (Solde solde : soldes) {
-					if (solde.getType().toString().equals(absence.getType().toString())) {
-						System.out.println(nombreDeJoursOuvresPendantAbsence);
-						if (solde.getNombreDeJours() - nombreDeJoursOuvresPendantAbsence < 0) {
+			// vérification des soldes des absences EN_ATTENTE_VALIDATION
+			for (Absence absence : listeAbsences) {
+				
+				int nombreDeJoursOuvresPendantAbsence = joursOuvresEntreDeuxDates(absence.getDateDebut(), absence.getDateFin());
+				
+				if (absence.getStatut().equals(Statut.EN_ATTENTE_VALIDATION)) {
+					if (absence.getType().equals(TypeAbsence.RTT_EMPLOYE)) {
+						soldeRTT -= nombreDeJoursOuvresPendantAbsence;
+					}
+					if (absence.getType().equals(TypeAbsence.CONGES_PAYES)) {
+						soldeCongesPayes -= nombreDeJoursOuvresPendantAbsence;
+					}
+				}
+			}
+			
+			// traitement des absences INITIALE
+			for (Absence absence : listeAbsences) {
+				
+				int nombreDeJoursOuvresPendantAbsence = joursOuvresEntreDeuxDates(absence.getDateDebut(), absence.getDateFin());
+				
+				if (absence.getStatut().equals(Statut.INITIALE)) {
+					
+					// pas de vérification de soldes pour les congés sans solde
+					if (absence.getType().equals(TypeAbsence.CONGES_SANS_SOLDE)) {
+						absence.setStatut(Statut.EN_ATTENTE_VALIDATION);
+						absenceRepository.save(absence);
+					}
+					
+					// vérification des soldes et changement de statut
+					if (absence.getType().equals(TypeAbsence.RTT_EMPLOYE)) {
+						if (soldeRTT - nombreDeJoursOuvresPendantAbsence < 0) {
 							absence.setStatut(Statut.REJETEE);
 			 				absenceRepository.save(absence);
 						} else {
+							soldeRTT = soldeRTT - nombreDeJoursOuvresPendantAbsence;
 							absence.setStatut(Statut.EN_ATTENTE_VALIDATION);
 							absenceRepository.save(absence);
-							// envoyer un mail au manager
 						}  
 					}
-				}
-			absence.setStatut(Statut.EN_ATTENTE_VALIDATION);
-			absenceRepository.save(absence);
-			} 
+					if (absence.getType().equals(TypeAbsence.CONGES_PAYES)) {
+						if (soldeCongesPayes - nombreDeJoursOuvresPendantAbsence < 0) {
+							absence.setStatut(Statut.REJETEE);
+			 				absenceRepository.save(absence);
+						} else {
+							soldeCongesPayes = soldeCongesPayes - nombreDeJoursOuvresPendantAbsence;
+							absence.setStatut(Statut.EN_ATTENTE_VALIDATION);
+							absenceRepository.save(absence);
+						}  
+					}
+				} 
+			}
 		}
 	}
-
+		
+	
 	/**
 	 * Supprimer une absence Règles métier: supprimer une demande d'absence qui
 	 * n'est pas de type mission
