@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import dev.controller.dto.AbsenceDemandeDto;
 import dev.controller.dto.AbsenceVisualisationDto;
 import dev.controller.dto.ErreurDto;
+import dev.entites.Statut;
 import dev.exceptions.AbsenceChevauchementException;
 import dev.exceptions.AbsenceDateException;
 import dev.exceptions.AbsenceDateFinException;
@@ -72,6 +73,17 @@ public class AbsenceController {
 	@GetMapping("/id")
 	public AbsenceVisualisationDto getAbsenceParId(@RequestParam("id") Integer id) {
 		return this.absenceService.getAbsenceParId(id);
+	}
+	
+	/**
+	 * RECUPERER ABSENCE VIA STATUT
+	 * 
+	 * @param id
+	 * @return
+	 */
+	@GetMapping("/statut")
+	public List<AbsenceVisualisationDto> getAbsenceParStatut(@RequestParam("statut") Statut statut) {
+		return this.absenceService.getAbsenceParStatut(statut);
 	}
 
 	/**

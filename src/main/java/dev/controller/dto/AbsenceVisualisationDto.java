@@ -5,6 +5,7 @@ package dev.controller.dto;
 
 import java.time.LocalDate;
 
+import dev.entites.Collegue;
 import dev.entites.Statut;
 import dev.entites.TypeAbsence;
 
@@ -24,7 +25,8 @@ public class AbsenceVisualisationDto {
 	private TypeAbsence type;
 	private String motif;
 	private Statut statut;
-
+	private CollegueAbsenceDto collegue;
+	
 	/**
 	 * Constructeur
 	 *
@@ -43,6 +45,28 @@ public class AbsenceVisualisationDto {
 		this.type = type;
 		this.motif = motif;
 		this.statut = statut;
+	}
+
+	/**
+	 * Constructeur
+	 *
+	 * @param id
+	 * @param dateDebut
+	 * @param dateFin
+	 * @param type
+	 * @param motif
+	 * @param statut
+	 * @param collegue
+	 */
+	public AbsenceVisualisationDto(Integer id, LocalDate dateDebut, LocalDate dateFin, TypeAbsence type, String motif, Statut statut, CollegueAbsenceDto collegue) {
+		super();
+		this.id = id;
+		this.dateDebut = dateDebut;
+		this.dateFin = dateFin;
+		this.type = type;
+		this.motif = motif;
+		this.statut = statut;
+		this.collegue = collegue;
 	}
 
 	/**
@@ -159,5 +183,21 @@ public class AbsenceVisualisationDto {
 	 */
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	/**Getter
+	 *
+	 * @return the collegue
+	 */
+	public CollegueAbsenceDto getCollegue() {
+		return collegue;
+	}
+
+	/**Setter
+	 *
+	 * @param collegue the collegue to set
+	 */
+	public void setCollegue(CollegueAbsenceDto collegue) {
+		this.collegue = collegue;
 	}
 }
