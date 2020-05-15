@@ -26,10 +26,10 @@ import dev.entites.TypeAbsence;
 import dev.entites.TypeJourFerme;
 import dev.entites.TypeSolde;
 import dev.exceptions.AbsenceChevauchementException;
-import dev.exceptions.DateDansLePasseOuAujourdhuiException;
 import dev.exceptions.AbsenceDateFinAvandDateDebutException;
 import dev.exceptions.AbsenceMotifManquantCongesSansSoldeException;
 import dev.exceptions.CollegueAuthentifieNonRecupereException;
+import dev.exceptions.DateDansLePasseOuAujourdhuiException;
 import dev.repository.AbsenceRepo;
 import dev.repository.CollegueRepo;
 import dev.repository.JourFermeRepo;
@@ -97,20 +97,6 @@ public class AbsenceService {
 		}
 
 		return abs;
-	}
-	
-	public List<AbsenceVisualisationDto> getAbsencesRttEmployeur(){
-		 List<Absence> absences = absenceRepository.findByType(TypeAbsence.RTT_EMPLOYEUR).orElseThrow(() -> new DateDansLePasseOuAujourdhuiException("Les absences RTT employeurs "
-				+ "n'ont pas été trouvées."));
-		 
-		 List<AbsenceVisualisationDto> absencesDto = new ArrayList<>();
-		 for (Absence absence : absences) {
-			 AbsenceVisualisationDto absenceDto = new AbsenceVisualisationDto(absence.getId(), absence.getDateDebut(), absence.getDateFin(),
-					 absence.getType(), absence.getMotif(), absence.getStatut());
-			 absencesDto.add(absenceDto);
-		 }
-		 
-		 return absencesDto;
 	}
 
 	/**

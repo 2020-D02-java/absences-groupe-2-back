@@ -76,11 +76,6 @@ public class AbsenceController {
 	public AbsenceVisualisationDto getAbsenceParId(@RequestParam("id") Integer id) {
 		return this.absenceService.getAbsenceParId(id);
 	}
-	
-	@GetMapping("/rtt-employeur")
-	public List<AbsenceVisualisationDto> getAbsencesRttEmployeur() {
-		return absenceService.getAbsencesRttEmployeur();
-	}
 
 	/**
 	 * MODIFICATION ABSENCE

@@ -15,18 +15,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import dev.controller.dto.JourFermeAjoutDto;
 import dev.controller.dto.JourFermeVisualisationDto;
-import dev.entites.Absence;
-import dev.entites.Collegue;
 import dev.entites.JourFerme;
 import dev.entites.Statut;
-import dev.entites.TypeAbsence;
 import dev.entites.TypeJourFerme;
 import dev.exceptions.CommentaireManquantJourFerieException;
 import dev.exceptions.DateDansLePasseException;
-import dev.exceptions.JourRttUnWeekEndException;
 import dev.exceptions.DeleteRttEmployeurDejaValideException;
+import dev.exceptions.JourRttUnWeekEndException;
 import dev.exceptions.SaisieJourFerieUnJourDejaFerieException;
-import dev.repository.AbsenceRepo;
 import dev.repository.JourFermeRepo;
 
 /**
@@ -40,16 +36,14 @@ public class JourFermeService {
 
 	// Déclarations
 	private JourFermeRepo jourFermeRepository;
-	private AbsenceRepo absenceRepository;
 
 	/**
 	 * Constructeur
 	 *
 	 * @param jourFermeRepository
 	 */
-	public JourFermeService(JourFermeRepo jourFermeRepository, AbsenceRepo absenceRepository) {
+	public JourFermeService(JourFermeRepo jourFermeRepository) {
 		this.jourFermeRepository = jourFermeRepository;
-		this.absenceRepository = absenceRepository;
 	}
 
 	/**
@@ -202,15 +196,6 @@ public class JourFermeService {
 
 		// Tous les cas sont passant, je sauvegarde le jour
 		this.jourFermeRepository.save(jourFerme);
-		
-		/*Collegue collegue = new Collegue();
-		
-		if (jourFerme.getType().equals(TypeJourFerme.RTT_EMPLOYEUR)) {
-			Absence absenceRttEmployeur = new Absence(jourFerme.getDate(), jourFerme.getDate(), 
-			TypeAbsence.RTT_EMPLOYEUR, jourFerme.getCommentaire(), jourFerme.getStatut(), collegue);
-	
-			absenceRepository.save(absenceRttEmployeur);
-		}*/
 		
 		return new JourFermeAjoutDto(jourFerme.getDate(), jourFerme.getType(), jourFerme.getCommentaire());
 
