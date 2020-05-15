@@ -26,9 +26,9 @@ import dev.controller.dto.AbsenceDemandeDto;
 import dev.controller.dto.AbsenceVisualisationDto;
 import dev.controller.dto.ErreurDto;
 import dev.exceptions.AbsenceChevauchementException;
-import dev.exceptions.AbsenceDateException;
-import dev.exceptions.AbsenceDateFinException;
-import dev.exceptions.AbsenceMotifManquantException;
+import dev.exceptions.DateDansLePasseOuAujourdhuiException;
+import dev.exceptions.AbsenceDateFinAvandDateDebutException;
+import dev.exceptions.AbsenceMotifManquantCongesSansSoldeException;
 import dev.exceptions.CollegueAuthentifieNonRecupereException;
 import dev.services.AbsenceService;
 
@@ -75,6 +75,11 @@ public class AbsenceController {
 	@GetMapping("/id")
 	public AbsenceVisualisationDto getAbsenceParId(@RequestParam("id") Integer id) {
 		return this.absenceService.getAbsenceParId(id);
+	}
+	
+	@GetMapping("/rtt-employeur")
+	public List<AbsenceVisualisationDto> getAbsencesRttEmployeur() {
+		return absenceService.getAbsencesRttEmployeur();
 	}
 
 	/**
@@ -129,7 +134,7 @@ public class AbsenceController {
 	// ---- GESTION DES ERREURS ---- //
 	// ----------------------------- //
 
-	// Gestion des erreurs des demandes d'absence
+	// Cas où on ne récupère pas le collègue authentifié
 	@ExceptionHandler(CollegueAuthentifieNonRecupereException.class)
 	public ResponseEntity<ErreurDto> quandCollegueByIdNotExistException(CollegueAuthentifieNonRecupereException ex) {
 		ErreurDto erreurDto = new ErreurDto();
@@ -138,24 +143,24 @@ public class AbsenceController {
 	}
 
 	// Cas jour saisi dans le passé ou aujourd'hui, erreur
-	@ExceptionHandler(AbsenceDateException.class)
-	public ResponseEntity<ErreurDto> quandAbsenceDateException(AbsenceDateException ex) {
+	@ExceptionHandler(DateDansLePasseOuAujourdhuiException.class)
+	public ResponseEntity<ErreurDto> quandDateDansLePasseOuAujourdhuiException(DateDansLePasseOuAujourdhuiException ex) {
 		ErreurDto erreurDto = new ErreurDto();
 		erreurDto.setMessage(ex.getMessage());
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erreurDto);
 	}
 
 	// Cas DateFin < DateDebut
-	@ExceptionHandler(AbsenceDateFinException.class)
-	public ResponseEntity<ErreurDto> quandAbsenceDateFinException(AbsenceDateFinException ex) {
+	@ExceptionHandler(AbsenceDateFinAvandDateDebutException.class)
+	public ResponseEntity<ErreurDto> quandAbsenceDateFinAvandDateDebutException(AbsenceDateFinAvandDateDebutException ex) {
 		ErreurDto erreurDto = new ErreurDto();
 		erreurDto.setMessage(ex.getMessage());
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erreurDto);
 	}
 
 	// Cas congès sans solde, et motif manquant
-	@ExceptionHandler(AbsenceMotifManquantException.class)
-	public ResponseEntity<ErreurDto> quandAbsenceMotifManquantException(AbsenceMotifManquantException ex) {
+	@ExceptionHandler(AbsenceMotifManquantCongesSansSoldeException.class)
+	public ResponseEntity<ErreurDto> quandAbsenceMotifManquantException(AbsenceMotifManquantCongesSansSoldeException ex) {
 		ErreurDto erreurDto = new ErreurDto();
 		erreurDto.setMessage(ex.getMessage());
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erreurDto);

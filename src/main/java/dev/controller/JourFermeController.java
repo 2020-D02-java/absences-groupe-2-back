@@ -26,8 +26,8 @@ import dev.controller.dto.JourFermeVisualisationDto;
 import dev.exceptions.CommentaireManquantJourFerieException;
 import dev.exceptions.DateDansLePasseException;
 import dev.exceptions.JourRttUnWeekEndException;
-import dev.exceptions.RttEmployeurDejaValideException;
-import dev.exceptions.SaisieJourFeriesUnJourDejaFeriesException;
+import dev.exceptions.DeleteRttEmployeurDejaValideException;
+import dev.exceptions.SaisieJourFerieUnJourDejaFerieException;
 import dev.services.JourFermeService;
 
 /**
@@ -139,16 +139,16 @@ public class JourFermeController {
 	}
 
 	// il est interdit de saisir un jour férié à la même date qu'un autre jour férié
-	@ExceptionHandler(SaisieJourFeriesUnJourDejaFeriesException.class)
-	public ResponseEntity<ErreurDto> onSaisieJourFerierSurJourDejaFerieException(SaisieJourFeriesUnJourDejaFeriesException ex) {
+	@ExceptionHandler(SaisieJourFerieUnJourDejaFerieException.class) 
+	public ResponseEntity<ErreurDto> onSaisieJourFerierSurJourDejaFerieException(SaisieJourFerieUnJourDejaFerieException ex) {
 		ErreurDto erreurDto = new ErreurDto();
 		erreurDto.setMessage(ex.getMessage());
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erreurDto);
 	}
 
-	// il est interdit de saisir un jour férié à la même date qu'un autre jour férié
-	@ExceptionHandler(RttEmployeurDejaValideException.class)
-	public ResponseEntity<ErreurDto> onDeleteRttDejaValideException(RttEmployeurDejaValideException ex) {
+	// Il n'est pas possible de faire la suppression d'un RTT employeur déjà validé 
+	@ExceptionHandler(DeleteRttEmployeurDejaValideException.class) 
+	public ResponseEntity<ErreurDto> onDeleteRttEmployeurDejaValideException(DeleteRttEmployeurDejaValideException ex) {
 		ErreurDto erreurDto = new ErreurDto();
 		erreurDto.setMessage(ex.getMessage());
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erreurDto);

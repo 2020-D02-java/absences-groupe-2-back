@@ -26,10 +26,9 @@ import dev.entites.TypeAbsence;
 import dev.entites.TypeJourFerme;
 import dev.entites.TypeSolde;
 import dev.exceptions.AbsenceChevauchementException;
-import dev.exceptions.AbsenceDateException;
-import dev.exceptions.AbsenceDateFinException;
-import dev.exceptions.AbsenceMotifManquantException;
-import dev.exceptions.AbsencesNotFindByStatutException;
+import dev.exceptions.DateDansLePasseOuAujourdhuiException;
+import dev.exceptions.AbsenceDateFinAvandDateDebutException;
+import dev.exceptions.AbsenceMotifManquantCongesSansSoldeException;
 import dev.exceptions.CollegueAuthentifieNonRecupereException;
 import dev.repository.AbsenceRepo;
 import dev.repository.CollegueRepo;
@@ -71,7 +70,8 @@ public class AbsenceService {
 
 		List<AbsenceVisualisationDto> listeAbsences = new ArrayList<>();
 
-		List<Absence> liste = absenceRepository.findByCollegueEmail(email).orElseThrow(() -> new CollegueAuthentifieNonRecupereException("Le collègue n'a pas pu être recupere")); 		
+		List<Absence> liste = absenceRepository.findByCollegueEmail(email).orElseThrow(() -> new CollegueAuthentifieNonRecupereException
+				("Le collègue authentifié n'a pas pu être recupéré")); 		
 		for (Absence absence : liste) {
 			AbsenceVisualisationDto absenceDto = new AbsenceVisualisationDto(absence.getId(), absence.getDateDebut(), absence.getDateFin(), absence.getType(),
 					absence.getMotif(), absence.getStatut());
@@ -98,6 +98,20 @@ public class AbsenceService {
 
 		return abs;
 	}
+	
+	public List<AbsenceVisualisationDto> getAbsencesRttEmployeur(){
+		 List<Absence> absences = absenceRepository.findByType(TypeAbsence.RTT_EMPLOYEUR).orElseThrow(() -> new DateDansLePasseOuAujourdhuiException("Les absences RTT employeurs "
+				+ "n'ont pas été trouvées."));
+		 
+		 List<AbsenceVisualisationDto> absencesDto = new ArrayList<>();
+		 for (Absence absence : absences) {
+			 AbsenceVisualisationDto absenceDto = new AbsenceVisualisationDto(absence.getId(), absence.getDateDebut(), absence.getDateFin(),
+					 absence.getType(), absence.getMotif(), absence.getStatut());
+			 absencesDto.add(absenceDto);
+		 }
+		 
+		 return absencesDto;
+	}
 
 	/**
 	 * MODIFICATION D'UNE ABSENCE
@@ -115,13 +129,13 @@ public class AbsenceService {
 		
 		if (abenceDto.getDateDebut().isBefore(LocalDate.now()) || (abenceDto.getDateDebut().isEqual(LocalDate.now()))) // Cas jour saisi dans le passé ou aujourd'hui, erreur
 		{
-			throw new AbsenceDateException("Une demande d'absence ne peut être saisie sur une date ultérieur ou le jour présent.");
+			throw new DateDansLePasseOuAujourdhuiException("Une demande d'absence ne peut être saisie sur une date ultérieur ou le jour présent.");
 		} else if (abenceDto.getDateFin().isBefore(abenceDto.getDateDebut())) // Cas DateFin < DateDebut
 		{
-			throw new AbsenceDateFinException("La date de fin ne peut-être inférieure à la date du début de votre absence.");
+			throw new AbsenceDateFinAvandDateDebutException("La date de fin ne peut-être inférieure à la date du début de votre absence.");
 		} else if (abenceDto.getType().equals(TypeAbsence.CONGES_SANS_SOLDE) && abenceDto.getMotif().isEmpty()) // Cas congès sans solde, et motif manquant
 		{
-			throw new AbsenceMotifManquantException("Un motif est obligatoire dans le cas où vous souhaitez demander un congés sans solde.");
+			throw new AbsenceMotifManquantCongesSansSoldeException("Un motif est obligatoire dans le cas où vous souhaitez demander un congés sans solde.");
 		}
 		else if ((abenceDto.getStatut().equals(Statut.EN_ATTENTE_VALIDATION))||(abenceDto.getStatut().equals(Statut.VALIDEE))) // Impossible de saisir une demande qui chevauche une autre sauf si celle-ci est en statut REJETEE
 		{
@@ -171,13 +185,13 @@ public class AbsenceService {
 
 		if (absence.getDateDebut().isBefore(LocalDate.now()) || (absence.getDateDebut().isEqual(LocalDate.now()))) // Cas jour saisi dans le passé ou aujourd'hui, erreur
 		{
-			throw new AbsenceDateException("Une demande d'absence ne peut être saisie sur une date ultérieur ou le jour présent.");
+			throw new DateDansLePasseOuAujourdhuiException("Une demande d'absence ne peut être saisie sur une date ultérieur ou le jour présent.");
 		} else if (absence.getDateFin().isBefore(absence.getDateDebut())) // Cas DateFin < DateDebut
 		{
-			throw new AbsenceDateFinException("La date de fin ne peut-être inférieure à la date du début de votre absence.");
+			throw new AbsenceDateFinAvandDateDebutException("La date de fin ne peut-être inférieure à la date du début de votre absence.");
 		} else if (absence.getType().equals(TypeAbsence.CONGES_SANS_SOLDE) && absence.getMotif().isEmpty()) // Cas congès sans solde, et motif manquant
 		{
-			throw new AbsenceMotifManquantException("Un motif est obligatoire dans le cas où vous souhaitez demander un congés sans solde.");
+			throw new AbsenceMotifManquantCongesSansSoldeException("Un motif est obligatoire dans le cas où vous souhaitez demander un congés sans solde.");
 		} else if((absence.getStatut().equals(Statut.EN_ATTENTE_VALIDATION))||(absence.getStatut().equals(Statut.VALIDEE))) // Impossible de saisir une demande qui chevauche une autre sauf si celle-ci est
 																															// en statut REJETEE
 		{

@@ -15,14 +15,18 @@ import org.springframework.transaction.annotation.Transactional;
 
 import dev.controller.dto.JourFermeAjoutDto;
 import dev.controller.dto.JourFermeVisualisationDto;
+import dev.entites.Absence;
+import dev.entites.Collegue;
 import dev.entites.JourFerme;
 import dev.entites.Statut;
+import dev.entites.TypeAbsence;
 import dev.entites.TypeJourFerme;
 import dev.exceptions.CommentaireManquantJourFerieException;
 import dev.exceptions.DateDansLePasseException;
 import dev.exceptions.JourRttUnWeekEndException;
-import dev.exceptions.RttEmployeurDejaValideException;
-import dev.exceptions.SaisieJourFeriesUnJourDejaFeriesException;
+import dev.exceptions.DeleteRttEmployeurDejaValideException;
+import dev.exceptions.SaisieJourFerieUnJourDejaFerieException;
+import dev.repository.AbsenceRepo;
 import dev.repository.JourFermeRepo;
 
 /**
@@ -36,14 +40,16 @@ public class JourFermeService {
 
 	// Déclarations
 	private JourFermeRepo jourFermeRepository;
+	private AbsenceRepo absenceRepository;
 
 	/**
 	 * Constructeur
 	 *
-	 * @param absenceRepository
+	 * @param jourFermeRepository
 	 */
-	public JourFermeService(JourFermeRepo jourFermeRepository) {
+	public JourFermeService(JourFermeRepo jourFermeRepository, AbsenceRepo absenceRepository) {
 		this.jourFermeRepository = jourFermeRepository;
+		this.absenceRepository = absenceRepository;
 	}
 
 	/**
@@ -138,7 +144,7 @@ public class JourFermeService {
 				for (JourFerme jour : listJourFerme) {
 					// Si je trouve deux jours feries à la même date, je leve une exception
 					if ((jour.getDate().toString().equals(jourFermeDto.getDate().toString()) && (jour.getType().equals(TypeJourFerme.JOURS_FERIES)))) {
-						throw new SaisieJourFeriesUnJourDejaFeriesException("Il n'est pas possible de saisir un jour férié à la même date qu'un autre jour férié.");
+						throw new SaisieJourFerieUnJourDejaFerieException("Il n'est pas possible de saisir un jour férié à la même date qu'un autre jour férié.");
 					}
 				}
 
@@ -188,7 +194,7 @@ public class JourFermeService {
 			for (JourFerme jour : listJourFerme) {
 				// Si je trouve deux jours feries à la même date, je leve une exception
 				if ((jour.getDate().toString().equals(jourFerme.getDate().toString()) && (jour.getType().equals(TypeJourFerme.JOURS_FERIES)))) {
-					throw new SaisieJourFeriesUnJourDejaFeriesException("Il n'est pas possible de saisir un jour férié à la même date qu'un autre jour férié.");
+					throw new SaisieJourFerieUnJourDejaFerieException("Il n'est pas possible de saisir un jour férié à la même date qu'un autre jour férié.");
 				}
 			}
 
@@ -196,7 +202,16 @@ public class JourFermeService {
 
 		// Tous les cas sont passant, je sauvegarde le jour
 		this.jourFermeRepository.save(jourFerme);
-
+		
+		/*Collegue collegue = new Collegue();
+		
+		if (jourFerme.getType().equals(TypeJourFerme.RTT_EMPLOYEUR)) {
+			Absence absenceRttEmployeur = new Absence(jourFerme.getDate(), jourFerme.getDate(), 
+			TypeAbsence.RTT_EMPLOYEUR, jourFerme.getCommentaire(), jourFerme.getStatut(), collegue);
+	
+			absenceRepository.save(absenceRttEmployeur);
+		}*/
+		
 		return new JourFermeAjoutDto(jourFerme.getDate(), jourFerme.getType(), jourFerme.getCommentaire());
 
 	}
@@ -221,7 +236,7 @@ public class JourFermeService {
 			}
 			// il n'est pas possible de supprimer une RTT employeur validée
 			else if (jourFerme.get().getStatut().equals(Statut.VALIDEE) && jourFerme.get().getType().equals(TypeJourFerme.RTT_EMPLOYEUR)) {
-				throw new RttEmployeurDejaValideException("Il n'est pas possible de faire la suppression d'un RTT employeur déjà validé.");
+				throw new DeleteRttEmployeurDejaValideException("Il n'est pas possible de faire la suppression d'un RTT employeur déjà validé.");
 			}
 			this.jourFermeRepository.delete(jourFerme.get());
 			return "\"mission supprimee\"";

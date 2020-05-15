@@ -7,10 +7,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 
 import dev.entites.Absence;
-import dev.entites.Statut;
+import dev.entites.TypeAbsence;
 
 /** Repository de l'entité Absence
  * 
@@ -20,5 +19,6 @@ import dev.entites.Statut;
 public interface AbsenceRepo extends JpaRepository<Absence, Integer> {
 
 	Optional<List<Absence>> findByCollegueEmail(String email);
+	Optional<List<Absence>> findByType(TypeAbsence type);
 
 }
