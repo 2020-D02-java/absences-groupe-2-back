@@ -25,6 +25,7 @@ import dev.entites.TypeSolde;
 import dev.repository.AbsenceRepo;
 import dev.repository.CollegueRepo;
 import dev.repository.JourFermeRepo;
+import dev.repository.SoldeRepo;
 
 /**
  * Code de démarrage de l'application.
@@ -40,19 +41,24 @@ public class StartupListener {
     private CollegueRepo collegueRepo;
     private AbsenceRepo absenceRepo;
     private JourFermeRepo jourFermeRepo;
+    private SoldeRepo soldeRepo;
  
-    public StartupListener(@Value("${app.version}") String appVersion, PasswordEncoder passwordEncoder, CollegueRepo collegueRepo, AbsenceRepo absenceRepo, JourFermeRepo jourFermeRepo) {
+    public StartupListener(@Value("${app.version}") String appVersion, PasswordEncoder passwordEncoder, CollegueRepo collegueRepo, 
+    		AbsenceRepo absenceRepo, JourFermeRepo jourFermeRepo, SoldeRepo soldeRepo) {
         this.appVersion = appVersion;
         this.passwordEncoder = passwordEncoder;
         this.collegueRepo = collegueRepo;
         this.absenceRepo = absenceRepo;
         this.jourFermeRepo = jourFermeRepo;
+        this.soldeRepo = soldeRepo;
+        
     }
 
     @EventListener(ContextRefreshedEvent.class)
     public void onStart() {
    
-        // Création de deux utilisateurs
+    	 
+       // Création de deux utilisateurs
 
         Collegue col1 = new Collegue();
         col1.setNom("Admin");
@@ -91,11 +97,14 @@ public class StartupListener {
        List<Solde> listeSoldesCol1 = new ArrayList<>();
        listeSoldesCol1.add(solde1RTT);
        listeSoldesCol1.add(solde1CP);
+       
        col1.setSoldes(listeSoldesCol1);
        //************************************************* 
    
- 
-        this.collegueRepo.save(col1);
+       this.collegueRepo.save(col1);
+        
+        this.soldeRepo.save(solde1CP);
+        this.soldeRepo.save(solde1RTT);
         this.absenceRepo.save(abs1col1);
         this.absenceRepo.save(abs2col1);
         this.absenceRepo.save(abs3col1);
