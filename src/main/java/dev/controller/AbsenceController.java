@@ -107,7 +107,7 @@ public class AbsenceController {
 	/**
 	 * TRAITEMENT DE NUIT
 	 */ 
-	@Scheduled(cron="00 00 21 * * *", zone="Europe/Paris")
+	//@Scheduled(cron="00 00 21 * * *", zone="Europe/Paris")
 	@PostMapping("/traitement-de-nuit")
 	public void traitementDeNuit() {
 		absenceService.traitementDeNuit();
