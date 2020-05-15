@@ -9,7 +9,9 @@ import dev.entites.Statut;
 import dev.entites.TypeJourFerme;
 
 /**
- *
+ * Structure modélisant une visualisation de JourFerme servant à communiquer avec 
+ * l'extérieur (WEB API).
+ * 
  * @author KOMINIARZ Anaïs, SAGAN Jonathan, BATIGNES Pierre, GIRARD Vincent.
  *
  */

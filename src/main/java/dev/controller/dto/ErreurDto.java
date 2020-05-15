@@ -4,8 +4,8 @@
 package dev.controller.dto;
 
 /**
- * Structure modélisant une erreur servant à communiquer avec l'extérieur (WEB
- * API)
+ * Structure modélisant une erreur servant à communiquer avec 
+ * l'extérieur (WEB API)
  *
  * @author KOMINIARZ Anaïs, SAGAN Jonathan, BATIGNES Pierre, GIRARD Vincent.
  *

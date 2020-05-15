@@ -8,8 +8,8 @@ import dev.entites.Collegue;
 import dev.entites.Role;
 
 /**
- * Structure modélisant un collègue servant à communiquer avec l'extérieur (WEB
- * API).
+ * Structure modélisant un collègue servant à communiquer avec 
+ * l'extérieur (WEB API).
  *
  * @author KOMINIARZ Anaïs, SAGAN Jonathan, BATIGNES Pierre, GIRARD Vincent.
  *

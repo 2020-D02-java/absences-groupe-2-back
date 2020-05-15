@@ -8,7 +8,9 @@ import java.time.LocalDate;
 import dev.entites.TypeJourFerme;
 
 /**
- *
+ * Structure modélisant un ajout de jourFerme servant à communiquer avec 
+ * l'extérieur (WEB API).
+ * 
  * @author KOMINIARZ Anaïs, SAGAN Jonathan, BATIGNES Pierre, GIRARD Vincent.
  *
  */

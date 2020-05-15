@@ -21,6 +21,8 @@ import dev.entites.Collegue;
 import dev.entites.JourFerme;
 import dev.entites.Solde;
 import dev.entites.Statut;
+import dev.entites.TypeAbsence;
+import dev.entites.TypeJourFerme;
 import dev.entites.TypeSolde;
 import dev.exceptions.AbsenceChevauchementException;
 import dev.exceptions.AbsenceDateException;
@@ -57,9 +59,9 @@ public class AbsenceService {
 	}
 
 	/**
-	 * @param collegue : Collegue
-	 * @return la liste des absences du collègue dont l'email est passé en
-	 *         paramètres
+	 * LISTER ABSENCES DU COLLEGUE CONNECTE
+	 * 
+	 * @return la liste d'absence Dto du collegue connecté
 	 */
 	public List<AbsenceVisualisationDto> listerAbsencesCollegue() {
 
@@ -67,12 +69,11 @@ public class AbsenceService {
 
 		List<AbsenceVisualisationDto> listeAbsences = new ArrayList<>();
 
-		for (Absence absence : absenceRepository.findAll()) {
-			if (absence.getCollegue().getEmail().equals(email)) {
-				AbsenceVisualisationDto absenceDto = new AbsenceVisualisationDto(absence.getId(), absence.getDateDebut(), absence.getDateFin(), absence.getType(),
-						absence.getMotif(), absence.getStatut());
-				listeAbsences.add(absenceDto);
-			}
+		List<Absence> liste = absenceRepository.findByCollegueEmail(email).orElseThrow(() -> new CollegueAuthentifieNonRecupereException("Le collègue n'a pas pu être recupere")); 		
+		for (Absence absence : liste) {
+			AbsenceVisualisationDto absenceDto = new AbsenceVisualisationDto(absence.getId(), absence.getDateDebut(), absence.getDateFin(), absence.getType(),
+					absence.getMotif(), absence.getStatut());
+			listeAbsences.add(absenceDto);
 		}
 		return listeAbsences;
 
@@ -116,11 +117,11 @@ public class AbsenceService {
 		} else if (abenceDto.getDateFin().isBefore(abenceDto.getDateDebut())) // Cas DateFin < DateDebut
 		{
 			throw new AbsenceDateFinException("La date de fin ne peut-être inférieure à la date du début de votre absence.");
-		} else if (abenceDto.getType().toString().equals("CONGES_SANS_SOLDE") && abenceDto.getMotif().isEmpty()) // Cas congès sans solde, et motif manquant
+		} else if (abenceDto.getType().equals(TypeAbsence.CONGES_SANS_SOLDE) && abenceDto.getMotif().isEmpty()) // Cas congès sans solde, et motif manquant
 		{
 			throw new AbsenceMotifManquantException("Un motif est obligatoire dans le cas où vous souhaitez demander un congés sans solde.");
 		}
-		else if ((abenceDto.getStatut().toString().equals("EN_ATTENTE_VALIDATION"))||(abenceDto.getStatut().toString().equals("VALIDEE"))) // Impossible de saisir une demande qui chevauche une autre sauf si celle-ci est en statut REJETEE
+		else if ((abenceDto.getStatut().equals(Statut.EN_ATTENTE_VALIDATION))||(abenceDto.getStatut().equals(Statut.VALIDEE))) // Impossible de saisir une demande qui chevauche une autre sauf si celle-ci est en statut REJETEE
 		{
 			
 			List<Absence> listAbsences = new ArrayList<>();
@@ -172,10 +173,10 @@ public class AbsenceService {
 		} else if (absence.getDateFin().isBefore(absence.getDateDebut())) // Cas DateFin < DateDebut
 		{
 			throw new AbsenceDateFinException("La date de fin ne peut-être inférieure à la date du début de votre absence.");
-		} else if (absence.getType().toString().equals("CONGES_SANS_SOLDE") && absence.getMotif().isEmpty()) // Cas congès sans solde, et motif manquant
+		} else if (absence.getType().equals(TypeAbsence.CONGES_SANS_SOLDE) && absence.getMotif().isEmpty()) // Cas congès sans solde, et motif manquant
 		{
 			throw new AbsenceMotifManquantException("Un motif est obligatoire dans le cas où vous souhaitez demander un congés sans solde.");
-		} else if((absence.getStatut().toString().equals("EN_ATTENTE_VALIDATION"))||(absence.getStatut().toString().equals("VALIDEE"))) // Impossible de saisir une demande qui chevauche une autre sauf si celle-ci est
+		} else if((absence.getStatut().equals(Statut.EN_ATTENTE_VALIDATION))||(absence.getStatut().equals(Statut.VALIDEE))) // Impossible de saisir une demande qui chevauche une autre sauf si celle-ci est
 																															// en statut REJETEE
 		{
 			List<Absence> listAbsences = new ArrayList<>();
@@ -201,17 +202,19 @@ public class AbsenceService {
 	 * @return le nombre de jours ouvrés entre deux dates
 	 */
 	public int joursOuvresEntreDeuxDates(LocalDate dateDebut, LocalDate dateFin) {
-
+ 
 		int numeroJour = dateDebut.getDayOfWeek().getValue();
 		int nombreDeJours = dateFin.compareTo(dateDebut) + 1;
+		System.out.println("nb jours = " + nombreDeJours);
+		int nombreDeSamediEtDimanche = 2 + (((nombreDeJours - (9- numeroJour)) / 7) *2);
+		
 		int nombreDeJoursFermes = 0;
-		int nombreDeSamediEtDimanche = nombreDeJours / (9 - numeroJour) * 2;
-
+ 
 		for (JourFerme jourFerme : jourFermeRepository.findAll()) {
 			if (!(jourFerme.getDate().isBefore(dateDebut)) && !(jourFerme.getDate().isAfter(dateFin))) {
 				nombreDeJoursFermes += 1;
 			}
-		}
+		} 
 
 		return nombreDeJours - nombreDeSamediEtDimanche - nombreDeJoursFermes;
 	}
@@ -220,39 +223,47 @@ public class AbsenceService {
 	 * traitement de nuit des demandes d'absences
 	 */
 	public void traitementDeNuit() {
-
+  
 		List<Solde> soldes = new ArrayList<>();
 
-		/*
-		 * si RTT employeur, changer la demande en validée et baisser le compteur de RTT
-		 * de tous les collegues
-		 */
 		for (JourFerme jourFerme : jourFermeRepository.findAll()) {
 			if (jourFerme.getStatut().equals(Statut.INITIALE)) {
 				jourFerme.setStatut(Statut.VALIDEE);
-			}
-			for (Collegue collegue : collegueRepository.findAll()) {
-				for (Solde solde : collegue.getSoldes()) {
-					if (solde.getType() == TypeSolde.RTT_EMPLOYE) {
-						solde.setNombreDeJours(solde.getNombreDeJours() - 1);
+				jourFermeRepository.save(jourFerme);
+				if (jourFerme.getType().equals(TypeJourFerme.RTT_EMPLOYEUR)) {
+					for (Collegue collegue : collegueRepository.findAll()) {
+						for (Solde solde : collegue.getSoldes()) {
+							if (solde.getType().equals(TypeSolde.RTT_EMPLOYE)) {
+								solde.setNombreDeJours(solde.getNombreDeJours() - 1);
+							}
+						}
+						collegueRepository.save(collegue);
 					}
 				}
 			}
 		}
 		for (Absence absence : absenceRepository.findAll()) {
-			int nombreDeJoursOuvresPendantAbsence = joursOuvresEntreDeuxDates(absence.getDateDebut(), absence.getDateFin());
-
-			soldes = absence.getCollegue().getSoldes();
-			for (Solde solde : soldes) {
-				if (solde.getType().toString().equals(absence.getType().toString())) {
-					if (solde.getNombreDeJours() - nombreDeJoursOuvresPendantAbsence < 0) {
-						absence.setStatut(Statut.REJETEE);
-					} else {
-						absence.setStatut(Statut.EN_ATTENTE_VALIDATION);
-						// envoyer un mail au manager
+			
+			if (absence.getStatut().equals(Statut.INITIALE)) {
+				int nombreDeJoursOuvresPendantAbsence = joursOuvresEntreDeuxDates(absence.getDateDebut(), absence.getDateFin());
+	
+				soldes = absence.getCollegue().getSoldes();
+				for (Solde solde : soldes) {
+					if (solde.getType().toString().equals(absence.getType().toString())) {
+						System.out.println(nombreDeJoursOuvresPendantAbsence);
+						if (solde.getNombreDeJours() - nombreDeJoursOuvresPendantAbsence < 0) {
+							absence.setStatut(Statut.REJETEE);
+			 				absenceRepository.save(absence);
+						} else {
+							absence.setStatut(Statut.EN_ATTENTE_VALIDATION);
+							absenceRepository.save(absence);
+							// envoyer un mail au manager
+						}  
 					}
 				}
-			}
+			absence.setStatut(Statut.EN_ATTENTE_VALIDATION);
+			absenceRepository.save(absence);
+			} 
 		}
 	}
 
