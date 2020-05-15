@@ -10,6 +10,7 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
+import org.springframework.security.acls.model.NotFoundException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -109,15 +110,15 @@ public class AbsenceService {
 	 */
 	public List<AbsenceVisualisationDto> getAbsenceParStatut(Statut statut) {
 		List<Absence> abs = absenceRepository.findAllByStatut(statut);
-		
+
 		List<AbsenceVisualisationDto> listAbs = new ArrayList<>();
 
 		for (Absence a : abs) {
-			AbsenceVisualisationDto absence = new AbsenceVisualisationDto(a.getId(), a.getDateDebut(), a.getDateFin(), a.getType(),
-					a.getMotif(), a.getStatut(), new CollegueAbsenceDto(a.getCollegue()));
+			AbsenceVisualisationDto absence = new AbsenceVisualisationDto(a.getId(), a.getDateDebut(), a.getDateFin(),
+					a.getType(), a.getMotif(), a.getStatut(), new CollegueAbsenceDto(a.getCollegue()));
 			listAbs.add(absence);
 		}
-		
+
 		return listAbs;
 	}
 
@@ -136,15 +137,9 @@ public class AbsenceService {
 
 		AbsenceVisualisationDto absence = this.getAbsenceParId(id);
 
-		if (abenceDto.getDateDebut().isBefore(LocalDate.now()) || (abenceDto.getDateDebut().isEqual(LocalDate.now()))) // Cas
-																														// jour
-																														// saisi
-																														// dans
-																														// le
-																														// passé
-																														// ou
-																														// aujourd'hui,
-																														// erreur
+		if (abenceDto.getDateDebut().isBefore(LocalDate.now()) || (abenceDto.getDateDebut().isEqual(LocalDate.now())))
+		
+			// Cas jour saisi dans le passé ou aujourd'hui, erreur
 		{
 			throw new AbsenceDateException(
 					"Une demande d'absence ne peut être saisie sur une date ultérieur ou le jour présent.");
@@ -152,13 +147,9 @@ public class AbsenceService {
 		{
 			throw new AbsenceDateFinException(
 					"La date de fin ne peut-être inférieure à la date du début de votre absence.");
-		} else if (abenceDto.getType().equals(TypeAbsence.CONGES_SANS_SOLDE) && abenceDto.getMotif().isEmpty()) // Cas
-																												// congès
-																												// sans
-																												// solde,
-																												// et
-																												// motif
-																												// manquant
+		} else if (abenceDto.getType().equals(TypeAbsence.CONGES_SANS_SOLDE) && abenceDto.getMotif().isEmpty()) 
+			
+			// Cas congès sans solde, et motif manquant
 		{
 			throw new AbsenceMotifManquantException(
 					"Un motif est obligatoire dans le cas où vous souhaitez demander un congés sans solde.");
@@ -191,6 +182,16 @@ public class AbsenceService {
 				absence.getStatut(), collegue);
 		abs.setId(absence.getId());
 
+		this.absenceRepository.save(abs);
+		return absence;
+	}
+	
+	public AbsenceVisualisationDto putValidationAbsence(@Valid AbsenceVisualisationDto absenceDto, Integer id) {
+		AbsenceVisualisationDto absence = absenceDto;
+		Absence abs = absenceRepository.findById(id).orElseThrow(
+				() -> new NotFoundException("L'absence n'a pas ete requpere"));
+		
+		abs.setStatut(absence.getStatut());
 		this.absenceRepository.save(abs);
 		return absence;
 	}
