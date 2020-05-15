@@ -9,6 +9,8 @@ import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -38,6 +40,7 @@ import dev.services.AbsenceService;
  */
 @RestController
 @RequestMapping("absences")
+@EnableScheduling
 public class AbsenceController {
 
 	// Déclarations
@@ -103,7 +106,8 @@ public class AbsenceController {
 
 	/**
 	 * TRAITEMENT DE NUIT
-	 */
+	 */ 
+	@Scheduled(cron="00 00 21 * * *", zone="Europe/Paris")
 	@PostMapping("/traitement-de-nuit")
 	public void traitementDeNuit() {
 		absenceService.traitementDeNuit();

@@ -229,6 +229,7 @@ public class AbsenceService {
 	/**
 	 * traitement de nuit des demandes d'absences
 	 */
+	@Transactional
 	public void traitementDeNuit() {
 
 		// traitement des RTT Employeur
