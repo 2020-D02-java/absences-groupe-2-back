@@ -20,8 +20,5 @@ import dev.entites.Statut;
 public interface AbsenceRepo extends JpaRepository<Absence, Integer> {
 
 	Optional<List<Absence>> findByCollegueEmail(String email);
-	
-	/*@Query("SELECT a FROM Absence a WHERE a.id = ?1 AND a.statut = ?2") 
-	Optional<List<Absence>> findByCollegueAndStatut(Integer id, Statut statut);*/
 
 }
