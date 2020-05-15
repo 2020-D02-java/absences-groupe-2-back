@@ -4,6 +4,8 @@
 package dev.services;
 
 import java.time.LocalDate;
+import java.time.Period;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -204,8 +206,7 @@ public class AbsenceService {
 	public int joursOuvresEntreDeuxDates(LocalDate dateDebut, LocalDate dateFin) {
  
 		int numeroJour = dateDebut.getDayOfWeek().getValue();
-		int nombreDeJours = dateFin.compareTo(dateDebut) + 1;
-		System.out.println("nb jours = " + nombreDeJours);
+		int nombreDeJours = (int) ChronoUnit.DAYS.between(dateDebut, dateFin) + 1;
 		int nombreDeSamediEtDimanche = 2 + (((nombreDeJours - (9- numeroJour)) / 7) *2);
 		
 		int nombreDeJoursFermes = 0;
@@ -247,6 +248,9 @@ public class AbsenceService {
 			if (absence.getStatut().equals(Statut.INITIALE)) {
 				int nombreDeJoursOuvresPendantAbsence = joursOuvresEntreDeuxDates(absence.getDateDebut(), absence.getDateFin());
 	
+				if (absence.getType().equals(TypeAbsence.CONGES_SANS_SOLDE)) {
+					absence.setStatut(Statut.EN_ATTENTE_VALIDATION);
+				}
 				soldes = absence.getCollegue().getSoldes();
 				for (Solde solde : soldes) {
 					if (solde.getType().toString().equals(absence.getType().toString())) {
@@ -261,8 +265,6 @@ public class AbsenceService {
 						}  
 					}
 				}
-			absence.setStatut(Statut.EN_ATTENTE_VALIDATION);
-			absenceRepository.save(absence);
 			} 
 		}
 	}
