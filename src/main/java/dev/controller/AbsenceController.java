@@ -27,7 +27,7 @@ import dev.controller.dto.AbsenceVisualisationDto;
 import dev.controller.dto.ErreurDto;
 import dev.exceptions.AbsenceChevauchementException;
 import dev.exceptions.DateDansLePasseOuAujourdhuiException;
-import dev.exceptions.AbsenceDateFinAvandDateDebutException;
+import dev.exceptions.AbsenceDateFinAvantDateDebutException;
 import dev.exceptions.AbsenceMotifManquantCongesSansSoldeException;
 import dev.exceptions.CollegueAuthentifieNonRecupereException;
 import dev.services.AbsenceService;
@@ -146,8 +146,8 @@ public class AbsenceController {
 	}
 
 	// Cas DateFin < DateDebut
-	@ExceptionHandler(AbsenceDateFinAvandDateDebutException.class)
-	public ResponseEntity<ErreurDto> quandAbsenceDateFinAvandDateDebutException(AbsenceDateFinAvandDateDebutException ex) {
+	@ExceptionHandler(AbsenceDateFinAvantDateDebutException.class)
+	public ResponseEntity<ErreurDto> quandAbsenceDateFinAvandDateDebutException(AbsenceDateFinAvantDateDebutException ex) {
 		ErreurDto erreurDto = new ErreurDto();
 		erreurDto.setMessage(ex.getMessage());
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erreurDto);
