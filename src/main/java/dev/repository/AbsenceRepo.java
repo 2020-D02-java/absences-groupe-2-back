@@ -7,8 +7,10 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import dev.entites.Absence;
+import dev.entites.Statut;
 
 /** Repository de l'entité Absence
  * 
@@ -18,5 +20,8 @@ import dev.entites.Absence;
 public interface AbsenceRepo extends JpaRepository<Absence, Integer> {
 
 	Optional<List<Absence>> findByCollegueEmail(String email);
+	
+	/*@Query("SELECT a FROM Absence a WHERE a.id = ?1 AND a.statut = ?2") 
+	Optional<List<Absence>> findByCollegueAndStatut(Integer id, Statut statut);*/
 
 }
