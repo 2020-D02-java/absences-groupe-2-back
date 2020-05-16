@@ -19,6 +19,5 @@ import dev.entites.TypeAbsence;
 public interface AbsenceRepo extends JpaRepository<Absence, Integer> {
 
 	Optional<List<Absence>> findByCollegueEmail(String email);
-	Optional<List<Absence>> findByType(TypeAbsence type);
 
 }

@@ -26,7 +26,7 @@ import dev.entites.TypeAbsence;
 import dev.entites.TypeJourFerme;
 import dev.entites.TypeSolde;
 import dev.exceptions.AbsenceChevauchementException;
-import dev.exceptions.AbsenceDateFinAvandDateDebutException;
+import dev.exceptions.AbsenceDateFinAvantDateDebutException;
 import dev.exceptions.AbsenceMotifManquantCongesSansSoldeException;
 import dev.exceptions.CollegueAuthentifieNonRecupereException;
 import dev.exceptions.CollegueAuthentifieNotAbsencesException;
@@ -119,7 +119,7 @@ public class AbsenceService {
 			throw new DateDansLePasseOuAujourdhuiException("Une demande d'absence ne peut être saisie sur une date ultérieur ou le jour présent.");
 		} else if (abenceDto.getDateFin().isBefore(abenceDto.getDateDebut())) // Cas DateFin < DateDebut
 		{
-			throw new AbsenceDateFinAvandDateDebutException("La date de fin ne peut-être inférieure à la date du début de votre absence.");
+			throw new AbsenceDateFinAvantDateDebutException("La date de fin ne peut-être inférieure à la date du début de votre absence.");
 		} else if (abenceDto.getType().equals(TypeAbsence.CONGES_SANS_SOLDE) && abenceDto.getMotif().isEmpty()) // Cas congès sans solde, et motif manquant
 		{
 			throw new AbsenceMotifManquantCongesSansSoldeException("Un motif est obligatoire dans le cas où vous souhaitez demander un congés sans solde.");
@@ -175,7 +175,7 @@ public class AbsenceService {
 			throw new DateDansLePasseOuAujourdhuiException("Une demande d'absence ne peut être saisie sur une date ultérieur ou le jour présent.");
 		} else if (absence.getDateFin().isBefore(absence.getDateDebut())) // Cas DateFin < DateDebut
 		{
-			throw new AbsenceDateFinAvandDateDebutException("La date de fin ne peut-être inférieure à la date du début de votre absence.");
+			throw new AbsenceDateFinAvantDateDebutException("La date de fin ne peut-être inférieure à la date du début de votre absence.");
 		} else if (absence.getType().equals(TypeAbsence.CONGES_SANS_SOLDE) && absence.getMotif().isEmpty()) // Cas congès sans solde, et motif manquant
 		{
 			throw new AbsenceMotifManquantCongesSansSoldeException("Un motif est obligatoire dans le cas où vous souhaitez demander un congés sans solde.");
