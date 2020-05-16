@@ -29,6 +29,7 @@ import dev.exceptions.AbsenceChevauchementException;
 import dev.exceptions.AbsenceDateFinAvantDateDebutException;
 import dev.exceptions.AbsenceMotifManquantCongesSansSoldeException;
 import dev.exceptions.CollegueAuthentifieNonRecupereException;
+import dev.exceptions.CollegueAuthentifieNotAbsencesException;
 import dev.exceptions.DateDansLePasseOuAujourdhuiException;
 import dev.repository.AbsenceRepo;
 import dev.repository.CollegueRepo;
@@ -70,8 +71,8 @@ public class AbsenceService {
 
 		List<AbsenceVisualisationDto> listeAbsences = new ArrayList<>();
 
-		List<Absence> liste = absenceRepository.findByCollegueEmail(email).orElseThrow(() -> new CollegueAuthentifieNonRecupereException
-				("Le collègue authentifié n'a pas pu être recupéré")); 		
+		List<Absence> liste = absenceRepository.findByCollegueEmail(email).orElseThrow(() -> new CollegueAuthentifieNotAbsencesException
+				("Le collègue authentifié n'a pas encore d'absences")); 		
 		for (Absence absence : liste) {
 			AbsenceVisualisationDto absenceDto = new AbsenceVisualisationDto(absence.getId(), absence.getDateDebut(), absence.getDateFin(), absence.getType(),
 					absence.getMotif(), absence.getStatut());
@@ -109,7 +110,7 @@ public class AbsenceService {
 	public AbsenceVisualisationDto putAbsence(@Valid AbsenceVisualisationDto abenceDto, Integer id) {
 		String email = SecurityContextHolder.getContext().getAuthentication().getName();
 
-		Collegue collegue = collegueRepository.findByEmail(email).orElseThrow(() -> new CollegueAuthentifieNonRecupereException("Le collegue authentifie n a pas ete recupere"));
+		Collegue collegue = collegueRepository.findByEmail(email).orElseThrow(() -> new CollegueAuthentifieNonRecupereException("Le collègue authentifié n'a pas été récupéré"));
 
 		AbsenceVisualisationDto absence = this.getAbsenceParId(id);
 		
@@ -164,7 +165,7 @@ public class AbsenceService {
 
 		String email = SecurityContextHolder.getContext().getAuthentication().getName();
 
-		Collegue collegue = collegueRepository.findByEmail(email).orElseThrow(() -> new CollegueAuthentifieNonRecupereException("Le collegue authentifie n a pas ete recupere"));
+		Collegue collegue = collegueRepository.findByEmail(email).orElseThrow(() -> new CollegueAuthentifieNonRecupereException("Le collègue authentifié n'a pas été récupéré"));
 
 		Absence absence = new Absence(absenceDemandeDto.getDateDebut(), absenceDemandeDto.getDateFin(), absenceDemandeDto.getType(), absenceDemandeDto.getMotif(),
 				absenceDemandeDto.getStatut(), collegue);
