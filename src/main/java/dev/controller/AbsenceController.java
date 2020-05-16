@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import dev.controller.dto.AbsenceDemandeDto;
 import dev.controller.dto.AbsenceVisualisationDto;
+import dev.controller.dto.AbsenceVisualisationEmailCollegueDto;
 import dev.controller.dto.ErreurDto;
 import dev.exceptions.AbsenceChevauchementException;
 import dev.exceptions.DateDansLePasseOuAujourdhuiException;
@@ -65,6 +66,16 @@ public class AbsenceController {
 	public List<AbsenceVisualisationDto> listerAbsencesCollegue() {
 		return absenceService.listerAbsencesCollegue();
 	}
+	
+	/**
+	 * 
+	 * LISTER TOUTES LES ABSENCES
+	 */
+	@GetMapping("/all")
+	public List<AbsenceVisualisationEmailCollegueDto> listerToutesAbsencesCollegue() {
+		return absenceService.listerToutesAbsencesCollegue();
+	}
+
 
 	/**
 	 * RECUPERER ABSENCE VIA ID

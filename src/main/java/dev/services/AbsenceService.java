@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import dev.controller.dto.AbsenceDemandeDto;
 import dev.controller.dto.AbsenceVisualisationDto;
+import dev.controller.dto.AbsenceVisualisationEmailCollegueDto;
 import dev.entites.Absence;
 import dev.entites.Collegue;
 import dev.entites.JourFerme;
@@ -76,6 +77,22 @@ public class AbsenceService {
 		for (Absence absence : liste) {
 			AbsenceVisualisationDto absenceDto = new AbsenceVisualisationDto(absence.getId(), absence.getDateDebut(), absence.getDateFin(), absence.getType(),
 					absence.getMotif(), absence.getStatut());
+			listeAbsences.add(absenceDto);
+		}
+		return listeAbsences;
+
+	}
+	
+	/**
+	 * LISTER TOUTES LES ABSENCES DES COLLEGUES (front ==> vue-par-departement-par-jour-par-collaborateur)
+	 */
+	public List<AbsenceVisualisationEmailCollegueDto> listerToutesAbsencesCollegue() {
+
+		List<AbsenceVisualisationEmailCollegueDto> listeAbsences = new ArrayList<>();
+		List<Absence> liste = absenceRepository.findAll();
+		for (Absence absence : liste) {
+			AbsenceVisualisationEmailCollegueDto absenceDto = new AbsenceVisualisationEmailCollegueDto(absence.getDateDebut(), absence.getDateFin(), absence.getType(),
+					absence.getMotif(), absence.getStatut(), absence.getCollegue().getEmail());
 			listeAbsences.add(absenceDto);
 		}
 		return listeAbsences;

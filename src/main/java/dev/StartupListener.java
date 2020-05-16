@@ -1,9 +1,7 @@
 package dev;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -135,7 +133,7 @@ public class StartupListener {
 	    Absence abs1col3 = new Absence(LocalDate.of(2020, 8, 17), LocalDate.of(2020, 8, 31), TypeAbsence.CONGES_PAYES, "", Statut.INITIALE, col3);
 	    Absence abs2col3 = new Absence(LocalDate.of(2020, 7, 15), LocalDate.of(2020, 07, 17), TypeAbsence.RTT_EMPLOYE, "Prolongation de la fête nationale", Statut.INITIALE, col3);
 	    Absence abs3col3 = new Absence(LocalDate.of(2021, 01, 01), LocalDate.of(2021, 02, 10), TypeAbsence.CONGES_SANS_SOLDE, "tour du monde en bateau", Statut.INITIALE, col3);
-	
+
 	    this.absenceRepo.save(abs1col3);
 	    this.absenceRepo.save(abs2col3);
 	    this.absenceRepo.save(abs3col3);
