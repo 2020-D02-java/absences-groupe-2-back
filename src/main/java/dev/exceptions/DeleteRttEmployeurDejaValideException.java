@@ -5,12 +5,12 @@ package dev.exceptions;
  * @author KOMINIARZ Anaïs, SAGAN Jonathan, BATIGNES Pierre, GIRARD Vincent.
  *
  */
-public class AbsenceDateException extends RuntimeException {
+public class DeleteRttEmployeurDejaValideException extends RuntimeException {
 
 	/** Constructeur
 	 * @param message
 	 */
-	public AbsenceDateException(String message) {
+	public DeleteRttEmployeurDejaValideException(String message) {
 		super(message);
 	}
 }

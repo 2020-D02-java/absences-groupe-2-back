@@ -5,12 +5,12 @@ package dev.exceptions;
  * @author KOMINIARZ Anaïs, SAGAN Jonathan, BATIGNES Pierre, GIRARD Vincent.
  *
  */
-public class AbsenceMotifManquantException extends RuntimeException {
+public class SaisieJourFerieUnJourDejaFerieException extends RuntimeException{
 
 	/** Constructeur
 	 * @param message
 	 */
-	public AbsenceMotifManquantException(String message) {
+	public SaisieJourFerieUnJourDejaFerieException(String message) {
 		super(message);
 	}
 }
