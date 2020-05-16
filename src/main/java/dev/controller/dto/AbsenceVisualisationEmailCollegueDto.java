@@ -15,10 +15,9 @@ import dev.entites.TypeAbsence;
  * @author KOMINIARZ Anaïs, SAGAN Jonathan, BATIGNES Pierre, GIRARD Vincent.
  *
  */
-public class AbsenceVisualisationIdCollegueDto {
+public class AbsenceVisualisationEmailCollegueDto {
 
 	// Declarations
-	private Integer id;
 	private LocalDate dateDebut;
 	private LocalDate dateFin;
 	private TypeAbsence type;
@@ -36,9 +35,8 @@ public class AbsenceVisualisationIdCollegueDto {
 	 * @param motif
 	 * @param statut
 	 */
-	public AbsenceVisualisationIdCollegueDto(Integer id, LocalDate dateDebut, LocalDate dateFin, TypeAbsence type, String motif, Statut statut, String emailCollegue) {
+	public AbsenceVisualisationEmailCollegueDto(LocalDate dateDebut, LocalDate dateFin, TypeAbsence type, String motif, Statut statut, String emailCollegue) {
 		super();
-		this.id = id;
 		this.dateDebut = dateDebut;
 		this.dateFin = dateFin;
 		this.type = type;
@@ -51,7 +49,7 @@ public class AbsenceVisualisationIdCollegueDto {
 	 * Constructeur vide
 	 *
 	 */
-	public AbsenceVisualisationIdCollegueDto() {
+	public AbsenceVisualisationEmailCollegueDto() {
 
 	}
 
@@ -143,24 +141,6 @@ public class AbsenceVisualisationIdCollegueDto {
 	 */
 	public void setStatut(Statut statut) {
 		this.statut = statut;
-	}
-
-	/**
-	 * Getter
-	 * 
-	 * @return the id
-	 */
-	public Integer getId() {
-		return id;
-	}
-
-	/**
-	 * Setter
-	 * 
-	 * @param id the id to set
-	 */
-	public void setId(Integer id) {
-		this.id = id;
 	}
 
 	/** Getter

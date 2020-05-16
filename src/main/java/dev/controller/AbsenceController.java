@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import dev.controller.dto.AbsenceDemandeDto;
 import dev.controller.dto.AbsenceVisualisationDto;
-import dev.controller.dto.AbsenceVisualisationIdCollegueDto;
+import dev.controller.dto.AbsenceVisualisationEmailCollegueDto;
 import dev.controller.dto.ErreurDto;
 import dev.exceptions.AbsenceChevauchementException;
 import dev.exceptions.AbsenceDateException;
@@ -69,7 +69,7 @@ public class AbsenceController {
 	 * LISTER TOUTES LES ABSENCES
 	 */
 	@GetMapping("/all")
-	public List<AbsenceVisualisationIdCollegueDto> listerToutesAbsencesCollegue() {
+	public List<AbsenceVisualisationEmailCollegueDto> listerToutesAbsencesCollegue() {
 		return absenceService.listerToutesAbsencesCollegue();
 	}
 
