@@ -31,6 +31,7 @@ import dev.exceptions.AbsenceMotifManquantCongesSansSoldeException;
 import dev.exceptions.CollegueAuthentifieNonRecupereException;
 import dev.exceptions.CollegueAuthentifieNotAbsencesException;
 import dev.exceptions.DateDansLePasseOuAujourdhuiException;
+import dev.exceptions.JoursFermesNotFoundByType;
 import dev.repository.AbsenceRepo;
 import dev.repository.CollegueRepo;
 import dev.repository.JourFermeRepo;
@@ -235,11 +236,14 @@ public class AbsenceService {
 	public void traitementDeNuit() {
 
 		// traitement des RTT Employeur
-		for (JourFerme jourFerme : jourFermeRepository.findAll()) {
-			if (jourFerme.getStatut().equals(Statut.INITIALE)) {
-				jourFerme.setStatut(Statut.VALIDEE);
-				jourFermeRepository.save(jourFerme);
-				if (jourFerme.getType().equals(TypeJourFerme.RTT_EMPLOYEUR)) {
+		List<JourFerme> listeRttEmployeurs = jourFermeRepository.findByType(TypeJourFerme.RTT_EMPLOYEUR).orElseThrow
+				(() -> new  JoursFermesNotFoundByType("Les jours fermés de type RTT employeur n'ont pas été trouvés.")); 
+		
+		for (JourFerme rtt_employeur : listeRttEmployeurs) {
+			if (rtt_employeur.getStatut().equals(Statut.INITIALE)) {
+				rtt_employeur.setStatut(Statut.VALIDEE);
+				jourFermeRepository.save(rtt_employeur);
+				if (rtt_employeur.getType().equals(TypeJourFerme.RTT_EMPLOYEUR)) {
 					for (Collegue collegue : collegueRepository.findAll()) {
 						for (Solde solde : collegue.getSoldes()) {
 							if (solde.getType().equals(TypeSolde.RTT_EMPLOYE)) {

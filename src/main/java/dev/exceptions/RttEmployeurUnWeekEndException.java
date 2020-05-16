@@ -5,12 +5,12 @@ package dev.exceptions;
  * @author KOMINIARZ Anaïs, SAGAN Jonathan, BATIGNES Pierre, GIRARD Vincent.
  *
  */
-public class JourRttUnWeekEndException extends RuntimeException{
+public class RttEmployeurUnWeekEndException extends RuntimeException{
 
 	/** Constructeur
 	 * @param message
 	 */
-	public JourRttUnWeekEndException(String message) {
+	public RttEmployeurUnWeekEndException(String message) {
 		super(message);
 	}
 }

@@ -25,7 +25,7 @@ import dev.controller.dto.JourFermeAjoutDto;
 import dev.controller.dto.JourFermeVisualisationDto;
 import dev.exceptions.CommentaireManquantJourFerieException;
 import dev.exceptions.DateDansLePasseException;
-import dev.exceptions.JourRttUnWeekEndException;
+import dev.exceptions.RttEmployeurUnWeekEndException;
 import dev.exceptions.DeleteRttEmployeurDejaValideException;
 import dev.exceptions.SaisieJourFerieUnJourDejaFerieException;
 import dev.services.JourFermeService;
@@ -131,8 +131,8 @@ public class JourFermeController {
 	}
 
 	// il est interdit de saisir une RTT employeur un samedi ou un dimanche
-	@ExceptionHandler(JourRttUnWeekEndException.class)
-	public ResponseEntity<ErreurDto> onRttLeWeekEndException(JourRttUnWeekEndException ex) {
+	@ExceptionHandler(RttEmployeurUnWeekEndException.class)
+	public ResponseEntity<ErreurDto> onRttLeWeekEndException(RttEmployeurUnWeekEndException ex) {
 		ErreurDto erreurDto = new ErreurDto();
 		erreurDto.setMessage(ex.getMessage());
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erreurDto);
