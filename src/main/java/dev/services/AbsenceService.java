@@ -73,19 +73,20 @@ public class AbsenceService {
 
 		List<AbsenceVisualisationDto> listeAbsences = new ArrayList<>();
 
-		List<Absence> liste = absenceRepository.findByCollegueEmail(email).orElseThrow(() -> new CollegueAuthentifieNotAbsencesException
-				("Le collègue authentifié n'a pas encore d'absences")); 		
+		List<Absence> liste = absenceRepository.findByCollegueEmail(email)
+				.orElseThrow(() -> new CollegueAuthentifieNotAbsencesException("Le collègue authentifié n'a pas encore d'absences"));
 		for (Absence absence : liste) {
-			AbsenceVisualisationDto absenceDto = new AbsenceVisualisationDto(absence.getId(), absence.getDateDebut(), absence.getDateFin(), absence.getType(),
-					absence.getMotif(), absence.getStatut());
+			AbsenceVisualisationDto absenceDto = new AbsenceVisualisationDto(absence.getId(), absence.getDateDebut(), absence.getDateFin(), absence.getType(), absence.getMotif(),
+					absence.getStatut());
 			listeAbsences.add(absenceDto);
 		}
 		return listeAbsences;
 
 	}
-	
+
 	/**
-	 * LISTER TOUTES LES ABSENCES DES COLLEGUES (front ==> vue-par-departement-par-jour-par-collaborateur)
+	 * LISTER TOUTES LES ABSENCES DES COLLEGUES (front ==>
+	 * vue-par-departement-par-jour-par-collaborateur)
 	 */
 	public List<AbsenceVisualisationEmailCollegueDto> listerToutesAbsencesCollegue() {
 
@@ -131,7 +132,7 @@ public class AbsenceService {
 		Collegue collegue = collegueRepository.findByEmail(email).orElseThrow(() -> new CollegueAuthentifieNonRecupereException("Le collègue authentifié n'a pas été récupéré"));
 
 		AbsenceVisualisationDto absence = this.getAbsenceParId(id);
-		
+
 		if (abenceDto.getDateDebut().isBefore(LocalDate.now()) || (abenceDto.getDateDebut().isEqual(LocalDate.now()))) // Cas jour saisi dans le passé ou aujourd'hui, erreur
 		{
 			throw new DateDansLePasseOuAujourdhuiException("Une demande d'absence ne peut être saisie sur une date ultérieur ou le jour présent.");
@@ -141,19 +142,128 @@ public class AbsenceService {
 		} else if (abenceDto.getType().equals(TypeAbsence.CONGES_SANS_SOLDE) && abenceDto.getMotif().isEmpty()) // Cas congès sans solde, et motif manquant
 		{
 			throw new AbsenceMotifManquantCongesSansSoldeException("Un motif est obligatoire dans le cas où vous souhaitez demander un congés sans solde.");
-		}
-		else if ((abenceDto.getStatut().equals(Statut.EN_ATTENTE_VALIDATION))||(abenceDto.getStatut().equals(Statut.VALIDEE))) // Impossible de saisir une demande qui chevauche une autre sauf si celle-ci est en statut REJETEE
+		} else if ((abenceDto.getStatut().equals(Statut.EN_ATTENTE_VALIDATION)) || (abenceDto.getStatut().equals(Statut.INITIALE))
+				|| (abenceDto.getStatut().equals(Statut.VALIDEE))) // Impossible de saisir une demande qui chevauche une autre sauf si celle-ci est
+																	// en statut REJETEE
 		{
-			
 			List<Absence> listAbsences = new ArrayList<>();
-			listAbsences = this.absenceRepository.findAll();
- 
+			listAbsences = this.absenceRepository.findByCollegueEmail(email).orElseThrow(() -> new CollegueAuthentifieNotAbsencesException("Le collègue n'a pas d'absence"));
+
 			System.out.println(listAbsences);
 
 			for (Absence abs : listAbsences) {
-
-				if ((abs.getDateDebut().toString().equals(abenceDto.getDateDebut().toString()))) {
-					throw new AbsenceChevauchementException("Une demande est déjà en cours à cette date test");
+				// GERER TOUS LES CAS POSSIBLE , POUR EVITER LES CHEVAUCHEMENTS D'ABSENCES
+				if (
+						(
+							(
+								abenceDto.getDateDebut().isAfter(abs.getDateDebut())
+							)
+							&&
+							(
+								abenceDto.getDateDebut().isBefore(abs.getDateFin())
+							)
+						)
+						&& 
+						(
+							(
+								abenceDto.getDateFin().isAfter(abs.getDateDebut())
+							)
+							&& 
+							(
+								abenceDto.getDateFin().isBefore(abs.getDateFin())
+							)
+						)
+						&& (abs.getId() != id)
+					)
+				{
+					throw new AbsenceChevauchementException("Votre date de début et votre date de fin chevauchent une période d'absence déjà existante");
+				}
+				// https://media.discordapp.net/attachments/705412798665982013/711932715930484739/unknown.png
+				else if // Si la date début + date fin englobe un interval déjà selectionné (CAS 4)
+				(
+					(
+						(
+							abenceDto.getDateDebut().isBefore(abs.getDateDebut())
+						) 
+						&&
+						(
+							abenceDto.getDateFin().isAfter(abs.getDateFin())
+						)
+						&&
+						(abs.getId() != id)
+					)
+				)
+				{
+					throw new AbsenceChevauchementException("Votre demande chevauche une période d'absence déjà existante");
+				} 
+				else if // Si la date début avant + date fin englobe un interval déjà selectionné (CAS 2)
+				(
+					(
+						(
+							abenceDto.getDateDebut().isBefore(abs.getDateDebut())
+						) 
+						&& 
+						(
+							abenceDto.getDateFin().isBefore(abs.getDateFin())
+						) 
+						&& 
+						(
+							abenceDto.getDateFin().isAfter(abs.getDateDebut())
+						) 
+						&& (abs.getId() != id)
+					)
+				) 
+				{
+					throw new AbsenceChevauchementException("Votre date de début est correcte , mais votre date de fin chevauche une période d'absence déjà existante");
+				} 
+				else if // Si la date début avant + date fin englobe un interval déjà selectionné (CAS 3)
+				(
+					(
+						(
+							abenceDto.getDateDebut().isBefore(abs.getDateFin())
+						)
+						&& 
+						(
+							abenceDto.getDateFin().isAfter(abs.getDateFin())
+						)
+						&& 
+						(
+							abenceDto.getDateDebut().isAfter(abs.getDateDebut())
+						)
+						&&
+						(abs.getId() != id)
+					)
+				) 
+				{
+					throw new AbsenceChevauchementException("Votre date de fin est correcte , mais votre date de début chevauche une période d'absence déjà existante");
+				}
+				else if // Si la date fin = date debut déjà existante (CAS 5)
+				(
+						abenceDto.getDateFin().equals(abs.getDateDebut()) && (abs.getId() != id)
+				)
+				{
+					throw new AbsenceChevauchementException("Votre date de fin est la même que la date de début d'une absence déjà existante");
+				} 
+				else if // Si la date fin = date fin déjà existante (CAS 5)
+				(
+						abenceDto.getDateFin().equals(abs.getDateFin()) && (abs.getId() != id)
+				)
+				{
+					throw new AbsenceChevauchementException("Votre date de fin est la même que la date de fin d'une absence déjà existante");
+				}
+				else if // Si la date debut = date debut déjà existante (CAS 5)
+				(
+						abenceDto.getDateDebut().equals(abs.getDateDebut()) && (abs.getId() != id)
+				)
+				{
+					throw new AbsenceChevauchementException("Votre date de debut est la même que la date de début d'une absence déjà existante");
+				} 
+				else if // Si la date début = date fin déjà existante (CAS 5)
+				(
+						abenceDto.getDateDebut().equals(abs.getDateFin()) && (abs.getId() != id)
+				)
+				{
+					throw new AbsenceChevauchementException("Votre date de debut est la même que la date de fin d'une absence déjà existante");
 				}
 			}
 
@@ -197,15 +307,120 @@ public class AbsenceService {
 		} else if (absence.getType().equals(TypeAbsence.CONGES_SANS_SOLDE) && absence.getMotif().isEmpty()) // Cas congès sans solde, et motif manquant
 		{
 			throw new AbsenceMotifManquantCongesSansSoldeException("Un motif est obligatoire dans le cas où vous souhaitez demander un congés sans solde.");
-		} else if((absence.getStatut().equals(Statut.EN_ATTENTE_VALIDATION))||(absence.getStatut().equals(Statut.VALIDEE))) // Impossible de saisir une demande qui chevauche une autre sauf si celle-ci est
-																															// en statut REJETEE
+		} else if ((absence.getStatut().equals(Statut.EN_ATTENTE_VALIDATION)) || (absence.getStatut().equals(Statut.VALIDEE) || (absence.getStatut().equals(Statut.INITIALE)))) // Impossible de saisir une demande qui chevauche une
+																																// autre sauf si celle-ci est
+																																// en statut REJETEE
 		{
 			List<Absence> listAbsences = new ArrayList<>();
-			listAbsences = this.absenceRepository.findAll();
-			for (Absence abs : listAbsences) {
+			listAbsences = this.absenceRepository.findByCollegueEmail(email).orElseThrow(() -> new CollegueAuthentifieNotAbsencesException("Le collègue n'a pas d'absence"));
 
-				if ((abs.getDateDebut().toString().equals(absence.getDateDebut().toString()))) {
-					throw new AbsenceChevauchementException("Une demande est déjà en cours à cette date");
+			for (Absence abs : listAbsences) {
+				// GERER TOUS LES CAS POSSIBLE , POUR EVITER LES CHEVAUCHEMENTS D'ABSENCES
+				if (
+						(
+							(
+									absenceDemandeDto.getDateDebut().isAfter(abs.getDateDebut())
+							)
+							&&
+							(
+									absenceDemandeDto.getDateDebut().isBefore(abs.getDateFin())
+							)
+						)
+						&& 
+						(
+							(
+									absenceDemandeDto.getDateFin().isAfter(abs.getDateDebut())
+							)
+							&& 
+							(
+									absenceDemandeDto.getDateFin().isBefore(abs.getDateFin())
+							)
+						)
+					)
+				{
+					throw new AbsenceChevauchementException("Votre date de début et votre date de fin chevauchent une période d'absence déjà existante");
+				}
+				// https://media.discordapp.net/attachments/705412798665982013/711932715930484739/unknown.png
+				else if // Si la date début + date fin englobe un interval déjà selectionné (CAS 4)
+				(
+					
+					(
+							absenceDemandeDto.getDateDebut().isBefore(abs.getDateDebut())
+					) 
+					&&
+					(
+							absenceDemandeDto.getDateFin().isAfter(abs.getDateFin())
+					)
+					
+				)
+				{
+					throw new AbsenceChevauchementException("Votre demande chevauche une période d'absence déjà existante");
+				} 
+				else if // Si la date début avant + date fin englobe un interval déjà selectionné (CAS 2)
+				(
+					
+					(
+							absenceDemandeDto.getDateDebut().isBefore(abs.getDateDebut())
+					) 
+					&& 
+					(
+							absenceDemandeDto.getDateFin().isBefore(abs.getDateFin())
+					) 
+					&& 
+					(
+							absenceDemandeDto.getDateFin().isAfter(abs.getDateDebut())
+					)
+					
+				) 
+				{
+					throw new AbsenceChevauchementException("Votre date de début est correcte , mais votre date de fin chevauche une période d'absence déjà existante");
+				} 
+				else if // Si la date début avant + date fin englobe un interval déjà selectionné (CAS 3)
+				(
+					
+					(
+							absenceDemandeDto.getDateDebut().isBefore(abs.getDateFin())
+					)
+					&& 
+					(
+							absenceDemandeDto.getDateFin().isAfter(abs.getDateFin())
+					)
+					&& 
+					(
+							absenceDemandeDto.getDateDebut().isAfter(abs.getDateDebut())
+					)
+					
+				) 
+				{
+					throw new AbsenceChevauchementException("Votre date de fin est correcte , mais votre date de début chevauche une période d'absence déjà existante");
+				}
+				else if // Si la date fin = date debut déjà existante (CAS 5)
+				(
+					absenceDemandeDto.getDateFin().equals(abs.getDateDebut())
+				)
+				{
+					throw new AbsenceChevauchementException("Votre date de fin est la même que la date de début d'une absence déjà existante");
+				} 
+				else if // Si la date fin = date fin déjà existante (CAS 5)
+				(
+					absenceDemandeDto.getDateFin().equals(abs.getDateFin())
+				)
+				{
+					throw new AbsenceChevauchementException("Votre date de fin est la même que la date de fin d'une absence déjà existante");
+				}
+				else if // Si la date debut = date debut déjà existante (CAS 5)
+				(
+					absenceDemandeDto.getDateDebut().equals(abs.getDateDebut())
+				)
+				{
+					throw new AbsenceChevauchementException("Votre date de debut est la même que la date de début d'une absence déjà existante");
+				} 
+				else if // Si la date début = date fin déjà existante (CAS 5)
+				(
+					absenceDemandeDto.getDateDebut().equals(abs.getDateFin())
+				)
+				{
+					throw new AbsenceChevauchementException("Votre date de debut est la même que la date de fin d'une absence déjà existante");
 				}
 			}
 
@@ -223,28 +438,28 @@ public class AbsenceService {
 	 * @return le nombre de jours ouvrés entre deux dates
 	 */
 	public int joursOuvresEntreDeuxDates(LocalDate dateDebut, LocalDate dateFin) {
-		
+
 		int nombreDeSamediEtDimanche;
 		int numeroJour = dateDebut.getDayOfWeek().getValue();
 		int nombreDeJours = (int) ChronoUnit.DAYS.between(dateDebut, dateFin) + 1;
-		
+
 		if ((numeroJour - 1 + nombreDeJours) <= 5) {
 			nombreDeSamediEtDimanche = 0;
 		} else {
-			nombreDeSamediEtDimanche = 2 + (((nombreDeJours - (9- numeroJour)) / 7) *2);
+			nombreDeSamediEtDimanche = 2 + (((nombreDeJours - (9 - numeroJour)) / 7) * 2);
 		}
-		
+
 		int nombreDeJoursFermes = 0;
- 
+
 		for (JourFerme jourFerme : jourFermeRepository.findAll()) {
-			if (!(jourFerme.getDate().isBefore(dateDebut)) && !(jourFerme.getDate().isAfter(dateFin)) 
-					&&!(jourFerme.getDate().getDayOfWeek().getValue() == 6) &&!(jourFerme.getDate().getDayOfWeek().getValue()==7)) {
+			if (!(jourFerme.getDate().isBefore(dateDebut)) && !(jourFerme.getDate().isAfter(dateFin)) && !(jourFerme.getDate().getDayOfWeek().getValue() == 6)
+					&& !(jourFerme.getDate().getDayOfWeek().getValue() == 7)) {
 				nombreDeJoursFermes += 1;
 			}
-		} 
+		}
 
 		return nombreDeJours - nombreDeSamediEtDimanche - nombreDeJoursFermes;
-	} 
+	}
 
 	/**
 	 * traitement de nuit des demandes d'absences
@@ -253,9 +468,9 @@ public class AbsenceService {
 	public void traitementDeNuit() {
 
 		// traitement des RTT Employeur
-		List<JourFerme> listeRttEmployeurs = jourFermeRepository.findByType(TypeJourFerme.RTT_EMPLOYEUR).orElseThrow
-				(() -> new  JoursFermesNotFoundByType("Les jours fermés de type RTT employeur n'ont pas été trouvés.")); 
-		
+		List<JourFerme> listeRttEmployeurs = jourFermeRepository.findByType(TypeJourFerme.RTT_EMPLOYEUR)
+				.orElseThrow(() -> new JoursFermesNotFoundByType("Les jours fermés de type RTT employeur n'ont pas été trouvés."));
+
 		for (JourFerme rtt_employeur : listeRttEmployeurs) {
 			if (rtt_employeur.getStatut().equals(Statut.INITIALE)) {
 				rtt_employeur.setStatut(Statut.VALIDEE);
@@ -272,13 +487,13 @@ public class AbsenceService {
 				}
 			}
 		}
-		
-		//Traitement des absences par collegue
+
+		// Traitement des absences par collegue
 		for (Collegue collegue : collegueRepository.findAll()) {
-			
+
 			// récupération des soldes du collègue
 			List<Solde> soldes = collegue.getSoldes();
-			
+
 			int soldeRTT = 0;
 			int soldeCongesPayes = 0;
 			for (Solde solde : soldes) {
@@ -288,14 +503,14 @@ public class AbsenceService {
 					soldeCongesPayes = solde.getNombreDeJours();
 				}
 			}
-			
+
 			List<Absence> listeAbsences = collegue.getAbsences();
-	
+
 			// vérification des soldes des absences EN_ATTENTE_VALIDATION
 			for (Absence absence : listeAbsences) {
-				
+
 				int nombreDeJoursOuvresPendantAbsence = joursOuvresEntreDeuxDates(absence.getDateDebut(), absence.getDateFin());
-				
+
 				if (absence.getStatut().equals(Statut.EN_ATTENTE_VALIDATION)) {
 					if (absence.getType().equals(TypeAbsence.RTT_EMPLOYE)) {
 						soldeRTT -= nombreDeJoursOuvresPendantAbsence;
@@ -305,47 +520,46 @@ public class AbsenceService {
 					}
 				}
 			}
-			
+
 			// traitement des absences INITIALE
 			for (Absence absence : listeAbsences) {
-				
+
 				int nombreDeJoursOuvresPendantAbsence = joursOuvresEntreDeuxDates(absence.getDateDebut(), absence.getDateFin());
-				
+
 				if (absence.getStatut().equals(Statut.INITIALE)) {
-					
+
 					// pas de vérification de soldes pour les congés sans solde
 					if (absence.getType().equals(TypeAbsence.CONGES_SANS_SOLDE)) {
 						absence.setStatut(Statut.EN_ATTENTE_VALIDATION);
 						absenceRepository.save(absence);
 					}
-					
+
 					// vérification des soldes et changement de statut
 					if (absence.getType().equals(TypeAbsence.RTT_EMPLOYE)) {
 						if (soldeRTT - nombreDeJoursOuvresPendantAbsence < 0) {
 							absence.setStatut(Statut.REJETEE);
-			 				absenceRepository.save(absence);
+							absenceRepository.save(absence);
 						} else {
 							soldeRTT = soldeRTT - nombreDeJoursOuvresPendantAbsence;
 							absence.setStatut(Statut.EN_ATTENTE_VALIDATION);
 							absenceRepository.save(absence);
-						}  
+						}
 					}
 					if (absence.getType().equals(TypeAbsence.CONGES_PAYES)) {
 						if (soldeCongesPayes - nombreDeJoursOuvresPendantAbsence < 0) {
 							absence.setStatut(Statut.REJETEE);
-			 				absenceRepository.save(absence);
+							absenceRepository.save(absence);
 						} else {
 							soldeCongesPayes = soldeCongesPayes - nombreDeJoursOuvresPendantAbsence;
 							absence.setStatut(Statut.EN_ATTENTE_VALIDATION);
 							absenceRepository.save(absence);
-						}  
+						}
 					}
-				} 
+				}
 			}
 		}
 	}
-		
-	
+
 	/**
 	 * Supprimer une absence Règles métier: supprimer une demande d'absence qui
 	 * n'est pas de type mission
