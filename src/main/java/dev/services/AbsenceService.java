@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import dev.controller.dto.AbsenceDemandeDto;
+import dev.controller.dto.AbsenceManagerVisualisationDto;
 import dev.controller.dto.AbsenceVisualisationDto;
 import dev.controller.dto.CollegueAbsenceDto;
 import dev.controller.dto.AbsenceVisualisationEmailCollegueDto;
@@ -127,14 +128,14 @@ public class AbsenceService {
 	 * 
 	 * @return
 	 */
-	public List<AbsenceVisualisationDto> getAbsenceParStatut(Statut statut) {
+	public List<AbsenceManagerVisualisationDto> getAbsenceParStatut(Statut statut) {
 		List<Absence> abs = absenceRepository.findAllByStatut(statut);
 
-		List<AbsenceVisualisationDto> listAbs = new ArrayList<>();
+		List<AbsenceManagerVisualisationDto> listAbs = new ArrayList<>();
 
 		for (Absence a : abs) {
-			AbsenceVisualisationDto absence = new AbsenceVisualisationDto(a.getId(), a.getDateDebut(), a.getDateFin(),
-					a.getType(), a.getMotif(), a.getStatut(), new CollegueAbsenceDto(a.getCollegue()));
+			AbsenceManagerVisualisationDto absence = new AbsenceManagerVisualisationDto(a.getId(), a.getDateDebut(), a.getDateFin(),
+					a.getType(), a.getMotif(), a.getStatut(), new CollegueAbsenceDto(a.getCollegue()), new CollegueAbsenceDto(a.getCollegue().getManager()));
 			listAbs.add(absence);
 		}
 
@@ -202,6 +203,7 @@ public class AbsenceService {
 	 * VALIDATION D'UNE ABSENCE
 	 * 
 	 * @param absenceDto
+	 * @param id
 	 * @return une AbsenceVisualisationDto
 	 */
 	public AbsenceVisualisationDto putValidationAbsence(@Valid AbsenceVisualisationDto absenceDto, Integer id) {
@@ -213,6 +215,13 @@ public class AbsenceService {
 		return absenceDto;
 	}
 	
+	/**
+	 * REFUSER UNE ABSENCE
+	 * 
+	 * @param absenceDto
+	 * @param id
+	 * @return une AbsenceVisualisationDto
+	 */
 	public AbsenceVisualisationDto putRefuserAbsence(@Valid AbsenceVisualisationDto absenceDto, Integer id) {
 		Absence abs = absenceRepository.findById(id).orElseThrow(
 				() -> new NotFoundException("L'absence n'a pas ete requpere"));

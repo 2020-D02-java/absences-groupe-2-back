@@ -16,7 +16,7 @@ import dev.entites.TypeAbsence;
  * @author KOMINIARZ Anaïs, SAGAN Jonathan, BATIGNES Pierre, GIRARD Vincent.
  *
  */
-public class AbsenceVisualisationDto {
+public class AbsenceManagerVisualisationDto {
 
 	// Declarations
 	private Integer id;
@@ -25,7 +25,9 @@ public class AbsenceVisualisationDto {
 	private TypeAbsence type;
 	private String motif;
 	private Statut statut;
-	
+	private CollegueAbsenceDto collegue;
+	private CollegueAbsenceDto manager;
+
 	/**
 	 * Constructeur
 	 *
@@ -35,8 +37,9 @@ public class AbsenceVisualisationDto {
 	 * @param type
 	 * @param motif
 	 * @param statut
+	 * @param collegue
 	 */
-	public AbsenceVisualisationDto(Integer id, LocalDate dateDebut, LocalDate dateFin, TypeAbsence type, String motif, Statut statut) {
+	public AbsenceManagerVisualisationDto(Integer id, LocalDate dateDebut, LocalDate dateFin, TypeAbsence type, String motif, Statut statut, CollegueAbsenceDto collegue, CollegueAbsenceDto manager) {
 		super();
 		this.id = id;
 		this.dateDebut = dateDebut;
@@ -44,13 +47,15 @@ public class AbsenceVisualisationDto {
 		this.type = type;
 		this.motif = motif;
 		this.statut = statut;
+		this.collegue = collegue;
+		this.manager = manager;
 	}
 
 	/**
 	 * Constructeur vide
 	 *
 	 */
-	public AbsenceVisualisationDto() {
+	public AbsenceManagerVisualisationDto() {
 
 	}
 
@@ -160,5 +165,37 @@ public class AbsenceVisualisationDto {
 	 */
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	/**Getter
+	 *
+	 * @return the collegue
+	 */
+	public CollegueAbsenceDto getCollegue() {
+		return collegue;
+	}
+
+	/**Setter
+	 *
+	 * @param collegue the collegue to set
+	 */
+	public void setCollegue(CollegueAbsenceDto collegue) {
+		this.collegue = collegue;
+	}
+
+	/**Getter
+	 *
+	 * @return the manager
+	 */
+	public CollegueAbsenceDto getManager() {
+		return manager;
+	}
+
+	/**Setter
+	 *
+	 * @param manager the manager to set
+	 */
+	public void setManager(CollegueAbsenceDto manager) {
+		this.manager = manager;
 	}
 }

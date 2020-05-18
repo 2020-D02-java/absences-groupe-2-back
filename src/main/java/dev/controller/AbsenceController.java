@@ -10,7 +10,6 @@ import javax.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -23,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import dev.controller.dto.AbsenceDemandeDto;
+import dev.controller.dto.AbsenceManagerVisualisationDto;
 import dev.controller.dto.AbsenceVisualisationDto;
 import dev.controller.dto.AbsenceVisualisationEmailCollegueDto;
 import dev.controller.dto.ErreurDto;
@@ -96,7 +96,7 @@ public class AbsenceController {
 	 * @return
 	 */
 	@GetMapping("/statut")
-	public List<AbsenceVisualisationDto> getAbsenceParStatut(@RequestParam("statut") Statut statut) {
+	public List<AbsenceManagerVisualisationDto> getAbsenceParStatut(@RequestParam("statut") Statut statut) {
 		return this.absenceService.getAbsenceParStatut(statut);
 	}
 
