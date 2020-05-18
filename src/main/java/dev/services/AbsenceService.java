@@ -232,11 +232,11 @@ public class AbsenceService {
 
 			if (solde.getType().equals(TypeSolde.RTT_EMPLOYE)) {
 
-				solde.setNombreDeJours(solde.getNombreDeJours() - nombreDeJoursOuvresPendantAbsence);
+				solde.setNombreDeJours(solde.getNombreDeJours() + nombreDeJoursOuvresPendantAbsence);
 
 			} else {
 
-				solde.setNombreDeJours(solde.getNombreDeJours() - nombreDeJoursOuvresPendantAbsence);
+				solde.setNombreDeJours(solde.getNombreDeJours() + nombreDeJoursOuvresPendantAbsence);
 
 			}
 
