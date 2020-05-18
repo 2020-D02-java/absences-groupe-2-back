@@ -78,7 +78,7 @@ public class AbsenceService {
 		List<AbsenceVisualisationDto> listeAbsences = new ArrayList<>();
 
 		List<Absence> liste = absenceRepository.findByCollegueEmail(email).orElseThrow(() -> new CollegueAuthentifieNotAbsencesException
-				("Le collègue authentifié n'a pas encore d'absences"));
+				("Le collègue authentifié n'a pas d'absences"));
 		for (Absence absence : liste) {
 			AbsenceVisualisationDto absenceDto = new AbsenceVisualisationDto(absence.getId(), absence.getDateDebut(),
 					absence.getDateFin(), absence.getType(), absence.getMotif(), absence.getStatut());
