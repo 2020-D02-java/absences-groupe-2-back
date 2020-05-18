@@ -146,73 +146,134 @@ public class AbsenceService {
 				|| (abenceDto.getStatut().equals(Statut.VALIDEE))) // Impossible de saisir une demande qui chevauche une autre sauf si celle-ci est
 																	// en statut REJETEE
 		{
-
 			List<Absence> listAbsences = new ArrayList<>();
-			listAbsences = this.absenceRepository.findAll();
+			listAbsences = this.absenceRepository.findByCollegueEmail(email).orElseThrow(() -> new CollegueAuthentifieNotAbsencesException("Le collègue n'a pas d'absence"));
 
 			System.out.println(listAbsences);
 
 			for (Absence abs : listAbsences) {
-
-
-//				if ((abs.getDateDebut().toString().equals(abenceDto.getDateDebut().toString()))) {
+				// GERER TOUS LES CAS POSSIBLE , POUR EVITER LES CHEVAUCHEMENTS D'ABSENCES
 				if (
-						((
+						(
+							(
 								abenceDto.getDateDebut().isAfter(abs.getDateDebut())
-						)
-						&&
-						(
+							)
+							&&
+							(
 								abenceDto.getDateDebut().isBefore(abs.getDateFin())
-						))
-						&& 
-						((
-								abenceDto.getDateFin().isAfter(abs.getDateDebut())
+							)
 						)
 						&& 
 						(
+							(
+								abenceDto.getDateFin().isAfter(abs.getDateDebut())
+							)
+							&& 
+							(
 								abenceDto.getDateFin().isBefore(abs.getDateFin())
-						))
+							)
+						)
 						&& (abs.getId() != id)
 					)
 				{
-					System.out.println("Cas 1 - 1");
-					throw new AbsenceChevauchementException("Votre date de début chevauche une date déjà utilisée pour une absence.");
+					throw new AbsenceChevauchementException("Votre date de début et votre date de fin chevauchent une période d'absence déjà existante");
 				}
-				// https://media.discordapp.net/attachments/705412798665982013/711908674012053544/unknown.png?width=1442&height=658
-				// Si la date début est comprise dans un interval déjà selectionné (CAS 1)
-
-//				else if ( // Si la date fin est comprise dans un interval déjà selectionné (CAS 1)
-//				((abenceDto.getDateFin().isAfter(abs.getDateDebut())) && (abenceDto.getDateFin().isBefore(abs.getDateFin())) && (abs.getId() != id))) {
-//					System.out.println("Cas 1 - 2");
-//					throw new AbsenceChevauchementException("Votre date de fin chevauche une date déjà utilisée pour une absence.");
-//
-//				} 
-				else if (
-				// Si la date début + date fin englobe un interval déjà selectionné (CAS 4)
-				((abenceDto.getDateDebut().isBefore(abs.getDateDebut())) && (abenceDto.getDateFin().isAfter(abs.getDateFin())) && (abs.getId() != id))) {
-					System.out.println("Cas 4");
-					throw new AbsenceChevauchementException("Votre date de début et votre date de fin chevauchent une période d'absence déjà utilisée");
-
-				} else if (// Si la date début avant + date fin englobe un interval déjà selectionné (CAS
-							// 2)
-				((abenceDto.getDateDebut().isBefore(abs.getDateDebut())) && (abenceDto.getDateFin().isBefore(abs.getDateFin())) && (abenceDto.getDateFin().isAfter(abs.getDateDebut())) && (abs.getId() != id))) {
-					System.out.println(abs.getId());
-					System.out.println(id);
-					System.out.println("Cas 2");
-					throw new AbsenceChevauchementException("Votre date de début est bonne , mais votre date de fin chevauche une période d'absence déjà utilisée");
-				} else if ( // Si la date début avant + date fin englobe un interval déjà selectionné (CAS
-							// 3)
-				((abenceDto.getDateDebut().isBefore(abs.getDateFin())) && (abenceDto.getDateFin().isAfter(abs.getDateFin())) && (abenceDto.getDateDebut().isBefore(abs.getDateFin())) && (abs.getId() != id))) {
-					System.out.println("Cas 3");
-					throw new AbsenceChevauchementException("Votre date de fin est bonne , mais votre date de début chevauche une période d'absence déjà utilisée");
-
+				// https://media.discordapp.net/attachments/705412798665982013/711932715930484739/unknown.png
+				else if // Si la date début + date fin englobe un interval déjà selectionné (CAS 4)
+				(
+					(
+						(
+							abenceDto.getDateDebut().isBefore(abs.getDateDebut())
+						) 
+						&&
+						(
+							abenceDto.getDateFin().isAfter(abs.getDateFin())
+						)
+						&&
+						(abs.getId() != id)
+					)
+				)
+				{
+					throw new AbsenceChevauchementException("Votre date de début et votre date de fin chevauchent une période d'absence déjà existante");
 				} 
-//				else
-//				{
-//					System.out.println(abs.getId());
-//					System.out.println(id);
-//					throw new AbsenceChevauchementException("Une demande est déjà en cours à cette dateeeee");
-//				}
+				else if // Si la date début avant + date fin englobe un interval déjà selectionné (CAS 2)
+				(
+					(
+						(
+							abenceDto.getDateDebut().isBefore(abs.getDateDebut())
+						) 
+						&& 
+						(
+							abenceDto.getDateFin().isBefore(abs.getDateFin())
+						) 
+						&& 
+						(
+							abenceDto.getDateFin().isAfter(abs.getDateDebut())
+						) 
+						&& (abs.getId() != id)
+					)
+				) 
+				{
+					throw new AbsenceChevauchementException("Votre date de début est bonne , mais votre date de fin chevauche une période d'absence déjà existante");
+				} 
+				else if // Si la date début avant + date fin englobe un interval déjà selectionné (CAS 3)
+				(
+					(
+						(
+							abenceDto.getDateDebut().isBefore(abs.getDateFin())
+						)
+						&& 
+						(
+							abenceDto.getDateFin().isAfter(abs.getDateFin())
+						)
+						&& 
+						(
+							abenceDto.getDateDebut().isAfter(abs.getDateDebut())
+						)
+						&&
+						(abs.getId() != id)
+					)
+				) 
+				{
+					throw new AbsenceChevauchementException("Votre date de fin est bonne , mais votre date de début chevauche une période d'absence déjà existante");
+				}
+				else if // Si la date début ou date fin = date déjà existante (CAS 5)
+				(
+					(
+						(
+							(
+								abenceDto.getDateDebut().equals(abs.getDateDebut())
+							) 
+							||
+							(
+								abenceDto.getDateDebut().equals(abs.getDateFin())
+							)
+						)
+						&&
+						(abs.getId() != id)
+					)
+				)
+				{
+					throw new AbsenceChevauchementException("Votre date de debut est la même que celle d'une absence déjà existante");
+				} else if // Si la date début ou date fin = date déjà existante (CAS 5)
+				(
+					
+					(
+						(
+							abenceDto.getDateFin().equals(abs.getDateDebut())
+						)
+						||
+						(
+							abenceDto.getDateFin().equals(abs.getDateFin())
+						)
+					)
+					&&
+					(abs.getId() != id)
+					
+				)
+				{
+					throw new AbsenceChevauchementException("Votre date de fin est la même que celle d'une absence déjà existante");
+				} 
 			}
 
 		}
@@ -255,17 +316,118 @@ public class AbsenceService {
 		} else if (absence.getType().equals(TypeAbsence.CONGES_SANS_SOLDE) && absence.getMotif().isEmpty()) // Cas congès sans solde, et motif manquant
 		{
 			throw new AbsenceMotifManquantCongesSansSoldeException("Un motif est obligatoire dans le cas où vous souhaitez demander un congés sans solde.");
-		} else if ((absence.getStatut().equals(Statut.EN_ATTENTE_VALIDATION)) || (absence.getStatut().equals(Statut.VALIDEE))) // Impossible de saisir une demande qui chevauche une
+		} else if ((absence.getStatut().equals(Statut.EN_ATTENTE_VALIDATION)) || (absence.getStatut().equals(Statut.VALIDEE) || (absence.getStatut().equals(Statut.INITIALE)))) // Impossible de saisir une demande qui chevauche une
 																																// autre sauf si celle-ci est
 																																// en statut REJETEE
 		{
 			List<Absence> listAbsences = new ArrayList<>();
-			listAbsences = this.absenceRepository.findAll();
-			for (Absence abs : listAbsences) {
+			listAbsences = this.absenceRepository.findByCollegueEmail(email).orElseThrow(() -> new CollegueAuthentifieNotAbsencesException("Le collègue n'a pas d'absence"));
 
-				if ((abs.getDateDebut().toString().equals(absence.getDateDebut().toString()))) {
-					throw new AbsenceChevauchementException("Une demande est déjà en cours à cette date");
+			for (Absence abs : listAbsences) {
+				// GERER TOUS LES CAS POSSIBLE , POUR EVITER LES CHEVAUCHEMENTS D'ABSENCES
+				if (
+						(
+							(
+									absenceDemandeDto.getDateDebut().isAfter(abs.getDateDebut())
+							)
+							&&
+							(
+									absenceDemandeDto.getDateDebut().isBefore(abs.getDateFin())
+							)
+						)
+						&& 
+						(
+							(
+									absenceDemandeDto.getDateFin().isAfter(abs.getDateDebut())
+							)
+							&& 
+							(
+									absenceDemandeDto.getDateFin().isBefore(abs.getDateFin())
+							)
+						)
+					)
+				{
+					throw new AbsenceChevauchementException("Votre date de début et votre date de fin chevauchent une période d'absence déjà existante");
 				}
+				// https://media.discordapp.net/attachments/705412798665982013/711932715930484739/unknown.png
+				else if // Si la date début + date fin englobe un interval déjà selectionné (CAS 4)
+				(
+					
+					(
+							absenceDemandeDto.getDateDebut().isBefore(abs.getDateDebut())
+					) 
+					&&
+					(
+							absenceDemandeDto.getDateFin().isAfter(abs.getDateFin())
+					)
+					
+				)
+				{
+					throw new AbsenceChevauchementException("Votre date de début et votre date de fin chevauchent une période d'absence déjà existante");
+				} 
+				else if // Si la date début avant + date fin englobe un interval déjà selectionné (CAS 2)
+				(
+					
+					(
+							absenceDemandeDto.getDateDebut().isBefore(abs.getDateDebut())
+					) 
+					&& 
+					(
+							absenceDemandeDto.getDateFin().isBefore(abs.getDateFin())
+					) 
+					&& 
+					(
+							absenceDemandeDto.getDateFin().isAfter(abs.getDateDebut())
+					)
+					
+				) 
+				{
+					throw new AbsenceChevauchementException("Votre date de début est bonne , mais votre date de fin chevauche une période d'absence déjà existante");
+				} 
+				else if // Si la date début avant + date fin englobe un interval déjà selectionné (CAS 3)
+				(
+					
+					(
+							absenceDemandeDto.getDateDebut().isBefore(abs.getDateFin())
+					)
+					&& 
+					(
+							absenceDemandeDto.getDateFin().isAfter(abs.getDateFin())
+					)
+					&& 
+					(
+							absenceDemandeDto.getDateDebut().isAfter(abs.getDateDebut())
+					)
+					
+				) 
+				{
+					throw new AbsenceChevauchementException("Votre date de fin est bonne , mais votre date de début chevauche une période d'absence déjà existante");
+				}
+				else if // Si la date début ou date fin = date déjà existante (CAS 5)
+				(
+					(
+							absenceDemandeDto.getDateDebut().equals(abs.getDateDebut())
+					) 
+					||
+					(
+							absenceDemandeDto.getDateDebut().equals(abs.getDateFin())
+					)
+				)
+				{
+					throw new AbsenceChevauchementException("Votre date de debut est la même que celle d'une absence déjà existante");
+				} else if // Si la date début ou date fin = date déjà existante (CAS 5)
+				(
+					(
+							absenceDemandeDto.getDateFin().equals(abs.getDateDebut())
+					)
+					||
+					(
+							absenceDemandeDto.getDateFin().equals(abs.getDateFin())
+					)
+				)
+				{
+					throw new AbsenceChevauchementException("Votre date de fin est la même que celle d'une absence déjà existante");
+				} 
 			}
 
 		}
