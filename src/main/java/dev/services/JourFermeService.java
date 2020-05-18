@@ -20,9 +20,9 @@ import dev.entites.Statut;
 import dev.entites.TypeJourFerme;
 import dev.exceptions.CommentaireManquantJourFerieException;
 import dev.exceptions.DateDansLePasseException;
-import dev.exceptions.JourRttUnWeekEndException;
-import dev.exceptions.RttEmployeurDejaValideException;
-import dev.exceptions.SaisieJourFeriesUnJourDejaFeriesException;
+import dev.exceptions.DeleteRttEmployeurDejaValideException;
+import dev.exceptions.RttEmployeurUnWeekEndException;
+import dev.exceptions.SaisieJourFerieUnJourDejaFerieException;
 import dev.repository.JourFermeRepo;
 
 /**
@@ -40,7 +40,7 @@ public class JourFermeService {
 	/**
 	 * Constructeur
 	 *
-	 * @param absenceRepository
+	 * @param jourFermeRepository
 	 */
 	public JourFermeService(JourFermeRepo jourFermeRepository) {
 		this.jourFermeRepository = jourFermeRepository;
@@ -124,7 +124,7 @@ public class JourFermeService {
 		// interdire la saisie de RTT le samedi ou dimanche
 		else if (jourFermeDto.getType().equals(TypeJourFerme.RTT_EMPLOYEUR)
 				&& (jourFermeDto.getDate().getDayOfWeek().toString() == "SATURDAY" || jourFermeDto.getDate().getDayOfWeek().toString() == "SUNDAY")) {
-			throw new JourRttUnWeekEndException("Il n'est pas possible de saisir un RTT le week-end.");
+			throw new RttEmployeurUnWeekEndException("Il n'est pas possible de saisir un RTT le week-end.");
 		}
 		// Vérifier si la date à été changé
 		else if (!(jourFerme.getDate().toString().equals(jourFermeDto.getDate().toString()))) {
@@ -138,7 +138,7 @@ public class JourFermeService {
 				for (JourFerme jour : listJourFerme) {
 					// Si je trouve deux jours feries à la même date, je leve une exception
 					if ((jour.getDate().toString().equals(jourFermeDto.getDate().toString()) && (jour.getType().equals(TypeJourFerme.JOURS_FERIES)))) {
-						throw new SaisieJourFeriesUnJourDejaFeriesException("Il n'est pas possible de saisir un jour férié à la même date qu'un autre jour férié.");
+						throw new SaisieJourFerieUnJourDejaFerieException("Il n'est pas possible de saisir un jour férié à la même date qu'un autre jour férié.");
 					}
 				}
 
@@ -176,7 +176,7 @@ public class JourFermeService {
 		// interdire la saisie de RTT le samedi ou dimanche
 		else if (jourFerme.getType().equals(TypeJourFerme.RTT_EMPLOYEUR)
 				&& (jourFerme.getDate().getDayOfWeek().toString() == "SATURDAY" || jourFerme.getDate().getDayOfWeek().toString() == "SUNDAY")) {
-			throw new JourRttUnWeekEndException("Il n'est pas possible de saisir un RTT le week-end.");
+			throw new RttEmployeurUnWeekEndException("Il n'est pas possible de saisir un RTT le week-end.");
 		}
 		// Si jour feriés, on vérifie qu'il n'existe pas déjà un jour ferié à cette date
 		else if (jourFerme.getType().equals(TypeJourFerme.JOURS_FERIES)) {
@@ -188,7 +188,7 @@ public class JourFermeService {
 			for (JourFerme jour : listJourFerme) {
 				// Si je trouve deux jours feries à la même date, je leve une exception
 				if ((jour.getDate().toString().equals(jourFerme.getDate().toString()) && (jour.getType().equals(TypeJourFerme.JOURS_FERIES)))) {
-					throw new SaisieJourFeriesUnJourDejaFeriesException("Il n'est pas possible de saisir un jour férié à la même date qu'un autre jour férié.");
+					throw new SaisieJourFerieUnJourDejaFerieException("Il n'est pas possible de saisir un jour férié à la même date qu'un autre jour férié.");
 				}
 			}
 
@@ -196,7 +196,7 @@ public class JourFermeService {
 
 		// Tous les cas sont passant, je sauvegarde le jour
 		this.jourFermeRepository.save(jourFerme);
-
+		
 		return new JourFermeAjoutDto(jourFerme.getDate(), jourFerme.getType(), jourFerme.getCommentaire());
 
 	}
@@ -221,7 +221,7 @@ public class JourFermeService {
 			}
 			// il n'est pas possible de supprimer une RTT employeur validée
 			else if (jourFerme.get().getStatut().equals(Statut.VALIDEE) && jourFerme.get().getType().equals(TypeJourFerme.RTT_EMPLOYEUR)) {
-				throw new RttEmployeurDejaValideException("Il n'est pas possible de faire la suppression d'un RTT employeur déjà validé.");
+				throw new DeleteRttEmployeurDejaValideException("Il n'est pas possible de faire la suppression d'un RTT employeur déjà validé.");
 			}
 			this.jourFermeRepository.delete(jourFerme.get());
 			return "\"mission supprimee\"";

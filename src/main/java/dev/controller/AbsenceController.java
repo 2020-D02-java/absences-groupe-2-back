@@ -9,6 +9,8 @@ import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -22,12 +24,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import dev.controller.dto.AbsenceDemandeDto;
 import dev.controller.dto.AbsenceVisualisationDto;
+import dev.controller.dto.AbsenceVisualisationEmailCollegueDto;
 import dev.controller.dto.ErreurDto;
 import dev.entites.Statut;
 import dev.exceptions.AbsenceChevauchementException;
-import dev.exceptions.AbsenceDateException;
-import dev.exceptions.AbsenceDateFinException;
-import dev.exceptions.AbsenceMotifManquantException;
+import dev.exceptions.DateDansLePasseOuAujourdhuiException;
+import dev.exceptions.AbsenceDateFinAvantDateDebutException;
+import dev.exceptions.AbsenceMotifManquantCongesSansSoldeException;
 import dev.exceptions.CollegueAuthentifieNonRecupereException;
 import dev.services.AbsenceService;
 
@@ -39,6 +42,7 @@ import dev.services.AbsenceService;
  */
 @RestController
 @RequestMapping("absences")
+@EnableScheduling
 public class AbsenceController {
 
 	// Déclarations
@@ -63,6 +67,16 @@ public class AbsenceController {
 	public List<AbsenceVisualisationDto> listerAbsencesCollegue() {
 		return absenceService.listerAbsencesCollegue();
 	}
+	
+	/**
+	 * 
+	 * LISTER TOUTES LES ABSENCES
+	 */
+	@GetMapping("/all")
+	public List<AbsenceVisualisationEmailCollegueDto> listerToutesAbsencesCollegue() {
+		return absenceService.listerToutesAbsencesCollegue();
+	}
+
 
 	/**
 	 * RECUPERER ABSENCE VIA ID
@@ -139,7 +153,8 @@ public class AbsenceController {
 
 	/**
 	 * TRAITEMENT DE NUIT
-	 */
+	 */ 
+	//@Scheduled(cron="00 00 21 * * *", zone="Europe/Paris")
 	@PostMapping("/traitement-de-nuit")
 	public void traitementDeNuit() {
 		absenceService.traitementDeNuit();
@@ -161,7 +176,7 @@ public class AbsenceController {
 	// ---- GESTION DES ERREURS ---- //
 	// ----------------------------- //
 
-	// Gestion des erreurs des demandes d'absence
+	// Cas où on ne récupère pas le collègue authentifié
 	@ExceptionHandler(CollegueAuthentifieNonRecupereException.class)
 	public ResponseEntity<ErreurDto> quandCollegueByIdNotExistException(CollegueAuthentifieNonRecupereException ex) {
 		ErreurDto erreurDto = new ErreurDto();
@@ -170,24 +185,24 @@ public class AbsenceController {
 	}
 
 	// Cas jour saisi dans le passé ou aujourd'hui, erreur
-	@ExceptionHandler(AbsenceDateException.class)
-	public ResponseEntity<ErreurDto> quandAbsenceDateException(AbsenceDateException ex) {
+	@ExceptionHandler(DateDansLePasseOuAujourdhuiException.class)
+	public ResponseEntity<ErreurDto> quandDateDansLePasseOuAujourdhuiException(DateDansLePasseOuAujourdhuiException ex) {
 		ErreurDto erreurDto = new ErreurDto();
 		erreurDto.setMessage(ex.getMessage());
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erreurDto);
 	}
 
 	// Cas DateFin < DateDebut
-	@ExceptionHandler(AbsenceDateFinException.class)
-	public ResponseEntity<ErreurDto> quandAbsenceDateFinException(AbsenceDateFinException ex) {
+	@ExceptionHandler(AbsenceDateFinAvantDateDebutException.class)
+	public ResponseEntity<ErreurDto> quandAbsenceDateFinAvandDateDebutException(AbsenceDateFinAvantDateDebutException ex) {
 		ErreurDto erreurDto = new ErreurDto();
 		erreurDto.setMessage(ex.getMessage());
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erreurDto);
 	}
 
 	// Cas congès sans solde, et motif manquant
-	@ExceptionHandler(AbsenceMotifManquantException.class)
-	public ResponseEntity<ErreurDto> quandAbsenceMotifManquantException(AbsenceMotifManquantException ex) {
+	@ExceptionHandler(AbsenceMotifManquantCongesSansSoldeException.class)
+	public ResponseEntity<ErreurDto> quandAbsenceMotifManquantException(AbsenceMotifManquantCongesSansSoldeException ex) {
 		ErreurDto erreurDto = new ErreurDto();
 		erreurDto.setMessage(ex.getMessage());
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erreurDto);
