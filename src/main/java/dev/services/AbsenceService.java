@@ -11,12 +11,15 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
+import org.springframework.security.acls.model.NotFoundException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import dev.controller.dto.AbsenceDemandeDto;
+import dev.controller.dto.AbsenceManagerVisualisationDto;
 import dev.controller.dto.AbsenceVisualisationDto;
+import dev.controller.dto.CollegueAbsenceDto;
 import dev.controller.dto.AbsenceVisualisationEmailCollegueDto;
 import dev.entites.Absence;
 import dev.entites.Collegue;
@@ -56,7 +59,8 @@ public class AbsenceService {
 	 *
 	 * @param absenceRepository
 	 */
-	public AbsenceService(AbsenceRepo absenceRepository, CollegueRepo collegueRepository, JourFermeRepo jourFermeRepository) {
+	public AbsenceService(AbsenceRepo absenceRepository, CollegueRepo collegueRepository,
+			JourFermeRepo jourFermeRepository) {
 		this.absenceRepository = absenceRepository;
 		this.collegueRepository = collegueRepository;
 		this.jourFermeRepository = jourFermeRepository;
@@ -73,11 +77,12 @@ public class AbsenceService {
 
 		List<AbsenceVisualisationDto> listeAbsences = new ArrayList<>();
 
-		List<Absence> liste = absenceRepository.findByCollegueEmail(email)
-				.orElseThrow(() -> new CollegueAuthentifieNotAbsencesException("Le collègue authentifié n'a pas encore d'absences"));
+		List<Absence> liste = absenceRepository.findByCollegueEmail(email).orElseThrow(() -> new CollegueAuthentifieNotAbsencesException
+				("Le collègue authentifié n'a pas encore d'absences"));
 		for (Absence absence : liste) {
-			AbsenceVisualisationDto absenceDto = new AbsenceVisualisationDto(absence.getId(), absence.getDateDebut(), absence.getDateFin(), absence.getType(), absence.getMotif(),
-					absence.getStatut());
+			AbsenceVisualisationDto absenceDto = new AbsenceVisualisationDto(absence.getId(), absence.getDateDebut(),
+					absence.getDateFin(), absence.getType(), absence.getMotif(), absence.getStatut());
+
 			listeAbsences.add(absenceDto);
 		}
 		return listeAbsences;
@@ -112,11 +117,31 @@ public class AbsenceService {
 
 		for (Absence absence : absenceRepository.findAll()) {
 			if (absence.getId() == id) {
-				abs = new AbsenceVisualisationDto(id, absence.getDateDebut(), absence.getDateFin(), absence.getType(), absence.getMotif(), absence.getStatut());
+				abs = new AbsenceVisualisationDto(id, absence.getDateDebut(), absence.getDateFin(), absence.getType(),
+						absence.getMotif(), absence.getStatut());
 			}
 		}
 
 		return abs;
+	}
+
+	/**
+	 * RECUPERER UNE ABSENCE VIA STATUT
+	 * 
+	 * @return
+	 */
+	public List<AbsenceManagerVisualisationDto> getAbsenceParStatut(Statut statut) {
+		List<Absence> abs = absenceRepository.findAllByStatut(statut);
+
+		List<AbsenceManagerVisualisationDto> listAbs = new ArrayList<>();
+
+		for (Absence a : abs) {
+			AbsenceManagerVisualisationDto absence = new AbsenceManagerVisualisationDto(a.getId(), a.getDateDebut(), a.getDateFin(),
+					a.getType(), a.getMotif(), a.getStatut(), new CollegueAbsenceDto(a.getCollegue()), new CollegueAbsenceDto(a.getCollegue().getManager()));
+			listAbs.add(absence);
+		}
+
+		return listAbs;
 	}
 
 	/**
@@ -275,11 +300,60 @@ public class AbsenceService {
 		absence.setMotif(abenceDto.getMotif());
 		absence.setStatut(abenceDto.getStatut());
 
-		Absence abs = new Absence(absence.getDateDebut(), absence.getDateFin(), absence.getType(), absence.getMotif(), absence.getStatut(), collegue);
+		Absence abs = new Absence(absence.getDateDebut(), absence.getDateFin(), absence.getType(), absence.getMotif(),
+				absence.getStatut(), collegue);
 		abs.setId(absence.getId());
 
 		this.absenceRepository.save(abs);
 		return absence;
+	}
+	
+	/**
+	 * VALIDATION D'UNE ABSENCE
+	 * 
+	 * @param absenceDto
+	 * @param id
+	 * @return une AbsenceVisualisationDto
+	 */
+	public AbsenceVisualisationDto putValidationAbsence(@Valid AbsenceVisualisationDto absenceDto, Integer id) {
+		Absence abs = absenceRepository.findById(id).orElseThrow(
+				() -> new NotFoundException("L'absence n'a pas ete requpere"));
+		
+		abs.setStatut(absenceDto.getStatut());
+		this.absenceRepository.save(abs);
+		return absenceDto;
+	}
+	
+	/**
+	 * REFUSER UNE ABSENCE
+	 * 
+	 * @param absenceDto
+	 * @param id
+	 * @return une AbsenceVisualisationDto
+	 */
+	public AbsenceVisualisationDto putRefuserAbsence(@Valid AbsenceVisualisationDto absenceDto, Integer id) {
+		Absence abs = absenceRepository.findById(id).orElseThrow(
+				() -> new NotFoundException("L'absence n'a pas ete requpere"));
+		
+		int nombreDeJoursOuvresPendantAbsence = joursOuvresEntreDeuxDates(abs.getDateDebut(), abs.getDateFin());
+
+		for (Solde solde : abs.getCollegue().getSoldes()) {
+
+			if (solde.getType().equals(TypeSolde.RTT_EMPLOYE)) {
+
+				solde.setNombreDeJours(solde.getNombreDeJours() + nombreDeJoursOuvresPendantAbsence);
+
+			} else {
+
+				solde.setNombreDeJours(solde.getNombreDeJours() + nombreDeJoursOuvresPendantAbsence);
+
+			}
+
+		}
+		
+		abs.setStatut(absenceDto.getStatut());
+		this.absenceRepository.save(abs);
+		return absenceDto;
 	}
 
 	/**
@@ -427,7 +501,8 @@ public class AbsenceService {
 		}
 
 		this.absenceRepository.save(absence);
-		return new AbsenceDemandeDto(absence.getDateDebut(), absence.getDateFin(), absence.getType(), absence.getMotif(), absence.getStatut());
+		return new AbsenceDemandeDto(absence.getDateDebut(), absence.getDateFin(), absence.getType(),
+				absence.getMotif(), absence.getStatut());
 	}
 
 	/**

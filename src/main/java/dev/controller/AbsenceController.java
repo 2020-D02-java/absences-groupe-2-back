@@ -10,7 +10,6 @@ import javax.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -23,9 +22,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import dev.controller.dto.AbsenceDemandeDto;
+import dev.controller.dto.AbsenceManagerVisualisationDto;
 import dev.controller.dto.AbsenceVisualisationDto;
 import dev.controller.dto.AbsenceVisualisationEmailCollegueDto;
 import dev.controller.dto.ErreurDto;
+import dev.entites.Statut;
 import dev.exceptions.AbsenceChevauchementException;
 import dev.exceptions.DateDansLePasseOuAujourdhuiException;
 import dev.exceptions.AbsenceDateFinAvantDateDebutException;
@@ -87,6 +88,17 @@ public class AbsenceController {
 	public AbsenceVisualisationDto getAbsenceParId(@RequestParam("id") Integer id) {
 		return this.absenceService.getAbsenceParId(id);
 	}
+	
+	/**
+	 * RECUPERER ABSENCE VIA STATUT
+	 * 
+	 * @param id
+	 * @return
+	 */
+	@GetMapping("/statut")
+	public List<AbsenceManagerVisualisationDto> getAbsenceParStatut(@RequestParam("statut") Statut statut) {
+		return this.absenceService.getAbsenceParStatut(statut);
+	}
 
 	/**
 	 * MODIFICATION ABSENCE
@@ -98,6 +110,30 @@ public class AbsenceController {
 	@PutMapping("/modification")
 	public AbsenceVisualisationDto putAbsence(@RequestBody @Valid AbsenceVisualisationDto absenceDto, @RequestParam("id") Integer id) {
 		return this.absenceService.putAbsence(absenceDto, id);
+	}
+	
+	/**
+	 * VALIDATION ABSENCE
+	 * 
+	 * @param absenceDto
+	 * @param id
+	 * @return
+	 */
+	@PutMapping
+	public AbsenceVisualisationDto putValidationAbsence(@RequestBody @Valid AbsenceVisualisationDto absenceDto, @RequestParam("id") Integer id) {
+		return this.absenceService.putValidationAbsence(absenceDto, id);
+	}
+	
+	/**
+	 * REUFUSER ABSENCE
+	 * 
+	 * @param absenceDto
+	 * @param id
+	 * @return
+	 */
+	@PutMapping("/refuser")
+	public AbsenceVisualisationDto putRefuserAbsence(@RequestBody @Valid AbsenceVisualisationDto absenceDto, @RequestParam("id") Integer id) {
+		return this.absenceService.putRefuserAbsence(absenceDto, id);
 	}
 
 	/**
