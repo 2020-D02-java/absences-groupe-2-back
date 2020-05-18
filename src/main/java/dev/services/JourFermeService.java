@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import dev.controller.dto.JourFermeAjoutDto;
 import dev.controller.dto.JourFermeVisualisationDto;
+import dev.controller.dto.JourFermeVisualisationPlanningDto;
 import dev.entites.JourFerme;
 import dev.entites.Statut;
 import dev.entites.TypeJourFerme;
@@ -51,13 +52,13 @@ public class JourFermeService {
 	 * 
 	 * @return
 	 */
-	public List<JourFermeVisualisationDto> getAllJourFermes() {
+	public List<JourFermeVisualisationPlanningDto> getAllJourFermes() {
 
-		List<JourFermeVisualisationDto> listeJourFerme = new ArrayList<>();
+		List<JourFermeVisualisationPlanningDto> listeJourFerme = new ArrayList<>();
 
 		for (JourFerme jourFerme : jourFermeRepository.findAll()) {
 
-			JourFermeVisualisationDto jourFermeDto = new JourFermeVisualisationDto(jourFerme.getId(), jourFerme.getDate(), jourFerme.getType(), jourFerme.getCommentaire());
+			JourFermeVisualisationPlanningDto jourFermeDto = new JourFermeVisualisationPlanningDto(jourFerme.getDate(), jourFerme.getCommentaire());
 			listeJourFerme.add(jourFermeDto);
 
 		}
