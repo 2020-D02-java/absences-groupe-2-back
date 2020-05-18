@@ -109,6 +109,18 @@ public class AbsenceController {
 	public AbsenceVisualisationDto putValidationAbsence(@RequestBody @Valid AbsenceVisualisationDto absenceDto, @RequestParam("id") Integer id) {
 		return this.absenceService.putValidationAbsence(absenceDto, id);
 	}
+	
+	/**
+	 * REUFUSER ABSENCE
+	 * 
+	 * @param absenceDto
+	 * @param id
+	 * @return
+	 */
+	@PutMapping("/refuser")
+	public AbsenceVisualisationDto putRefuserAbsence(@RequestBody @Valid AbsenceVisualisationDto absenceDto, @RequestParam("id") Integer id) {
+		return this.absenceService.putRefuserAbsence(absenceDto, id);
+	}
 
 	/**
 	 * SUPPRESSION ABSENCE VIA ID

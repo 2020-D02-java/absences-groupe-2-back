@@ -186,14 +186,44 @@ public class AbsenceService {
 		return absence;
 	}
 	
+	/**
+	 * VALIDATION D'UNE ABSENCE
+	 * 
+	 * @param absenceDto
+	 * @return une AbsenceVisualisationDto
+	 */
 	public AbsenceVisualisationDto putValidationAbsence(@Valid AbsenceVisualisationDto absenceDto, Integer id) {
-		AbsenceVisualisationDto absence = absenceDto;
 		Absence abs = absenceRepository.findById(id).orElseThrow(
 				() -> new NotFoundException("L'absence n'a pas ete requpere"));
 		
-		abs.setStatut(absence.getStatut());
+		abs.setStatut(absenceDto.getStatut());
 		this.absenceRepository.save(abs);
-		return absence;
+		return absenceDto;
+	}
+	
+	public AbsenceVisualisationDto putRefuserAbsence(@Valid AbsenceVisualisationDto absenceDto, Integer id) {
+		Absence abs = absenceRepository.findById(id).orElseThrow(
+				() -> new NotFoundException("L'absence n'a pas ete requpere"));
+		
+		int nombreDeJoursOuvresPendantAbsence = joursOuvresEntreDeuxDates(abs.getDateDebut(), abs.getDateFin());
+
+		for (Solde solde : abs.getCollegue().getSoldes()) {
+
+			if (solde.getType().equals(TypeSolde.RTT_EMPLOYE)) {
+
+				solde.setNombreDeJours(solde.getNombreDeJours() - nombreDeJoursOuvresPendantAbsence);
+
+			} else {
+
+				solde.setNombreDeJours(solde.getNombreDeJours() - nombreDeJoursOuvresPendantAbsence);
+
+			}
+
+		}
+		
+		abs.setStatut(absenceDto.getStatut());
+		this.absenceRepository.save(abs);
+		return absenceDto;
 	}
 
 	/**
