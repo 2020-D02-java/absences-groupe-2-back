@@ -191,7 +191,7 @@ public class Absence {
 	 * @return the collegue
 	 */
 	public Collegue getCollegue() {
-		return collegue;
+		return this.collegue;
 	}
 
 	/**

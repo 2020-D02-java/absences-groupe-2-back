@@ -23,10 +23,11 @@ import org.springframework.web.bind.annotation.RestController;
 import dev.controller.dto.ErreurDto;
 import dev.controller.dto.JourFermeAjoutDto;
 import dev.controller.dto.JourFermeVisualisationDto;
+import dev.controller.dto.JourFermeVisualisationPlanningDto;
 import dev.exceptions.CommentaireManquantJourFerieException;
 import dev.exceptions.DateDansLePasseException;
-import dev.exceptions.RttEmployeurUnWeekEndException;
 import dev.exceptions.DeleteRttEmployeurDejaValideException;
+import dev.exceptions.RttEmployeurUnWeekEndException;
 import dev.exceptions.SaisieJourFerieUnJourDejaFerieException;
 import dev.services.JourFermeService;
 
@@ -51,9 +52,19 @@ public class JourFermeController {
 	public JourFermeController(JourFermeService jourFermeService) {
 		this.jourFermeService = jourFermeService;
 	}
-
+	
 	/**
-	 * RECUPERER TOUS LES JOUR FERMER AVEC FILTRE ANNEE
+	 * LISTER TOUS LES JOURS FERMES
+	 * 
+	 */
+	@GetMapping
+	public List<JourFermeVisualisationPlanningDto> listerJourFermes() {
+		return jourFermeService.getAllJourFermes();
+	}
+	
+	
+	/**
+	 * RECUPERER TOUS LES JOURS FERMES AVEC FILTRE ANNEE
 	 * 
 	 * @param annee
 	 * @return
@@ -64,7 +75,7 @@ public class JourFermeController {
 	}
 
 	/**
-	 * RECUPERER JOUR FERME VIA ID
+	 * RECUPERER JOURS FERMES VIA ID
 	 * 
 	 * @param id
 	 * @return
@@ -75,7 +86,7 @@ public class JourFermeController {
 	}
 
 	/**
-	 * MODIFICATION JOUR FERME
+	 * MODIFICATION JOURS FERMES
 	 * 
 	 * @param jourFermeDto
 	 * @param id
@@ -87,7 +98,7 @@ public class JourFermeController {
 	}
 
 	/**
-	 * AJOUTER JOUR FERME
+	 * AJOUTER JOURS FERMES
 	 * 
 	 * @param jourFermeDto
 	 * @return
@@ -98,7 +109,7 @@ public class JourFermeController {
 	}
 
 	/**
-	 * SUPPRESSION JOUR FERME VIA ID
+	 * SUPPRESSION JOURS FERMES VIA ID
 	 * 
 	 * @param id
 	 * @return
