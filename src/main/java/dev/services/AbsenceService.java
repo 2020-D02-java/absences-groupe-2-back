@@ -36,6 +36,7 @@ import dev.exceptions.JoursFermesNotFoundByType;
 import dev.repository.AbsenceRepo;
 import dev.repository.CollegueRepo;
 import dev.repository.JourFermeRepo;
+import dev.repository.SoldeRepo;
 
 /**
  * Service de l'entité Absence
@@ -50,16 +51,18 @@ public class AbsenceService {
 	private AbsenceRepo absenceRepository;
 	private CollegueRepo collegueRepository;
 	private JourFermeRepo jourFermeRepository;
+	private SoldeRepo soldeRepository;
 
 	/**
 	 * Constructeur
 	 *
 	 * @param absenceRepository
 	 */
-	public AbsenceService(AbsenceRepo absenceRepository, CollegueRepo collegueRepository, JourFermeRepo jourFermeRepository) {
+	public AbsenceService(AbsenceRepo absenceRepository, CollegueRepo collegueRepository, JourFermeRepo jourFermeRepository, SoldeRepo soldeRepository) {
 		this.absenceRepository = absenceRepository;
 		this.collegueRepository = collegueRepository;
 		this.jourFermeRepository = jourFermeRepository;
+		this.soldeRepository = soldeRepository;
 	}
 
 	/**
@@ -276,72 +279,41 @@ public class AbsenceService {
 		//Traitement des absences par collegue
 		for (Collegue collegue : collegueRepository.findAll()) {
 			
-			// récupération des soldes du collègue
-			List<Solde> soldes = collegue.getSoldes();
-			
-			int soldeRTT = 0;
-			int soldeCongesPayes = 0;
-			for (Solde solde : soldes) {
-				if (solde.getType().equals(TypeSolde.RTT_EMPLOYE)) {
-					soldeRTT = solde.getNombreDeJours();
-				} else {
-					soldeCongesPayes = solde.getNombreDeJours();
-				}
-			}
-			
 			List<Absence> listeAbsences = collegue.getAbsences();
-	
-			// vérification des soldes des absences EN_ATTENTE_VALIDATION
-			for (Absence absence : listeAbsences) {
-				
-				int nombreDeJoursOuvresPendantAbsence = joursOuvresEntreDeuxDates(absence.getDateDebut(), absence.getDateFin());
-				
-				if (absence.getStatut().equals(Statut.EN_ATTENTE_VALIDATION)) {
-					if (absence.getType().equals(TypeAbsence.RTT_EMPLOYE)) {
-						soldeRTT -= nombreDeJoursOuvresPendantAbsence;
-					}
-					if (absence.getType().equals(TypeAbsence.CONGES_PAYES)) {
-						soldeCongesPayes -= nombreDeJoursOuvresPendantAbsence;
-					}
-				}
-			}
 			
-			// traitement des absences INITIALE
 			for (Absence absence : listeAbsences) {
 				
-				int nombreDeJoursOuvresPendantAbsence = joursOuvresEntreDeuxDates(absence.getDateDebut(), absence.getDateFin());
-				
+				// on ne s'occupe que des absences au statut inital 
 				if (absence.getStatut().equals(Statut.INITIALE)) {
 					
-					// pas de vérification de soldes pour les congés sans solde
+					int nombreDeJoursOuvresPendantAbsence = joursOuvresEntreDeuxDates(absence.getDateDebut(), absence.getDateFin());
+					
 					if (absence.getType().equals(TypeAbsence.CONGES_SANS_SOLDE)) {
 						absence.setStatut(Statut.EN_ATTENTE_VALIDATION);
 						absenceRepository.save(absence);
 					}
 					
-					// vérification des soldes et changement de statut
-					if (absence.getType().equals(TypeAbsence.RTT_EMPLOYE)) {
-						if (soldeRTT - nombreDeJoursOuvresPendantAbsence < 0) {
-							absence.setStatut(Statut.REJETEE);
-			 				absenceRepository.save(absence);
-						} else {
-							soldeRTT = soldeRTT - nombreDeJoursOuvresPendantAbsence;
-							absence.setStatut(Statut.EN_ATTENTE_VALIDATION);
-							absenceRepository.save(absence);
-						}  
+					List<Solde> soldes = collegue.getSoldes();
+					
+					for (Solde solde : soldes) {
+						if (solde.getType().toString().equals(absence.getType().toString())){
+							
+							// si le collègue n'a pas assez de soldes (RTT_EMPLOYE ou CONGES_PAYES)
+							if (solde.getNombreDeJours() - nombreDeJoursOuvresPendantAbsence < 0) {
+								absence.setStatut(Statut.REJETEE);
+								absenceRepository.save(absence);
+							// sinon 	
+							} else {
+								absence.setStatut(Statut.EN_ATTENTE_VALIDATION);
+								absenceRepository.save(absence);
+								solde.setNombreDeJours(solde.getNombreDeJours() - nombreDeJoursOuvresPendantAbsence);
+							}
+						}
 					}
-					if (absence.getType().equals(TypeAbsence.CONGES_PAYES)) {
-						if (soldeCongesPayes - nombreDeJoursOuvresPendantAbsence < 0) {
-							absence.setStatut(Statut.REJETEE);
-			 				absenceRepository.save(absence);
-						} else {
-							soldeCongesPayes = soldeCongesPayes - nombreDeJoursOuvresPendantAbsence;
-							absence.setStatut(Statut.EN_ATTENTE_VALIDATION);
-							absenceRepository.save(absence);
-						}  
-					}
-				} 
+				}
 			}
+			// sauvegarde le collegue pour avoir ses soldes mis à jour
+			collegueRepository.save(collegue);
 		}
 	}
 		
