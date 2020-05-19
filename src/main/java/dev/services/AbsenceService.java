@@ -513,11 +513,19 @@ public class AbsenceService {
 		int nombreDeSamediEtDimanche;
 		int numeroJour = dateDebut.getDayOfWeek().getValue();
 		int nombreDeJours = (int) ChronoUnit.DAYS.between(dateDebut, dateFin) + 1;
+		int nombreDeJoursDeDateDebutALundiQuiSuit = 9 - numeroJour;
+		int deuxJoursDuPremierWeekEndDeLAbsence = 2; 
+		int nombreDeJoursDurantUnWeekEnd = 2;
+		int nombreDeJoursDansUneSemaine = 7;
 
+		// condition qui vérifie qu'une absence est plus petite qu'une semaine et ne
+		// contient aucun week-end 
 		if ((numeroJour - 1 + nombreDeJours) <= 5) {
 			nombreDeSamediEtDimanche = 0;
+		// sinon 
 		} else {
-			nombreDeSamediEtDimanche = 2 + (((nombreDeJours - (9 - numeroJour)) / 7) * 2);
+			nombreDeSamediEtDimanche = deuxJoursDuPremierWeekEndDeLAbsence + 
+					( ( (nombreDeJours - (nombreDeJoursDeDateDebutALundiQuiSuit) ) / nombreDeJoursDansUneSemaine) * nombreDeJoursDurantUnWeekEnd );
 		}
 
 		int nombreDeJoursFermes = 0;
