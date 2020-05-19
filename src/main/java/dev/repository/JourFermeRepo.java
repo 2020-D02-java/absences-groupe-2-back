@@ -1,6 +1,3 @@
-/**
- * 
- */
 package dev.repository;
 
 import java.util.List;
@@ -11,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import dev.entites.JourFerme;
 import dev.entites.TypeJourFerme;
 
-/** Repository des jours ferme
+/** Repository des jours fermés
  * 
  * @author KOMINIARZ Anaïs, SAGAN Jonathan, BATIGNES Pierre, GIRARD Vincent.
  *

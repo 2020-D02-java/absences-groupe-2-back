@@ -16,7 +16,7 @@ import dev.entites.Role;
  */
 public class CollegueDto {
 
-	// Declarations
+	// Déclarations
 	private String email;
 	private String nom;
 	private String prenom;

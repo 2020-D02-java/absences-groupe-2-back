@@ -1,6 +1,3 @@
-/**
- * 
- */
 package dev.entites;
 
 import java.time.LocalDate;
@@ -80,7 +77,7 @@ public class Absence {
 	/**
 	 * Getter
 	 *
-	 * @return the id
+	 * @return id
 	 */
 	public Integer getId() {
 		return id;
@@ -89,7 +86,7 @@ public class Absence {
 	/**
 	 * Setter
 	 *
-	 * @param id the id to set
+	 * @param id to set
 	 */
 	public void setId(Integer id) {
 		this.id = id;
@@ -98,7 +95,7 @@ public class Absence {
 	/**
 	 * Getter
 	 *
-	 * @return the dateDebut
+	 * @return dateDebut
 	 */
 	public LocalDate getDateDebut() {
 		return dateDebut;
@@ -107,7 +104,7 @@ public class Absence {
 	/**
 	 * Setter
 	 *
-	 * @param dateDebut the dateDebut to set
+	 * @param dateDebut to set
 	 */
 	public void setDateDebut(LocalDate dateDebut) {
 		this.dateDebut = dateDebut;
@@ -116,7 +113,7 @@ public class Absence {
 	/**
 	 * Getter
 	 *
-	 * @return the dateFin
+	 * @return dateFin
 	 */
 	public LocalDate getDateFin() {
 		return dateFin;
@@ -125,7 +122,7 @@ public class Absence {
 	/**
 	 * Setter
 	 *
-	 * @param dateFin the dateFin to set
+	 * @param dateFin to set
 	 */
 	public void setDateFin(LocalDate dateFin) {
 		this.dateFin = dateFin;
@@ -134,7 +131,7 @@ public class Absence {
 	/**
 	 * Getter
 	 *
-	 * @return the typeAbsence
+	 * @return typeAbsence
 	 */
 	public TypeAbsence getType() {
 		return type;
@@ -143,7 +140,7 @@ public class Absence {
 	/**
 	 * Setter
 	 *
-	 * @param typeAbsence the typeAbsence to set
+	 * @param typeAbsence to set
 	 */
 	public void setType(TypeAbsence type) {
 		this.type = type;
@@ -152,7 +149,7 @@ public class Absence {
 	/**
 	 * Getter
 	 *
-	 * @return the motif
+	 * @return motif
 	 */
 	public String getMotif() {
 		return motif;
@@ -161,7 +158,7 @@ public class Absence {
 	/**
 	 * Setter
 	 *
-	 * @param motif the motif to set
+	 * @param motif to set
 	 */
 	public void setMotif(String motif) {
 		this.motif = motif;
@@ -170,7 +167,7 @@ public class Absence {
 	/**
 	 * Getter
 	 *
-	 * @return the statut
+	 * @return statut
 	 */
 	public Statut getStatut() {
 		return statut;
@@ -179,7 +176,7 @@ public class Absence {
 	/**
 	 * Setter
 	 *
-	 * @param statut the statut to set
+	 * @param statut to set
 	 */
 	public void setStatut(Statut statut) {
 		this.statut = statut;
@@ -188,7 +185,7 @@ public class Absence {
 	/**
 	 * Getter
 	 *
-	 * @return the collegue
+	 * @return collegue
 	 */
 	public Collegue getCollegue() {
 		return this.collegue;
@@ -197,7 +194,7 @@ public class Absence {
 	/**
 	 * Setter
 	 *
-	 * @param collegue the collegue to set
+	 * @param collegue to set
 	 */
 	public void setCollegue(Collegue collegue) {
 		this.collegue = collegue;

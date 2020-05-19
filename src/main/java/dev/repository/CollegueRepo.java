@@ -8,6 +8,7 @@ import dev.entites.Collegue;
 
 /**
  * Repository de l'entité Collegue
+ * 
  * @author KOMINIARZ Anaïs, SAGAN Jonathan, BATIGNES Pierre, GIRARD Vincent.
  *
  */

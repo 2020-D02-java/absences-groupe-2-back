@@ -16,7 +16,7 @@ import dev.entites.Role;
  */
 public class CollegueAbsenceDto {
 
-	// Declarations
+	// Déclarations
 	private Integer id;
 	private String email;
 	private String nom;
@@ -47,7 +47,7 @@ public class CollegueAbsenceDto {
 
 	/**Getter
 	 *
-	 * @return the id
+	 * @return id
 	 */
 	public Integer getId() {
 		return id;
@@ -55,7 +55,7 @@ public class CollegueAbsenceDto {
 
 	/**Setter
 	 *
-	 * @param id the id to set
+	 * @param id to set
 	 */
 	public void setId(Integer id) {
 		this.id = id;

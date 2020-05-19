@@ -24,7 +24,7 @@ public class ErreurDto {
 	/**
 	 * Getter
 	 *
-	 * @return the message
+	 * @return message
 	 */
 	public String getMessage() {
 		return message;
@@ -33,7 +33,7 @@ public class ErreurDto {
 	/**
 	 * Setter
 	 *
-	 * @param message the message to set
+	 * @param message to set
 	 */
 	public void setMessage(String message) {
 		this.message = message;

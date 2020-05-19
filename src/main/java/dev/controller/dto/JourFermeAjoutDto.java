@@ -8,7 +8,7 @@ import java.time.LocalDate;
 import dev.entites.TypeJourFerme;
 
 /**
- * Structure modélisant un ajout de jourFerme servant à communiquer avec 
+ * Structure modélisant un ajout de jour fermé servant à communiquer avec 
  * l'extérieur (WEB API).
  * 
  * @author KOMINIARZ Anaïs, SAGAN Jonathan, BATIGNES Pierre, GIRARD Vincent.
@@ -38,7 +38,7 @@ public class JourFermeAjoutDto {
 	/**
 	 * Getter
 	 * 
-	 * @return the date
+	 * @return date
 	 */
 	public LocalDate getDate() {
 		return date;
@@ -47,7 +47,7 @@ public class JourFermeAjoutDto {
 	/**
 	 * Setter
 	 * 
-	 * @param date the date to set
+	 * @param date to set
 	 */
 	public void setDate(LocalDate date) {
 		this.date = date;
@@ -56,7 +56,7 @@ public class JourFermeAjoutDto {
 	/**
 	 * Getter
 	 * 
-	 * @return the type
+	 * @return type
 	 */
 	public TypeJourFerme getType() {
 		return type;
@@ -65,7 +65,7 @@ public class JourFermeAjoutDto {
 	/**
 	 * Setter
 	 * 
-	 * @param type the type to set
+	 * @param type to set
 	 */
 	public void setType(TypeJourFerme type) {
 		this.type = type;
@@ -74,7 +74,7 @@ public class JourFermeAjoutDto {
 	/**
 	 * Getter
 	 * 
-	 * @return the commentaire
+	 * @return commentaire
 	 */
 	public String getCommentaire() {
 		return commentaire;
@@ -83,7 +83,7 @@ public class JourFermeAjoutDto {
 	/**
 	 * Setter
 	 * 
-	 * @param commentaire the commentaire to set
+	 * @param commentaire to set
 	 */
 	public void setCommentaire(String commentaire) {
 		this.commentaire = commentaire;

@@ -33,7 +33,7 @@ public class SoldeDto {
 	/**
 	 * Getter
 	 *
-	 * @return the typeSolde
+	 * @return typeSolde
 	 */
 	public TypeSolde getType() {
 		return type;
@@ -42,7 +42,7 @@ public class SoldeDto {
 	/**
 	 * Setter
 	 *
-	 * @param typeSolde the typeSolde to set
+	 * @param typeSolde to set
 	 */
 	public void setType(TypeSolde type) {
 		this.type = type;
@@ -51,7 +51,7 @@ public class SoldeDto {
 	/**
 	 * Getter
 	 *
-	 * @return the nombredeJours
+	 * @return nombredeJours
 	 */
 	public Integer getNombreDeJours() {
 		return nombreDeJours;
@@ -60,7 +60,7 @@ public class SoldeDto {
 	/**
 	 * Setter
 	 *
-	 * @param nombredeJours the nombredeJours to set
+	 * @param nombredeJours to set
 	 */
 	public void setNombreDeJours(Integer nombreDeJours) {
 		this.nombreDeJours = nombreDeJours;

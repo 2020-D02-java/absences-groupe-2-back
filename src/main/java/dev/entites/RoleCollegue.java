@@ -10,7 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 /**
- * Représentation du role d'un collègue
+ * Représentation du rôle d'un collègue
  * 
  * @author KOMINIARZ Anaïs, SAGAN Jonathan, BATIGNES Pierre, GIRARD Vincent.
  *
@@ -19,7 +19,7 @@ import javax.persistence.ManyToOne;
 public class RoleCollegue {
 
 	// Déclarations
-	/** id du role collegue **/
+	/** id du rôle collegue **/
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
@@ -29,7 +29,7 @@ public class RoleCollegue {
 	@JoinColumn(name = "collegue_id")
 	private Collegue collegue;
 
-	/** role d'un collegue **/
+	/** rôle d'un collegue **/
 	@Enumerated(EnumType.STRING)
 	private Role role;
 
@@ -37,7 +37,7 @@ public class RoleCollegue {
 	 * Constructeur
 	 * 
 	 * @param collegue
-	 * @param role
+	 * @param rôle
 	 */
 	public RoleCollegue(Collegue collegue, Role role) {
 		this.collegue = collegue;
@@ -68,7 +68,7 @@ public class RoleCollegue {
 	/**
 	 * Getter
 	 *
-	 * @return the role
+	 * @return rôle
 	 */
 	public Role getRole() {
 		return role;
@@ -77,7 +77,7 @@ public class RoleCollegue {
 	/**
 	 * Setter
 	 *
-	 * @param role the role to set
+	 * @param rôle to set
 	 */
 	public void setRole(Role role) {
 		this.role = role;

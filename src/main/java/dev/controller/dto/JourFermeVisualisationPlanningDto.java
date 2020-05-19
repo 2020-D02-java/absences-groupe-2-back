@@ -2,7 +2,7 @@ package dev.controller.dto;
 
 import java.time.LocalDate;
 
-/** Modélise une visualisation de JourFerme servant à communiquer avec 
+/** Modélise une visualisation de jour fermé servant à communiquer avec 
  * l'extérieur (WEB API).
  * 
  * @author KOMINIARZ Anaïs, SAGAN Jonathan, BATIGNES Pierre, GIRARD Vincent.
@@ -10,6 +10,8 @@ import java.time.LocalDate;
  */
 
 public class JourFermeVisualisationPlanningDto {
+	
+	// Déclarations 
 	private LocalDate date;
 	private String commentaire;
 	
@@ -27,7 +29,8 @@ public class JourFermeVisualisationPlanningDto {
 
 
 	/** Getter
-	 * @return
+	 * 
+	 * @return date
 	 */
 	public LocalDate getDate() {
 		return date;
@@ -35,6 +38,7 @@ public class JourFermeVisualisationPlanningDto {
 
 
 	/** Setter
+	 * 
 	 * @param date
 	 */
 	public void setDate(LocalDate date) {
@@ -43,7 +47,8 @@ public class JourFermeVisualisationPlanningDto {
 
 
 	/** Getter
-	 * @return
+	 * 
+	 * @return commentaire
 	 */
 	public String getCommentaire() {
 		return commentaire;
@@ -51,6 +56,7 @@ public class JourFermeVisualisationPlanningDto {
 
 
 	/** Setter
+	 * 
 	 * @param commentaire
 	 */
 	public void setCommentaire(String commentaire) {

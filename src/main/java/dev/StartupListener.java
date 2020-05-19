@@ -93,12 +93,12 @@ public class StartupListener {
         Absence abs1col1 = new Absence(LocalDate.of(2020, 06, 12), LocalDate.of(2020, 06, 15), TypeAbsence.RTT_EMPLOYE, "week-end allongé", Statut.INITIALE, col1);
         Absence abs2col1 = new Absence(LocalDate.of(2020, 11, 02), LocalDate.of(2020, 11, 20), TypeAbsence.CONGES_PAYES, "vacances en Grèce avec Tzatzíki", Statut.INITIALE, col1);
         Absence abs3col1 = new Absence(LocalDate.of(2021, 01, 01), LocalDate.of(2021, 02, 10), TypeAbsence.CONGES_SANS_SOLDE, "tour du monde en vélo", Statut.INITIALE, col1);
-//        Absence abs4col1 = new Absence(LocalDate.of(2020, 11, 27), LocalDate.of(2021, 01, 8), TypeAbsence.CONGES_PAYES, "vacances de Noël en Islande", Statut.INITIALE, col1);
+
     
         this.absenceRepo.save(abs1col1);
         this.absenceRepo.save(abs2col1);
         this.absenceRepo.save(abs3col1);
-//        this.absenceRepo.save(abs4col1);
+
        
         // Création des deux soldes CP + RTT 
         Solde solde1CP = new Solde(25, TypeSolde.CONGES_PAYES, col1);

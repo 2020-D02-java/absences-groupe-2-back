@@ -1,6 +1,3 @@
-/**
- * 
- */
 package dev.services;
 
 import java.time.LocalDate;
@@ -68,9 +65,9 @@ public class AbsenceService {
 	}
 
 	/**
-	 * LISTER ABSENCES DU COLLEGUE CONNECTE
+	 * LISTER LES ABSENCES DU COLLEGUE CONNECTE
 	 * 
-	 * @return la liste d'absence Dto du collegue connecté
+	 * @return la liste d'absences Dto du collègue connecté
 	 */
 	public List<AbsenceVisualisationDto> listerAbsencesCollegue() {
 
@@ -108,7 +105,7 @@ public class AbsenceService {
 	}
 
 	/**
-	 * RECUPERER UNE ABSENCE VIA ID
+	 * RECUPERER UNE ABSENCE VIA L'ID
 	 * 
 	 * @param id
 	 * @return
@@ -123,7 +120,7 @@ public class AbsenceService {
 	}
 
 	/**
-	 * RECUPERER UNE ABSENCE VIA STATUT
+	 * RECUPERER UNE ABSENCE VIA LE STATUT
 	 * 
 	 * @return
 	 */
@@ -157,13 +154,13 @@ public class AbsenceService {
 
 		if (abenceDto.getDateDebut().isBefore(LocalDate.now()) || (abenceDto.getDateDebut().isEqual(LocalDate.now()))) // Cas jour saisi dans le passé ou aujourd'hui, erreur
 		{
-			throw new DateDansLePasseOuAujourdhuiException("Une demande d'absence ne peut être saisie sur une date ultérieur ou le jour présent.");
+			throw new DateDansLePasseOuAujourdhuiException("Une demande d'absence ne peut être saisie sur une date ultérieure ou le jour présent.");
 		} else if (abenceDto.getDateFin().isBefore(abenceDto.getDateDebut())) // Cas DateFin < DateDebut
 		{
-			throw new AbsenceDateFinAvantDateDebutException("La date de fin ne peut-être inférieure à la date du début de votre absence.");
-		} else if (abenceDto.getType().equals(TypeAbsence.CONGES_SANS_SOLDE) && abenceDto.getMotif().isEmpty()) // Cas congès sans solde, et motif manquant
+			throw new AbsenceDateFinAvantDateDebutException("La date de fin ne peut être inférieure à la date du début de votre absence.");
+		} else if (abenceDto.getType().equals(TypeAbsence.CONGES_SANS_SOLDE) && abenceDto.getMotif().isEmpty()) // Cas d'un congé sans solde, et motif manquant
 		{
-			throw new AbsenceMotifManquantCongesSansSoldeException("Un motif est obligatoire dans le cas où vous souhaitez demander un congés sans solde.");
+			throw new AbsenceMotifManquantCongesSansSoldeException("Un motif est obligatoire dans le cas où vous souhaitez demander un congé sans solde.");
 		} else if ((abenceDto.getStatut().equals(Statut.EN_ATTENTE_VALIDATION)) || (abenceDto.getStatut().equals(Statut.INITIALE))
 				|| (abenceDto.getStatut().equals(Statut.VALIDEE))) // Impossible de saisir une demande qui chevauche une autre sauf si celle-ci est
 																	// en statut REJETEE
@@ -173,7 +170,7 @@ public class AbsenceService {
 
 
 			for (Absence abs : listAbsences) {
-				// GERER TOUS LES CAS POSSIBLE , POUR EVITER LES CHEVAUCHEMENTS D'ABSENCES
+				// GERER TOUS LES CAS POSSIBLES , POUR EVITER LES CHEVAUCHEMENTS D'ABSENCES
 				if (
 						(
 							(
@@ -199,8 +196,8 @@ public class AbsenceService {
 				{
 					throw new AbsenceChevauchementException("Votre date de début et votre date de fin chevauchent une période d'absence déjà existante");
 				}
-				// https://media.discordapp.net/attachments/705412798665982013/711932715930484739/unknown.png
-				else if // Si la date début + date fin englobe un interval déjà selectionné (CAS 4)
+				
+				else if // Si la date début et la date fin englobe un intervalle déjà selectionné (CAS 4)
 				(
 					(
 						(
@@ -217,7 +214,7 @@ public class AbsenceService {
 				{
 					throw new AbsenceChevauchementException("Votre demande chevauche une période d'absence déjà existante");
 				} 
-				else if // Si la date début avant + date fin englobe un interval déjà selectionné (CAS 2)
+				else if // Si la date début avant et la date de fin englobe un intervalle déjà selectionné (CAS 2)
 				(
 					(
 						(
@@ -237,7 +234,7 @@ public class AbsenceService {
 				{
 					throw new AbsenceChevauchementException("Votre date de début est correcte , mais votre date de fin chevauche une période d'absence déjà existante");
 				} 
-				else if // Si la date début avant + date fin englobe un interval déjà selectionné (CAS 3)
+				else if // Si la date début avant et la date de fin englobe un intervalle déjà selectionné (CAS 3)
 				(
 					(
 						(
@@ -258,7 +255,7 @@ public class AbsenceService {
 				{
 					throw new AbsenceChevauchementException("Votre date de fin est correcte , mais votre date de début chevauche une période d'absence déjà existante");
 				}
-				else if // Si la date fin = date debut déjà existante (CAS 5)
+				else if // Si la date de fin = date de debut déjà existante (CAS 5)
 				(
 						abenceDto.getDateFin().equals(abs.getDateDebut()) && (abs.getId() != id)
 				)
@@ -277,14 +274,14 @@ public class AbsenceService {
 						abenceDto.getDateDebut().equals(abs.getDateDebut()) && (abs.getId() != id)
 				)
 				{
-					throw new AbsenceChevauchementException("Votre date de debut est la même que la date de début d'une absence déjà existante");
+					throw new AbsenceChevauchementException("Votre date de début est la même que la date de début d'une absence déjà existante");
 				} 
 				else if // Si la date début = date fin déjà existante (CAS 5)
 				(
 						abenceDto.getDateDebut().equals(abs.getDateFin()) && (abs.getId() != id)
 				)
 				{
-					throw new AbsenceChevauchementException("Votre date de debut est la même que la date de fin d'une absence déjà existante");
+					throw new AbsenceChevauchementException("Votre date de début est la même que la date de fin d'une absence déjà existante");
 				}
 			}
 
@@ -313,7 +310,7 @@ public class AbsenceService {
 	 */
 	public AbsenceVisualisationDto putValidationAbsence(@Valid AbsenceVisualisationDto absenceDto, Integer id) {
 		Absence abs = absenceRepository.findById(id).orElseThrow(
-				() -> new NotFoundException("L'absence n'a pas ete requpere"));
+				() -> new NotFoundException("L'absence n'a pas été récupérée"));
 		
 		abs.setStatut(absenceDto.getStatut());
 		this.absenceRepository.save(abs);
@@ -329,7 +326,7 @@ public class AbsenceService {
 	 */
 	public AbsenceVisualisationDto putRefuserAbsence(@Valid AbsenceVisualisationDto absenceDto, Integer id) {
 		Absence abs = absenceRepository.findById(id).orElseThrow(
-				() -> new NotFoundException("L'absence n'a pas ete requpere"));
+				() -> new NotFoundException("L'absence n'a pas ete récupérée"));
 		
 		int nombreDeJoursOuvresPendantAbsence = joursOuvresEntreDeuxDates(abs.getDateDebut(), abs.getDateFin());
 
@@ -370,22 +367,22 @@ public class AbsenceService {
 
 		if (absence.getDateDebut().isBefore(LocalDate.now()) || (absence.getDateDebut().isEqual(LocalDate.now()))) // Cas jour saisi dans le passé ou aujourd'hui, erreur
 		{
-			throw new DateDansLePasseOuAujourdhuiException("Une demande d'absence ne peut être saisie sur une date ultérieur ou le jour présent.");
+			throw new DateDansLePasseOuAujourdhuiException("Une demande d'absence ne peut être saisie sur une date ultérieure ou le jour présent.");
 		} else if (absence.getDateFin().isBefore(absence.getDateDebut())) // Cas DateFin < DateDebut
 		{
-			throw new AbsenceDateFinAvantDateDebutException("La date de fin ne peut-être inférieure à la date du début de votre absence.");
+			throw new AbsenceDateFinAvantDateDebutException("La date de fin ne peut être inférieure à la date du début de votre absence.");
 		} else if (absence.getType().equals(TypeAbsence.CONGES_SANS_SOLDE) && absence.getMotif().isEmpty()) // Cas congès sans solde, et motif manquant
 		{
-			throw new AbsenceMotifManquantCongesSansSoldeException("Un motif est obligatoire dans le cas où vous souhaitez demander un congés sans solde.");
+			throw new AbsenceMotifManquantCongesSansSoldeException("Un motif est obligatoire dans le cas où vous souhaitez demander un congé sans solde.");
 		} else if ((absence.getStatut().equals(Statut.EN_ATTENTE_VALIDATION)) || (absence.getStatut().equals(Statut.VALIDEE) || (absence.getStatut().equals(Statut.INITIALE)))) // Impossible de saisir une demande qui chevauche une
 																																// autre sauf si celle-ci est
 																																// en statut REJETEE
 		{
 			List<Absence> listAbsences = new ArrayList<>();
-			listAbsences = this.absenceRepository.findByCollegueEmail(email).orElseThrow(() -> new CollegueAuthentifieNotAbsencesException("Le collègue n'a pas d'absence"));
+			listAbsences = this.absenceRepository.findByCollegueEmail(email).orElseThrow(() -> new CollegueAuthentifieNotAbsencesException("Le collègue n'a pas d'absences"));
 
 			for (Absence abs : listAbsences) {
-				// GERER TOUS LES CAS POSSIBLE , POUR EVITER LES CHEVAUCHEMENTS D'ABSENCES
+				// GERER TOUS LES CAS POSSIBLES , POUR EVITER LES CHEVAUCHEMENTS D'ABSENCES
 				if (
 						(
 							(
@@ -410,7 +407,7 @@ public class AbsenceService {
 				{
 					throw new AbsenceChevauchementException("Votre date de début et votre date de fin chevauchent une période d'absence déjà existante");
 				}
-				// https://media.discordapp.net/attachments/705412798665982013/711932715930484739/unknown.png
+				
 				else if // Si la date début + date fin englobe un interval déjà selectionné (CAS 4)
 				(
 					
@@ -483,14 +480,14 @@ public class AbsenceService {
 					absenceDemandeDto.getDateDebut().equals(abs.getDateDebut())
 				)
 				{
-					throw new AbsenceChevauchementException("Votre date de debut est la même que la date de début d'une absence déjà existante");
+					throw new AbsenceChevauchementException("Votre date de début est la même que la date de début d'une absence déjà existante");
 				} 
 				else if // Si la date début = date fin déjà existante (CAS 5)
 				(
 					absenceDemandeDto.getDateDebut().equals(abs.getDateFin())
 				)
 				{
-					throw new AbsenceChevauchementException("Votre date de debut est la même que la date de fin d'une absence déjà existante");
+					throw new AbsenceChevauchementException("Votre date de début est la même que la date de fin d'une absence déjà existante");
 				}
 			}
 
@@ -502,7 +499,7 @@ public class AbsenceService {
 	}
 
 	/**
-	 * jours Ouvres Entre DeuxDates
+	 * jours Ouvrés Entre Deux Dates
 	 * 
 	 * @param dateDebut 1ere date (ni samedi ni dimanche)
 	 * @param dateFin   2eme date (ni samedi ni dimanche)

@@ -17,7 +17,7 @@ import dev.entites.TypeAbsence;
  */
 public class AbsenceVisualisationEmailCollegueDto {
 
-	// Declarations
+	// Déclarations
 	private LocalDate dateDebut;
 	private LocalDate dateFin;
 	private TypeAbsence type;
@@ -56,7 +56,7 @@ public class AbsenceVisualisationEmailCollegueDto {
 	/**
 	 * Getter
 	 *
-	 * @return the dateDebut
+	 * @return dateDebut
 	 */
 	public LocalDate getDateDebut() {
 		return dateDebut;
@@ -65,7 +65,7 @@ public class AbsenceVisualisationEmailCollegueDto {
 	/**
 	 * Setter
 	 *
-	 * @param dateDebut the dateDebut to set
+	 * @param dateDebut to set
 	 */
 	public void setDateDebut(LocalDate dateDebut) {
 		this.dateDebut = dateDebut;
@@ -74,7 +74,7 @@ public class AbsenceVisualisationEmailCollegueDto {
 	/**
 	 * Getter
 	 *
-	 * @return the dateFin
+	 * @return dateFin
 	 */
 	public LocalDate getDateFin() {
 		return dateFin;
@@ -83,7 +83,7 @@ public class AbsenceVisualisationEmailCollegueDto {
 	/**
 	 * Setter
 	 *
-	 * @param dateFin the dateFin to set
+	 * @param dateFin to set
 	 */
 	public void setDateFin(LocalDate dateFin) {
 		this.dateFin = dateFin;
@@ -92,7 +92,7 @@ public class AbsenceVisualisationEmailCollegueDto {
 	/**
 	 * Getter
 	 *
-	 * @return the typeAbsence
+	 * @return typeAbsence
 	 */
 	public TypeAbsence getType() {
 		return type;
@@ -101,7 +101,7 @@ public class AbsenceVisualisationEmailCollegueDto {
 	/**
 	 * Setter
 	 *
-	 * @param typeAbsence the typeAbsence to set
+	 * @param typeAbsence to set
 	 */
 	public void setType(TypeAbsence type) {
 		this.type = type;
@@ -110,7 +110,7 @@ public class AbsenceVisualisationEmailCollegueDto {
 	/**
 	 * Getter
 	 *
-	 * @return the motif
+	 * @return motif
 	 */
 	public String getMotif() {
 		return motif;
@@ -119,7 +119,7 @@ public class AbsenceVisualisationEmailCollegueDto {
 	/**
 	 * Setter
 	 *
-	 * @param motif the motif to set
+	 * @param motif to set
 	 */
 	public void setMotif(String motif) {
 		this.motif = motif;
@@ -128,7 +128,7 @@ public class AbsenceVisualisationEmailCollegueDto {
 	/**
 	 * Getter
 	 *
-	 * @return the statutAbs
+	 * @return statutAbs
 	 */
 	public Statut getStatut() {
 		return statut;
@@ -137,21 +137,21 @@ public class AbsenceVisualisationEmailCollegueDto {
 	/**
 	 * Setter
 	 *
-	 * @param statutAbs the statutAbs to set
+	 * @param statutAbs to set
 	 */
 	public void setStatut(Statut statut) {
 		this.statut = statut;
 	}
 
 	/** Getter
-	 * @return the emailCollegue
+	 * @return emailCollegue
 	 */
 	public String getEmailCollegue() {
 		return emailCollegue;
 	}
 
 	/** Setter
-	 * @param emailCollegue the emailCollegue to set
+	 * @param emailCollegue to set
 	 */
 	public void setEmailCollegue(String emailCollegue) {
 		this.emailCollegue = emailCollegue;

@@ -9,7 +9,7 @@ import dev.entites.Statut;
 import dev.entites.TypeJourFerme;
 
 /**
- * Structure modélisant une visualisation de JourFerme servant à communiquer avec 
+ * Structure modélisant une visualisation de jour fermé servant à communiquer avec 
  * l'extérieur (WEB API).
  * 
  * @author KOMINIARZ Anaïs, SAGAN Jonathan, BATIGNES Pierre, GIRARD Vincent.
@@ -43,7 +43,7 @@ public class JourFermeVisualisationDto {
 	/**
 	 * Getter
 	 * 
-	 * @return the date
+	 * @return date
 	 */
 	public LocalDate getDate() {
 		return date;
@@ -52,7 +52,7 @@ public class JourFermeVisualisationDto {
 	/**
 	 * Setter
 	 * 
-	 * @param date the date to set
+	 * @param date to set
 	 */
 	public void setDate(LocalDate date) {
 		this.date = date;
@@ -61,7 +61,7 @@ public class JourFermeVisualisationDto {
 	/**
 	 * Getter
 	 * 
-	 * @return the typeJourFerme
+	 * @return typeJourFerme
 	 */
 	public TypeJourFerme getType() {
 		return type;
@@ -70,7 +70,7 @@ public class JourFermeVisualisationDto {
 	/**
 	 * Setter
 	 * 
-	 * @param typeJourFerme the typeJourFerme to set
+	 * @param typeJourFerme to set
 	 */
 	public void setType(TypeJourFerme type) {
 		this.type = type;
@@ -79,7 +79,7 @@ public class JourFermeVisualisationDto {
 	/**
 	 * Getter
 	 * 
-	 * @return the commentaire
+	 * @return commentaire
 	 */
 	public String getCommentaire() {
 		return commentaire;
@@ -88,7 +88,7 @@ public class JourFermeVisualisationDto {
 	/**
 	 * Setter
 	 * 
-	 * @param commentaire the commentaire to set
+	 * @param commentaire to set
 	 */
 	public void setCommentaire(String commentaire) {
 		this.commentaire = commentaire;
@@ -97,7 +97,7 @@ public class JourFermeVisualisationDto {
 	/**
 	 * Getter
 	 * 
-	 * @return the id
+	 * @return id
 	 */
 	public Integer getId() {
 		return id;
@@ -106,7 +106,7 @@ public class JourFermeVisualisationDto {
 	/**
 	 * Setter
 	 * 
-	 * @param id the id to set
+	 * @param id to set
 	 */
 	public void setId(Integer id) {
 		this.id = id;
@@ -115,7 +115,7 @@ public class JourFermeVisualisationDto {
 	/**
 	 * Getter
 	 * 
-	 * @return the statut
+	 * @return statut
 	 */
 	public Statut getStatut() {
 		return statut;
@@ -124,7 +124,7 @@ public class JourFermeVisualisationDto {
 	/**
 	 * Setter
 	 * 
-	 * @param statut the statut to set
+	 * @param statut to set
 	 */
 	public void setStatut(Statut statut) {
 		this.statut = statut;

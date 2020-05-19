@@ -11,7 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 /**
- * Entité collegue
+ * Entité collègue
  * 
  * @author KOMINIARZ Anaïs, SAGAN Jonathan, BATIGNES Pierre, GIRARD Vincent.
  *
@@ -136,7 +136,7 @@ public class Collegue {
 
 	/** Getter
 	 *
-	 * @return the soldes
+	 * @return soldes
 	 */
 	public List<Solde> getSoldes() {
 		return soldes;
@@ -144,7 +144,7 @@ public class Collegue {
 
 	/** Setter
 	 *
-	 * @param soldes the soldes to set
+	 * @param soldes to set
 	 */
 	public void setSoldes(List<Solde> soldes) {
 		this.soldes = soldes;
@@ -152,7 +152,7 @@ public class Collegue {
 
 	/** Getter
 	 *
-	 * @return the absences
+	 * @return absences
 	 */
 	public List<Absence> getAbsences() {
 		return absences;
@@ -160,7 +160,7 @@ public class Collegue {
 
 	/** Setter
 	 *
-	 * @param absences the absences to set
+	 * @param absences to set
 	 */
 	public void setAbsences(List<Absence> absences) {
 		this.absences = absences;
@@ -168,7 +168,7 @@ public class Collegue {
 
 	/** Getter
 	 *
-	 * @return the manager
+	 * @return manager
 	 */
 	public Collegue getManager() {
 		return manager;
@@ -176,7 +176,7 @@ public class Collegue {
 
 	/** Setter
 	 *
-	 * @param manager the manager to set
+	 * @param manager to set
 	 */
 	public void setManager(Collegue manager) {
 		this.manager = manager;
@@ -184,7 +184,7 @@ public class Collegue {
 
 	/** Getter
 	 *
-	 * @return the subordonnes
+	 * @return subordonnes
 	 */
 	public List<Collegue> getSubordonnes() {
 		return subordonnes;
@@ -192,7 +192,7 @@ public class Collegue {
 
 	/** Setter
 	 *
-	 * @param subordonnes the subordonnes to set
+	 * @param subordonnes to set
 	 */
 	public void setSubordonnes(List<Collegue> subordonnes) {
 		this.subordonnes = subordonnes;

@@ -1,6 +1,3 @@
-/**
- * 
- */
 package dev.entites;
 
 import javax.persistence.Entity;
@@ -63,7 +60,7 @@ public class Solde {
 	/**
 	 * Getter
 	 *
-	 * @return the id
+	 * @return id
 	 */
 	public Integer getId() {
 		return id;
@@ -72,7 +69,7 @@ public class Solde {
 	/**
 	 * Setter
 	 *
-	 * @param id the id to set
+	 * @param id to set
 	 */
 	public void setId(Integer id) {
 		this.id = id;
@@ -81,7 +78,7 @@ public class Solde {
 	/**
 	 * Getter
 	 *
-	 * @return the nombreDeJours
+	 * @return nombreDeJours
 	 */
 	public Integer getNombreDeJours() {
 		return nombreDeJours;
@@ -90,7 +87,7 @@ public class Solde {
 	/**
 	 * Setter
 	 *
-	 * @param nombreDeJours the nombreDeJours to set
+	 * @param nombreDeJours to set
 	 */
 	public void setNombreDeJours(Integer nombreDeJours) {
 		this.nombreDeJours = nombreDeJours;
@@ -99,7 +96,7 @@ public class Solde {
 	/**
 	 * Getter
 	 *
-	 * @return the typeSolde
+	 * @return typeSolde
 	 */
 	public TypeSolde getType() {
 		return type;
@@ -108,7 +105,7 @@ public class Solde {
 	/**
 	 * Setter
 	 *
-	 * @param typeSolde the typeSolde to set
+	 * @param typeSolde to set
 	 */
 	public void setTypeSolde(TypeSolde type) {
 		this.type = type;
@@ -117,7 +114,7 @@ public class Solde {
 	/**
 	 * Getter
 	 *
-	 * @return the collegue
+	 * @return collegue
 	 */
 	public Collegue getCollegue() {
 		return collegue;
@@ -126,7 +123,7 @@ public class Solde {
 	/**
 	 * Setter
 	 *
-	 * @param collegue the collegue to set
+	 * @param collegue to set
 	 */
 	public void setCollegue(Collegue collegue) {
 		this.collegue = collegue;

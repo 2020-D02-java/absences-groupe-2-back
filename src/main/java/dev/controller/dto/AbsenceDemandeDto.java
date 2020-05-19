@@ -42,7 +42,7 @@ public class AbsenceDemandeDto {
 	/**
 	 * Getter
 	 *
-	 * @return the dateDebut
+	 * @return dateDebut
 	 */
 	public LocalDate getDateDebut() {
 		return dateDebut;
@@ -51,7 +51,7 @@ public class AbsenceDemandeDto {
 	/**
 	 * Setter
 	 *
-	 * @param dateDebut the dateDebut to set
+	 * @param dateDebut to set
 	 */
 	public void setDateDebut(LocalDate dateDebut) {
 		this.dateDebut = dateDebut;
@@ -60,7 +60,7 @@ public class AbsenceDemandeDto {
 	/**
 	 * Getter
 	 *
-	 * @return the dateFin
+	 * @return dateFin
 	 */
 	public LocalDate getDateFin() {
 		return dateFin;
@@ -69,7 +69,7 @@ public class AbsenceDemandeDto {
 	/**
 	 * Setter
 	 *
-	 * @param dateFin the dateFin to set
+	 * @param dateFin to set
 	 */
 	public void setDateFin(LocalDate dateFin) {
 		this.dateFin = dateFin;
@@ -78,7 +78,7 @@ public class AbsenceDemandeDto {
 	/**
 	 * Getter
 	 *
-	 * @return the type
+	 * @return type
 	 */
 	public TypeAbsence getType() {
 		return type;
@@ -87,7 +87,7 @@ public class AbsenceDemandeDto {
 	/**
 	 * Setter
 	 *
-	 * @param type the type to set
+	 * @param type to set
 	 */
 	public void setType(TypeAbsence type) {
 		this.type = type;
@@ -96,7 +96,7 @@ public class AbsenceDemandeDto {
 	/**
 	 * Getter
 	 *
-	 * @return the motif
+	 * @return motif
 	 */
 	public String getMotif() {
 		return motif;
@@ -105,7 +105,7 @@ public class AbsenceDemandeDto {
 	/**
 	 * Setter
 	 *
-	 * @param motif the motif to set
+	 * @param motif to set
 	 */
 	public void setMotif(String motif) {
 		this.motif = motif;
@@ -114,7 +114,7 @@ public class AbsenceDemandeDto {
 	/**
 	 * Getter
 	 *
-	 * @return the statut
+	 * @return statut
 	 */
 	public Statut getStatut() {
 		return statut;
@@ -123,7 +123,7 @@ public class AbsenceDemandeDto {
 	/**
 	 * Setter
 	 *
-	 * @param statut the statut to set
+	 * @param statut to set
 	 */
 	public void setStatut(Statut statut) {
 		this.statut = statut;

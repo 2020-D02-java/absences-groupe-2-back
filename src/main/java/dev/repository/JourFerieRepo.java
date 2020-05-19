@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import dev.entites.JourFerme;
 
 /**
+ * Repository de l'entité jour férié
  * 
  * @author KOMINIARZ Anaïs, SAGAN Jonathan, BATIGNES Pierre, GIRARD Vincent.
  *

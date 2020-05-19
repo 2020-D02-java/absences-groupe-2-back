@@ -18,7 +18,7 @@ import dev.entites.TypeAbsence;
  */
 public class AbsenceManagerVisualisationDto {
 
-	// Declarations
+	// Déclarations
 	private Integer id;
 	private LocalDate dateDebut;
 	private LocalDate dateFin;
@@ -62,7 +62,7 @@ public class AbsenceManagerVisualisationDto {
 	/**
 	 * Getter
 	 *
-	 * @return the dateDebut
+	 * @return dateDebut
 	 */
 	public LocalDate getDateDebut() {
 		return dateDebut;
@@ -71,7 +71,7 @@ public class AbsenceManagerVisualisationDto {
 	/**
 	 * Setter
 	 *
-	 * @param dateDebut the dateDebut to set
+	 * @param dateDebut to set
 	 */
 	public void setDateDebut(LocalDate dateDebut) {
 		this.dateDebut = dateDebut;
@@ -80,7 +80,7 @@ public class AbsenceManagerVisualisationDto {
 	/**
 	 * Getter
 	 *
-	 * @return the dateFin
+	 * @return dateFin
 	 */
 	public LocalDate getDateFin() {
 		return dateFin;
@@ -89,7 +89,7 @@ public class AbsenceManagerVisualisationDto {
 	/**
 	 * Setter
 	 *
-	 * @param dateFin the dateFin to set
+	 * @param dateFin to set
 	 */
 	public void setDateFin(LocalDate dateFin) {
 		this.dateFin = dateFin;
@@ -98,7 +98,7 @@ public class AbsenceManagerVisualisationDto {
 	/**
 	 * Getter
 	 *
-	 * @return the typeAbsence
+	 * @return typeAbsence
 	 */
 	public TypeAbsence getType() {
 		return type;
@@ -107,7 +107,7 @@ public class AbsenceManagerVisualisationDto {
 	/**
 	 * Setter
 	 *
-	 * @param typeAbsence the typeAbsence to set
+	 * @param typeAbsence to set
 	 */
 	public void setType(TypeAbsence type) {
 		this.type = type;
@@ -116,7 +116,7 @@ public class AbsenceManagerVisualisationDto {
 	/**
 	 * Getter
 	 *
-	 * @return the motif
+	 * @return motif
 	 */
 	public String getMotif() {
 		return motif;
@@ -125,7 +125,7 @@ public class AbsenceManagerVisualisationDto {
 	/**
 	 * Setter
 	 *
-	 * @param motif the motif to set
+	 * @param motif to set
 	 */
 	public void setMotif(String motif) {
 		this.motif = motif;
@@ -134,7 +134,7 @@ public class AbsenceManagerVisualisationDto {
 	/**
 	 * Getter
 	 *
-	 * @return the statutAbs
+	 * @return statutAbs
 	 */
 	public Statut getStatut() {
 		return statut;
@@ -143,7 +143,7 @@ public class AbsenceManagerVisualisationDto {
 	/**
 	 * Setter
 	 *
-	 * @param statutAbs the statutAbs to set
+	 * @param statutAbs to set
 	 */
 	public void setStatut(Statut statut) {
 		this.statut = statut;
@@ -152,7 +152,7 @@ public class AbsenceManagerVisualisationDto {
 	/**
 	 * Getter
 	 * 
-	 * @return the id
+	 * @return id
 	 */
 	public Integer getId() {
 		return id;
@@ -161,7 +161,7 @@ public class AbsenceManagerVisualisationDto {
 	/**
 	 * Setter
 	 * 
-	 * @param id the id to set
+	 * @param id to set
 	 */
 	public void setId(Integer id) {
 		this.id = id;
@@ -169,7 +169,7 @@ public class AbsenceManagerVisualisationDto {
 
 	/**Getter
 	 *
-	 * @return the collegue
+	 * @return collegue
 	 */
 	public CollegueAbsenceDto getCollegue() {
 		return collegue;
@@ -177,7 +177,7 @@ public class AbsenceManagerVisualisationDto {
 
 	/**Setter
 	 *
-	 * @param collegue the collegue to set
+	 * @param collegue to set
 	 */
 	public void setCollegue(CollegueAbsenceDto collegue) {
 		this.collegue = collegue;
@@ -185,7 +185,7 @@ public class AbsenceManagerVisualisationDto {
 
 	/**Getter
 	 *
-	 * @return the manager
+	 * @return manager
 	 */
 	public CollegueAbsenceDto getManager() {
 		return manager;
@@ -193,7 +193,7 @@ public class AbsenceManagerVisualisationDto {
 
 	/**Setter
 	 *
-	 * @param manager the manager to set
+	 * @param manager to set
 	 */
 	public void setManager(CollegueAbsenceDto manager) {
 		this.manager = manager;
