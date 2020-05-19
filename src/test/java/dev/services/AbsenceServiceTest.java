@@ -17,6 +17,12 @@ import dev.entites.JourFerme;
 import dev.entites.TypeJourFerme;
 import dev.repository.JourFermeRepo;
 
+/**
+ * Tests de joursOuvresEntreDeuxDates du service de l'entité Absence
+ * 
+ * @author KOMINIARZ Anaïs, SAGAN Jonathan, BATIGNES Pierre, GIRARD Vincent.
+ *
+ */
 @ExtendWith(MockitoExtension.class)
 public class AbsenceServiceTest {
 	
