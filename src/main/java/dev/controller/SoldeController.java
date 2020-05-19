@@ -42,7 +42,7 @@ public class SoldeController {
 	} 
 	
 	/**
-	 *  LISTER SOLDES 
+	 *  LISTER LES SOLDES 
 	 *  
 	 * @return une liste de soldes Dto
 	 */

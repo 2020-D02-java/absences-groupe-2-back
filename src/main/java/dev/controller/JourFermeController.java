@@ -32,7 +32,7 @@ import dev.exceptions.SaisieJourFerieUnJourDejaFerieException;
 import dev.services.JourFermeService;
 
 /**
- * Controller de l'entité jour ferme
+ * Controller de l'entité jour fermé
  * 
  * @author KOMINIARZ Anaïs, SAGAN Jonathan, BATIGNES Pierre, GIRARD Vincent.
  *
@@ -75,7 +75,7 @@ public class JourFermeController {
 	}
 
 	/**
-	 * RECUPERER JOURS FERMES VIA ID
+	 * RECUPERER LES JOURS FERMES VIA L'ID
 	 * 
 	 * @param id
 	 * @return
@@ -86,7 +86,7 @@ public class JourFermeController {
 	}
 
 	/**
-	 * MODIFICATION JOURS FERMES
+	 * MODIFICATION DES JOURS FERMES
 	 * 
 	 * @param jourFermeDto
 	 * @param id
@@ -98,7 +98,7 @@ public class JourFermeController {
 	}
 
 	/**
-	 * AJOUTER JOURS FERMES
+	 * AJOUT DES JOURS FERMES
 	 * 
 	 * @param jourFermeDto
 	 * @return
@@ -109,7 +109,7 @@ public class JourFermeController {
 	}
 
 	/**
-	 * SUPPRESSION JOURS FERMES VIA ID
+	 * SUPPRESSION DES JOURS FERMES VIA L'ID
 	 * 
 	 * @param id
 	 * @return
@@ -125,7 +125,7 @@ public class JourFermeController {
 	// ---- GESTION DES ERREURS ---- //
 	// ----------------------------- //
 	
-	// un jour férié ne peut pas être saisi dans le passé
+	// Un jour férié ne peut pas être saisi dans le passé
 	@ExceptionHandler(DateDansLePasseException.class)
 	public ResponseEntity<ErreurDto> onDateDansLePasseException(DateDansLePasseException ex) {
 		ErreurDto erreurDto = new ErreurDto();
@@ -133,7 +133,7 @@ public class JourFermeController {
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erreurDto);
 	}
 
-	// le commentaire est obligatoire pour les jours feriés.
+	// Le commentaire est obligatoire pour les jours feriés
 	@ExceptionHandler(CommentaireManquantJourFerieException.class)
 	public ResponseEntity<ErreurDto> onCommentaireManquantJourFerieException(CommentaireManquantJourFerieException ex) {
 		ErreurDto erreurDto = new ErreurDto();
@@ -141,7 +141,7 @@ public class JourFermeController {
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erreurDto);
 	}
 
-	// il est interdit de saisir une RTT employeur un samedi ou un dimanche
+	// Il est interdit de saisir une RTT employeur un samedi ou un dimanche
 	@ExceptionHandler(RttEmployeurUnWeekEndException.class)
 	public ResponseEntity<ErreurDto> onRttLeWeekEndException(RttEmployeurUnWeekEndException ex) {
 		ErreurDto erreurDto = new ErreurDto();
@@ -149,7 +149,7 @@ public class JourFermeController {
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erreurDto);
 	}
 
-	// il est interdit de saisir un jour férié à la même date qu'un autre jour férié
+	// Il est interdit de saisir un jour férié à la même date qu'un autre jour férié
 	@ExceptionHandler(SaisieJourFerieUnJourDejaFerieException.class) 
 	public ResponseEntity<ErreurDto> onSaisieJourFerierSurJourDejaFerieException(SaisieJourFerieUnJourDejaFerieException ex) {
 		ErreurDto erreurDto = new ErreurDto();

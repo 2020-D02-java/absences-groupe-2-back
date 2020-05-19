@@ -61,7 +61,7 @@ public class AbsenceController {
 	 * LISTER ABSENCES
 	 * 
 	 * @param id
-	 * @return une liste d'absence Dto
+	 * @return une liste d'absences Dto
 	 */
 	@GetMapping
 	public List<AbsenceVisualisationDto> listerAbsencesCollegue() {
@@ -79,7 +79,7 @@ public class AbsenceController {
 
 
 	/**
-	 * RECUPERER ABSENCE VIA ID
+	 * RECUPERER UNE ABSENCE VIA L'ID
 	 * 
 	 * @param id
 	 * @return
@@ -90,7 +90,7 @@ public class AbsenceController {
 	}
 	
 	/**
-	 * RECUPERER ABSENCE VIA STATUT
+	 * RECUPERER UNE ABSENCE VIA LE STATUT
 	 * 
 	 * @param id
 	 * @return
@@ -101,7 +101,7 @@ public class AbsenceController {
 	}
 
 	/**
-	 * MODIFICATION ABSENCE
+	 * MODIFICATION D'UNE ABSENCE
 	 * 
 	 * @param absenceDto
 	 * @param id
@@ -113,7 +113,7 @@ public class AbsenceController {
 	}
 	
 	/**
-	 * VALIDATION ABSENCE
+	 * VALIDATION D'UNE ABSENCE
 	 * 
 	 * @param absenceDto
 	 * @param id
@@ -125,7 +125,7 @@ public class AbsenceController {
 	}
 	
 	/**
-	 * REUFUSER ABSENCE
+	 * REUFUSER UNE ABSENCE
 	 * 
 	 * @param absenceDto
 	 * @param id
@@ -137,7 +137,7 @@ public class AbsenceController {
 	}
 
 	/**
-	 * SUPPRESSION ABSENCE VIA ID
+	 * SUPPRESSION D'UNE ABSENCE VIA L'ID
 	 * 
 	 * @param id
 	 * @return

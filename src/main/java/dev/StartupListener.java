@@ -55,7 +55,7 @@ public class StartupListener {
     	 
     /* ********************************************************************************* */
     	
-       // Création d'un administrateur/employe
+       // Création d'un administrateur/employé
         Collegue col1 = new Collegue();
         col1.setNom("Admin");
         col1.setPrenom("DEV");
@@ -89,7 +89,7 @@ public class StartupListener {
         
         this.collegueRepo.save(col2);
         
-        // Création de des absences de col1
+        // Création des absences de col1
         Absence abs1col1 = new Absence(LocalDate.of(2020, 06, 12), LocalDate.of(2020, 06, 15), TypeAbsence.RTT_EMPLOYE, "week-end allongé", Statut.INITIALE, col1);
         Absence abs2col1 = new Absence(LocalDate.of(2020, 11, 02), LocalDate.of(2020, 11, 20), TypeAbsence.CONGES_PAYES, "vacances en Grèce avec Tzatzíki", Statut.INITIALE, col1);
         Absence abs3col1 = new Absence(LocalDate.of(2021, 01, 01), LocalDate.of(2021, 02, 10), TypeAbsence.CONGES_SANS_SOLDE, "tour du monde en vélo", Statut.INITIALE, col1);
@@ -110,7 +110,7 @@ public class StartupListener {
  
     /* ********************************************************************************* */
    	
-	    // Création de des absences de col2
+	    // Création des absences de col2
 	    Absence abs1col2 = new Absence(LocalDate.of(2020, 05, 20), LocalDate.of(2020, 05, 29), TypeAbsence.CONGES_PAYES, "vacances à Djerba", Statut.INITIALE, col2);
 	    Absence abs2col2 = new Absence(LocalDate.of(2020, 07, 21), LocalDate.of(2020, 07, 28), TypeAbsence.CONGES_PAYES, "vacances en Italie, à Rome", Statut.INITIALE, col2);
 	    Absence abs3col2 = new Absence(LocalDate.of(2021, 01, 01), LocalDate.of(2021, 02, 10), TypeAbsence.CONGES_SANS_SOLDE, "tour du monde en planche à voile", Statut.INITIALE, col2);
@@ -133,7 +133,7 @@ public class StartupListener {
    		
         
         
-        // Création de des absences de col3 
+        // Création des absences de col3 
 	    Absence abs1col3 = new Absence(LocalDate.of(2020, 8, 17), LocalDate.of(2020, 8, 31), TypeAbsence.CONGES_PAYES, "", Statut.INITIALE, col3);
 	    Absence abs2col3 = new Absence(LocalDate.of(2020, 7, 15), LocalDate.of(2020, 07, 17), TypeAbsence.RTT_EMPLOYE, "Prolongation de la fête nationale", Statut.INITIALE, col3);
 	    Absence abs3col3 = new Absence(LocalDate.of(2021, 01, 01), LocalDate.of(2021, 02, 10), TypeAbsence.CONGES_SANS_SOLDE, "tour du monde en bateau", Statut.INITIALE, col3);
