@@ -29,6 +29,7 @@ import dev.entites.Statut;
 import dev.entites.TypeAbsence;
 import dev.entites.TypeJourFerme;
 import dev.entites.TypeSolde;
+import dev.exceptions.AbsenceByIdNotFound;
 import dev.exceptions.AbsenceChevauchementException;
 import dev.exceptions.AbsenceDateFinAvantDateDebutException;
 import dev.exceptions.AbsenceMotifManquantCongesSansSoldeException;
@@ -113,15 +114,11 @@ public class AbsenceService {
 	 * @return
 	 */
 	public AbsenceVisualisationDto getAbsenceParId(Integer id) {
-		AbsenceVisualisationDto abs = null;
-
-		for (Absence absence : absenceRepository.findAll()) {
-			if (absence.getId() == id) {
-				abs = new AbsenceVisualisationDto(id, absence.getDateDebut(), absence.getDateFin(), absence.getType(),
-						absence.getMotif(), absence.getStatut());
-			}
-		}
-
+		Absence absence = absenceRepository.findById(id).orElseThrow(() -> new AbsenceByIdNotFound("Aucune absence ne correspond à cet id."));
+		
+		AbsenceVisualisationDto abs = new AbsenceVisualisationDto(id, absence.getDateDebut(), absence.getDateFin(), absence.getType(),
+				absence.getMotif(), absence.getStatut());
+		
 		return abs;
 	}
 
@@ -174,7 +171,6 @@ public class AbsenceService {
 			List<Absence> listAbsences = new ArrayList<>();
 			listAbsences = this.absenceRepository.findByCollegueEmail(email).orElseThrow(() -> new CollegueAuthentifieNotAbsencesException("Le collègue n'a pas d'absence"));
 
-			System.out.println(listAbsences);
 
 			for (Absence abs : listAbsences) {
 				// GERER TOUS LES CAS POSSIBLE , POUR EVITER LES CHEVAUCHEMENTS D'ABSENCES
@@ -508,8 +504,8 @@ public class AbsenceService {
 	/**
 	 * jours Ouvres Entre DeuxDates
 	 * 
-	 * @param dateDebut 1ere date
-	 * @param dateFin   2eme date
+	 * @param dateDebut 1ere date (ni samedi ni dimanche)
+	 * @param dateFin   2eme date (ni samedi ni dimanche)
 	 * @return le nombre de jours ouvrés entre deux dates
 	 */
 	public int joursOuvresEntreDeuxDates(LocalDate dateDebut, LocalDate dateFin) {
