@@ -34,7 +34,7 @@ public class Collegue {
     /** email du collegue **/
     private String email;
 
-    /** mot de passe du collegue **/
+	/** mot de passe du collegue **/
     private String motDePasse;
 
     /** roles du collegue **/
@@ -59,6 +59,32 @@ public class Collegue {
     @OneToMany(mappedBy = "manager")
     List<Collegue> subordonnes;
     
+    /** Constructeur
+     *
+     */
+    public Collegue() {
+    	
+    }
+    
+    /** Constructeur
+	 *
+	 * @param nom
+	 * @param prenom
+	 * @param email
+	 * @param roles
+	 * @param soldes
+	 * @param absences
+	 */
+	public Collegue(String nom, String prenom, String email, List<RoleCollegue> roles, List<Solde> soldes,
+			List<Absence> absences) {
+		super();
+		this.nom = nom;
+		this.prenom = prenom;
+		this.email = email;
+		this.roles = roles;
+		this.soldes = soldes;
+		this.absences = absences;
+	}
     
     public Integer getId() {
         return id;
