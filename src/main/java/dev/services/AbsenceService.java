@@ -339,7 +339,7 @@ public class AbsenceService {
 
 				solde.setNombreDeJours(solde.getNombreDeJours() + nombreDeJoursOuvresPendantAbsence);
 
-			} else if (abs.getType().equals(TypeAbsence.CONGES_PAYES)) {
+			} else if (solde.getType().equals(TypeSolde.CONGES_PAYES) && abs.getType().equals(TypeAbsence.CONGES_PAYES)) {
 
 				solde.setNombreDeJours(solde.getNombreDeJours() + nombreDeJoursOuvresPendantAbsence);
 
@@ -506,7 +506,7 @@ public class AbsenceService {
 	 * 
 	 * @param dateDebut 1ere date (ni samedi ni dimanche)
 	 * @param dateFin   2eme date (ni samedi ni dimanche)
-	 * @return le nombre de jours ouvrés entre deux dates
+	 * @return le nombre de jours ouvrés entre deux dates (dateDebut et dateFin comprises)
 	 */
 	public int joursOuvresEntreDeuxDates(LocalDate dateDebut, LocalDate dateFin) {
 

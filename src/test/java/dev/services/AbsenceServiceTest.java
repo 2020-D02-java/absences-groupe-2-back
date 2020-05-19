@@ -6,72 +6,26 @@ import static org.mockito.Mockito.when;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-import dev.entites.Absence;
-import dev.entites.Collegue;
 import dev.entites.JourFerme;
-import dev.entites.Role;
-import dev.entites.RoleCollegue;
-import dev.entites.Solde;
-import dev.entites.Statut;
-import dev.entites.TypeAbsence;
 import dev.entites.TypeJourFerme;
-import dev.entites.TypeSolde;
-import dev.repository.AbsenceRepo;
-import dev.repository.CollegueRepo;
 import dev.repository.JourFermeRepo;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 public class AbsenceServiceTest {
 	
-	@MockBean
+	@Mock
 	JourFermeRepo jourFermeRepository;
 	
-	@MockBean
-	CollegueRepo collegueRepository;
-	
-	@MockBean
-	AbsenceRepo absenceRepository;
-	
-	@Autowired 
+	@InjectMocks
 	AbsenceService absenceService;
-	
-	Collegue collegueTest;
-	
 
-	@BeforeEach
-	public void init() {
-		
-		// Initialisation d'un collègue
-		List<RoleCollegue> roles = new ArrayList<>();
-		RoleCollegue roleCollegue = new RoleCollegue(collegueTest, Role.ROLE_ADMINISTRATEUR);
-		roles.add(roleCollegue);
-		
-		List<Solde> soldes = new ArrayList<>();
-		Solde solde1 = new Solde(25, TypeSolde.CONGES_PAYES, collegueTest);
-		Solde solde2 = new Solde(11, TypeSolde.RTT_EMPLOYE, collegueTest);
-		soldes.add(solde1);
-		soldes.add(solde2);
-		
-		List<Absence> absences = new ArrayList<>();
-		Absence abs1 = new Absence(LocalDate.of(2020, 06, 12), LocalDate.of(2020, 06, 15), TypeAbsence.RTT_EMPLOYE, "week-end prolongé", Statut.INITIALE, collegueTest);
-	    Absence abs2 = new Absence(LocalDate.of(2020, 11, 02), LocalDate.of(2020, 11, 20), TypeAbsence.CONGES_PAYES, "vacances en Grèce avec Tzatzíki", Statut.INITIALE, collegueTest);
-	    Absence abs3 = new Absence(LocalDate.of(2021, 01, 01), LocalDate.of(2021, 02, 10), TypeAbsence.CONGES_SANS_SOLDE, "tour du monde en vélo", Statut.INITIALE, collegueTest);
-		
-	    absences.add(abs1);
-	    absences.add(abs2);
-	    absences.add(abs3);
-	    
-		collegueTest = new Collegue("testnom", "testprenom", "testnom.testprenom@gmail.com", roles, soldes, absences);
-		
-	}
 	
 	/* ****************** TESTS joursOuvresEntreDeuxDates ****************************** */
 	
@@ -180,23 +134,6 @@ public class AbsenceServiceTest {
 		LocalDate dateFin = LocalDate.of(2020, 5, 22);
 		
 		assertEquals(2, absenceService.joursOuvresEntreDeuxDates(dateDebut, dateFin));
-	}
-	
-	/* ****************** TESTS traitementDeNuit ****************************** */
-	
-	void traitementDeNuit1() {
-		
-		JourFerme rtt1 = new JourFerme(LocalDate.of(2020, 5, 21), TypeJourFerme.RTT_EMPLOYEUR, "");
-        JourFerme rtt2 = new JourFerme(LocalDate.of(2020, 5, 22), TypeJourFerme.RTT_EMPLOYEUR, "");
-        
-        List<JourFerme> listeRtt = new ArrayList<>();
-        listeRtt.add(rtt1);
-        listeRtt.add(rtt2);
-		
-		when(jourFermeRepository.findByType(TypeJourFerme.RTT_EMPLOYEUR)).thenReturn(Optional.of(listeRtt));
-		
-		
-		
 	}
 	
 }

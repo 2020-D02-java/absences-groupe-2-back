@@ -2,7 +2,6 @@ package dev;
 
 import java.time.LocalDate;
 import java.util.Arrays;
-import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -31,8 +30,6 @@ import dev.repository.SoldeRepo;
  */
 @Component
 public class StartupListener {
-
-	private static final Logger LOGGER = Logger.getLogger(StartupListener.class.getName());
 	
 	private String appVersion;
     private PasswordEncoder passwordEncoder;
