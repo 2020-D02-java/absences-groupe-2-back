@@ -339,7 +339,7 @@ public class AbsenceService {
 
 		for (Solde solde : abs.getCollegue().getSoldes()) {
 
-			if (solde.getType().equals(TypeSolde.RTT_EMPLOYE)) {
+			if (solde.getType().equals(TypeSolde.RTT_EMPLOYE) && abs.getType() == TypeAbsence.RTT_EMPLOYE) {
 
 				solde.setNombreDeJours(solde.getNombreDeJours() + nombreDeJoursOuvresPendantAbsence);
 
