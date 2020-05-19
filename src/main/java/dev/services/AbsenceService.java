@@ -339,11 +339,11 @@ public class AbsenceService {
 
 		for (Solde solde : abs.getCollegue().getSoldes()) {
 
-			if (solde.getType().equals(TypeSolde.RTT_EMPLOYE) && abs.getType() == TypeAbsence.RTT_EMPLOYE) {
+			if (solde.getType().equals(TypeSolde.RTT_EMPLOYE) && abs.getType().equals(TypeAbsence.RTT_EMPLOYE)) {
 
 				solde.setNombreDeJours(solde.getNombreDeJours() + nombreDeJoursOuvresPendantAbsence);
 
-			} else {
+			} else if (abs.getType().equals(TypeAbsence.CONGES_PAYES)) {
 
 				solde.setNombreDeJours(solde.getNombreDeJours() + nombreDeJoursOuvresPendantAbsence);
 
