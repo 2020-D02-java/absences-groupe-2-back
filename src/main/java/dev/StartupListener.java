@@ -153,6 +153,7 @@ public class StartupListener {
    		
         // -- JOURS FERMES
 
+   		JourFerme jourFerme0 = new JourFerme(LocalDate.of(2020, 5, 21), TypeJourFerme.JOURS_FERIES, "Ascension");
         JourFerme jourFerme1 = new JourFerme(LocalDate.of(2020, 5, 22), TypeJourFerme.RTT_EMPLOYEUR, "Pont de l'ascension");
         JourFerme jourFerme2 = new JourFerme(LocalDate.of(2020, 6, 1), TypeJourFerme.JOURS_FERIES, "Pentecôte");
         JourFerme jourFerme3 = new JourFerme(LocalDate.of(2020, 7, 13), TypeJourFerme.RTT_EMPLOYEUR, "Pont de la fête nationale");
@@ -166,6 +167,7 @@ public class StartupListener {
         
         
 
+        this.jourFermeRepo.save(jourFerme0);
         this.jourFermeRepo.save(jourFerme1);
         this.jourFermeRepo.save(jourFerme2);
         this.jourFermeRepo.save(jourFerme3); 
