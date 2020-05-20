@@ -31,13 +31,13 @@ public class JourFermeVisualisationDto {
 	 * @param typeJourFerme
 	 * @param commentaire
 	 */
-	public JourFermeVisualisationDto(Integer id, LocalDate date, TypeJourFerme type, String commentaire) {
+	public JourFermeVisualisationDto(Integer id, LocalDate date, TypeJourFerme type, Statut statut, String commentaire) {
 		super();
 		this.id = id;
 		this.date = date;
 		this.type = type;
 		this.commentaire = commentaire;
-		this.statut = Statut.INITIALE;
+		this.statut = statut;
 	}
 
 	/**
