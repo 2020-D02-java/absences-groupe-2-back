@@ -71,7 +71,7 @@ public class StartupListener {
 	    col2.setMotDePasse(passwordEncoder.encode("superpass"));
 	    col2.setRoles(Arrays.asList(new RoleCollegue(col2, Role.ROLE_EMPLOYE)));
         
-	    // Création d'un administrateur
+	    // Création d'un manager
         Collegue col3 = new Collegue();
         col3.setNom("Manager");
         col3.setPrenom("DEV");
@@ -90,14 +90,15 @@ public class StartupListener {
         this.collegueRepo.save(col2);
         
         // Création des absences de col1
-        Absence abs1col1 = new Absence(LocalDate.of(2020, 06, 12), LocalDate.of(2020, 06, 15), TypeAbsence.RTT_EMPLOYE, "week-end allongé", Statut.INITIALE, col1);
-        Absence abs2col1 = new Absence(LocalDate.of(2020, 11, 02), LocalDate.of(2020, 11, 20), TypeAbsence.CONGES_PAYES, "vacances en Grèce avec Tzatzíki", Statut.INITIALE, col1);
-        Absence abs3col1 = new Absence(LocalDate.of(2021, 01, 01), LocalDate.of(2021, 02, 10), TypeAbsence.CONGES_SANS_SOLDE, "tour du monde en vélo", Statut.INITIALE, col1);
-
+        Absence abs1col1 = new Absence(LocalDate.of(2020, 05, 20), LocalDate.of(2020, 05, 29), TypeAbsence.CONGES_PAYES, "vacances à Djerba", Statut.INITIALE, col1);
+	    Absence abs2col1 = new Absence(LocalDate.of(2020, 07, 21), LocalDate.of(2020, 07, 28), TypeAbsence.CONGES_PAYES, "vacances en Italie, à Rome", Statut.INITIALE, col1);
+	    Absence abs3col1 = new Absence(LocalDate.of(2021, 01, 01), LocalDate.of(2021, 02, 10), TypeAbsence.CONGES_SANS_SOLDE, "tour du monde en planche à voile", Statut.INITIALE, col1);
+	    Absence abs4col1 = new Absence(LocalDate.of(2021, 11, 25), LocalDate.of(2021, 12, 17), TypeAbsence.RTT_EMPLOYE, "", Statut.INITIALE, col1);
     
         this.absenceRepo.save(abs1col1);
         this.absenceRepo.save(abs2col1);
         this.absenceRepo.save(abs3col1);
+	    this.absenceRepo.save(abs4col1);
 
        
         // Création des deux soldes CP + RTT 
@@ -111,15 +112,14 @@ public class StartupListener {
     /* ********************************************************************************* */
    	
 	    // Création des absences de col2
-	    Absence abs1col2 = new Absence(LocalDate.of(2020, 05, 20), LocalDate.of(2020, 05, 29), TypeAbsence.CONGES_PAYES, "vacances à Djerba", Statut.INITIALE, col2);
-	    Absence abs2col2 = new Absence(LocalDate.of(2020, 07, 21), LocalDate.of(2020, 07, 28), TypeAbsence.CONGES_PAYES, "vacances en Italie, à Rome", Statut.INITIALE, col2);
-	    Absence abs3col2 = new Absence(LocalDate.of(2021, 01, 01), LocalDate.of(2021, 02, 10), TypeAbsence.CONGES_SANS_SOLDE, "tour du monde en planche à voile", Statut.INITIALE, col2);
-	    Absence abs4col2 = new Absence(LocalDate.of(2021, 11, 25), LocalDate.of(2021, 12, 17), TypeAbsence.RTT_EMPLOYE, "", Statut.INITIALE, col2);
+        Absence abs1col2 = new Absence(LocalDate.of(2020, 06, 12), LocalDate.of(2020, 06, 15), TypeAbsence.RTT_EMPLOYE, "week-end prolongé", Statut.INITIALE, col2);
+        Absence abs2col2 = new Absence(LocalDate.of(2020, 11, 02), LocalDate.of(2020, 11, 20), TypeAbsence.CONGES_PAYES, "vacances en Grèce avec Tzatzíki", Statut.INITIALE, col2);
+        Absence abs3col2 = new Absence(LocalDate.of(2021, 01, 01), LocalDate.of(2021, 02, 10), TypeAbsence.CONGES_SANS_SOLDE, "tour du monde en vélo", Statut.INITIALE, col2);
+
 	
 	    this.absenceRepo.save(abs1col2);
 	    this.absenceRepo.save(abs2col2);
 	    this.absenceRepo.save(abs3col2);
-	    this.absenceRepo.save(abs4col2);
        
 	    // Création des deux soldes CP + RTT 
 	    Solde solde2CP = new Solde(25, TypeSolde.CONGES_PAYES, col2);
@@ -153,20 +153,19 @@ public class StartupListener {
    		
         // -- JOURS FERMES
 
-        JourFerme jourFerme1 = new JourFerme(LocalDate.of(2020, 5, 21), TypeJourFerme.JOURS_FERIES, "Ascension");
+        JourFerme jourFerme1 = new JourFerme(LocalDate.of(2020, 5, 22), TypeJourFerme.RTT_EMPLOYEUR, "Pont de l'ascension");
         JourFerme jourFerme2 = new JourFerme(LocalDate.of(2020, 6, 1), TypeJourFerme.JOURS_FERIES, "Pentecôte");
-        JourFerme jourFerme3 = new JourFerme(LocalDate.of(2020, 7, 14), TypeJourFerme.JOURS_FERIES, "Fête nationale");
-        JourFerme jourFerme4 = new JourFerme(LocalDate.of(2020, 8, 15), TypeJourFerme.JOURS_FERIES, "Assomption");
-        JourFerme jourFerme5 = new JourFerme(LocalDate.of(2020, 11, 1), TypeJourFerme.JOURS_FERIES, "Toussaint");
-        JourFerme jourFerme6 = new JourFerme(LocalDate.of(2020, 11, 11), TypeJourFerme.JOURS_FERIES, "Armistice");
-        JourFerme jourFerme7 = new JourFerme(LocalDate.of(2020, 12, 25), TypeJourFerme.JOURS_FERIES, "Noël");
-        JourFerme jourFerme8 = new JourFerme(LocalDate.of(2021, 1, 1), TypeJourFerme.JOURS_FERIES, "Jour de l'an");
-        JourFerme jourFerme9 = new JourFerme(LocalDate.of(2021, 4, 5), TypeJourFerme.JOURS_FERIES, "Lundi de Pâques");
+        JourFerme jourFerme3 = new JourFerme(LocalDate.of(2020, 7, 13), TypeJourFerme.RTT_EMPLOYEUR, "Pont de la fête nationale");
+        JourFerme jourFerme4 = new JourFerme(LocalDate.of(2020, 7, 14), TypeJourFerme.JOURS_FERIES, "Fête nationale");
+        JourFerme jourFerme5 = new JourFerme(LocalDate.of(2020, 8, 15), TypeJourFerme.JOURS_FERIES, "Assomption");
+        JourFerme jourFerme6 = new JourFerme(LocalDate.of(2020, 11, 1), TypeJourFerme.JOURS_FERIES, "Toussaint");
+        JourFerme jourFerme7 = new JourFerme(LocalDate.of(2020, 11, 11), TypeJourFerme.JOURS_FERIES, "Armistice");
+        JourFerme jourFerme8 = new JourFerme(LocalDate.of(2020, 12, 25), TypeJourFerme.JOURS_FERIES, "Noël");
+        JourFerme jourFerme9 = new JourFerme(LocalDate.of(2021, 1, 1), TypeJourFerme.JOURS_FERIES, "Jour de l'an");
+        JourFerme jourFerme10 = new JourFerme(LocalDate.of(2021, 4, 5), TypeJourFerme.JOURS_FERIES, "Lundi de Pâques");
         
         
-        JourFerme jourFerme10 = new JourFerme(LocalDate.of(2020, 5, 22), TypeJourFerme.RTT_EMPLOYEUR, "Pont de l'ascension");
-        JourFerme jourFerme11 = new JourFerme(LocalDate.of(2020, 7, 13), TypeJourFerme.RTT_EMPLOYEUR, "Pont de la fête nationale");
-        
+
         this.jourFermeRepo.save(jourFerme1);
         this.jourFermeRepo.save(jourFerme2);
         this.jourFermeRepo.save(jourFerme3); 
@@ -177,7 +176,6 @@ public class StartupListener {
         this.jourFermeRepo.save(jourFerme8);
         this.jourFermeRepo.save(jourFerme9);
         this.jourFermeRepo.save(jourFerme10);
-        this.jourFermeRepo.save(jourFerme11);
         
     }
 
