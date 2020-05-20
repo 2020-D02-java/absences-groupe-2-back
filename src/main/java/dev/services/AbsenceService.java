@@ -170,7 +170,7 @@ public class AbsenceService {
 
 
 			for (Absence abs : listAbsences) {
-				// GERER TOUS LES CAS POSSIBLES , POUR EVITER LES CHEVAUCHEMENTS D'ABSENCES
+				// GERER TOUS LES CAS POSSIBLES, POUR EVITER LES CHEVAUCHEMENTS D'ABSENCES
 				if (
 						(
 							(
