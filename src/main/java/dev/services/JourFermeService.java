@@ -69,7 +69,7 @@ public class JourFermeService {
 	 * Récupérer tous les jours fermés par date (année)
 	 * 
 	 * @param annee
-	 * @return
+	 * @return 
 	 */
 	public List<JourFermeVisualisationDto> getJourFermesParDate(Integer annee) {
 
@@ -77,7 +77,7 @@ public class JourFermeService {
 
 		for (JourFerme jourFerme : jourFermeRepository.findAll()) {
 			if (jourFerme.getDate().getYear() == annee) {
-				JourFermeVisualisationDto jourFermeDto = new JourFermeVisualisationDto(jourFerme.getId(), jourFerme.getDate(), jourFerme.getType(), jourFerme.getCommentaire());
+				JourFermeVisualisationDto jourFermeDto = new JourFermeVisualisationDto(jourFerme.getId(), jourFerme.getDate(), jourFerme.getType(), jourFerme.getStatut(), jourFerme.getCommentaire());
 				listeJourFerme.add(jourFermeDto);
 			}
 
@@ -97,7 +97,7 @@ public class JourFermeService {
 
 		for (JourFerme jourFerme : jourFermeRepository.findAll()) {
 			if (jourFerme.getId() == id) {
-				jour = new JourFermeVisualisationDto(id, jourFerme.getDate(), jourFerme.getType(), jourFerme.getCommentaire());
+				jour = new JourFermeVisualisationDto(id, jourFerme.getDate(), jourFerme.getType(), jourFerme.getStatut(), jourFerme.getCommentaire());
 			}
 		}
 
@@ -152,6 +152,7 @@ public class JourFermeService {
 		JourFerme jour = new JourFerme(jourFerme.getDate(), jourFerme.getType(), jourFerme.getCommentaire());
 		jour.setId(jourFerme.getId());
 
+		jour.setStatut(Statut.INITIALE);
 		this.jourFermeRepository.save(jour);
 		return jourFerme;
 	}
@@ -195,6 +196,8 @@ public class JourFermeService {
 
 		}
 
+		jourFerme.setStatut(Statut.INITIALE);
+		
 		// Tous les cas sont passants, je sauvegarde le jour
 		this.jourFermeRepository.save(jourFerme);
 		
